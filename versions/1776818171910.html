@@ -1,0 +1,668 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Ptera Prime Elder",
+  "schemaVersion": 1,
+  "description": "Ptera Prime Elder guide for The Isle - Gateway map with route overlay, objectives tracker, and growth timeline. Liquid glass UI, centered layout."
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ptera Prime Elder Guide</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 30% 20%, #0e2a1a 0%, #060d1f 40%, #0a0a0f 100%);
+    font-family: 'Segoe UI', sans-serif;
+    color: #e6edf3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 40px;
+  }
+
+  /* ---- GLASS CARD ---- */
+  .glass-card {
+    width: 100%;
+    max-width: 720px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 20px;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    padding: 28px 28px 20px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(46,160,67,0.12) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .header-icon { font-size: 48px; margin-bottom: 8px; display: block; }
+  .header h1 {
+    font-size: 24px; font-weight: 800; letter-spacing: 2px;
+    background: linear-gradient(135deg, #58a6ff, #2ea043);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+  .header p { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; }
+
+  /* ---- TABS ---- */
+  .tabs {
+    display: flex;
+    padding: 12px 20px 0;
+    gap: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .tab {
+    flex: 1; text-align: center;
+    padding: 10px; cursor: pointer;
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    border-radius: 10px 10px 0 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .tab.active {
+    color: #e6edf3;
+    border-bottom-color: #58a6ff;
+    background: rgba(88,166,255,0.07);
+  }
+  .tab:hover:not(.active) { color: rgba(255,255,255,0.6); }
+
+  /* ---- BODY PADDING ---- */
+  .tab-body { padding: 20px 24px 24px; }
+
+  /* ---- PRIME RULE ---- */
+  .prime-rule {
+    background: linear-gradient(135deg, rgba(46,160,67,0.15), rgba(88,166,255,0.08));
+    border: 1px solid rgba(46,160,67,0.3);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .prime-rule .icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .prime-rule h3 { color: #3fb950; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 5px; }
+  .prime-rule p { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+  /* ---- PROGRESS ---- */
+  .progress-section { margin-bottom: 16px; }
+  .progress-label {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-bottom: 7px; display: flex; justify-content: space-between;
+  }
+  .progress-label span:last-child { color: #58a6ff; font-weight: 600; }
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.07);
+    border-radius: 8px; height: 8px; overflow: hidden;
+  }
+  .progress-bar {
+    background: linear-gradient(90deg, #2ea043, #58a6ff);
+    height: 100%; transition: width 0.4s ease; border-radius: 8px;
+  }
+
+  /* ---- GROWTH TIMELINE ---- */
+  .growth-timeline {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+  }
+  .growth-timeline h4 {
+    font-size: 10px; color: rgba(255,255,255,0.3);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
+  }
+  .timeline-bar {
+    height: 8px; border-radius: 8px; overflow: hidden;
+    background: linear-gradient(90deg, #1a7f37 0%, #2ea043 50%, #f0883e 75%, #da3633 87.5%, #6e40c9 100%);
+  }
+  .timeline-markers {
+    display: flex; justify-content: space-between; margin-top: 8px;
+  }
+  .tm { font-size: 9px; color: rgba(255,255,255,0.3); text-align: center; }
+  .tm span { display: block; color: rgba(255,255,255,0.6); font-weight: 700; font-size: 10px; }
+  .tm.warn span { color: #f0883e; }
+
+  /* ---- PHASE LABEL ---- */
+  .phase-label {
+    font-size: 10px; color: rgba(255,255,255,0.3);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin: 18px 0 8px;
+  }
+
+  /* ---- OBJ CARDS ---- */
+  .obj-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .obj-card:hover { border-color: rgba(88,166,255,0.3); background: rgba(88,166,255,0.04); }
+  .obj-card.done { border-color: rgba(46,160,67,0.4); background: rgba(46,160,67,0.06); }
+
+  .obj-header {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  }
+  .obj-check {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid rgba(88,166,255,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; flex-shrink: 0; transition: all 0.2s;
+    color: transparent;
+  }
+  .obj-card.done .obj-check {
+    background: #2ea043; border-color: #2ea043; color: #fff;
+  }
+  .obj-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .obj-badge {
+    font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 700;
+    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4);
+  }
+  .obj-badge.easy { background: rgba(46,160,67,0.15); color: #3fb950; }
+  .obj-badge.medium { background: rgba(227,179,65,0.15); color: #e3b341; }
+  .obj-badge.hard { background: rgba(248,81,73,0.15); color: #f85149; }
+  .obj-expand { font-size: 10px; color: rgba(255,255,255,0.3); transition: transform 0.2s; }
+  .obj-card.open .obj-expand { transform: rotate(180deg); }
+
+  .obj-body {
+    display: none; padding: 0 16px 14px;
+    font-size: 12px; color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .obj-card.open .obj-body { display: block; padding-top: 12px; }
+  .obj-tip {
+    background: rgba(46,160,67,0.1); border-left: 2px solid #2ea043;
+    padding: 7px 10px; border-radius: 0 6px 6px 0; margin-top: 10px;
+    font-size: 11px; color: rgba(255,255,255,0.6);
+  }
+  .obj-warn {
+    background: rgba(227,179,65,0.08); border-left: 2px solid #e3b341;
+    padding: 7px 10px; border-radius: 0 6px 6px 0; margin-top: 6px;
+    font-size: 11px; color: #e3b341;
+  }
+
+  .ptera-note {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 12px; padding: 12px 16px;
+    margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+  }
+  .ptera-note strong { color: #e3b341; }
+  .ptera-note b { color: rgba(255,255,255,0.75); }
+
+  /* ---- MAP TAB ---- */
+  .map-outer {
+    display: flex; flex-direction: column;
+    height: 520px; border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: #020817;
+  }
+
+  .map-controls {
+    padding: 8px 14px; display: flex; gap: 8px; align-items: center;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .map-btn {
+    padding: 5px 14px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.06); color: #e6edf3;
+    font-size: 12px; cursor: pointer; transition: all 0.2s; font-weight: 600;
+  }
+  .map-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(88,166,255,0.4); }
+  .map-btn.on { background: rgba(46,160,67,0.15); border-color: rgba(46,160,67,0.4); color: #3fb950; }
+  .map-zoom-label { font-size: 11px; color: rgba(255,255,255,0.3); margin-left: auto; }
+
+  .map-container {
+    flex: 1; position: relative; overflow: hidden;
+    cursor: grab; user-select: none;
+  }
+  .map-container:active { cursor: grabbing; }
+
+  .map-inner {
+    position: absolute; transform-origin: 0 0;
+    width: 1232px; height: 968px;
+  }
+  .map-img { width: 1232px; height: 968px; display: block; }
+
+  .map-svg-overlay {
+    position: absolute; top: 0; left: 0;
+    width: 1232px; height: 968px; pointer-events: none;
+  }
+
+  .stop-marker {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(13,30,60,0.85);
+    border: 2px solid rgba(88,166,255,0.8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #e6edf3;
+    cursor: pointer; pointer-events: all; z-index: 10;
+    transition: transform 0.15s, background 0.15s;
+    box-shadow: 0 0 10px rgba(88,166,255,0.35);
+    backdrop-filter: blur(4px);
+  }
+  .stop-marker:hover, .stop-marker.active {
+    background: #58a6ff; color: #0d1117;
+    transform: translate(-50%,-50%) scale(1.3);
+    box-shadow: 0 0 20px rgba(88,166,255,0.7);
+  }
+  .stop-marker.start { border-color: rgba(46,160,67,0.9); box-shadow: 0 0 10px rgba(46,160,67,0.35); }
+  .stop-marker.start:hover, .stop-marker.start.active { background: #2ea043; box-shadow: 0 0 20px rgba(46,160,67,0.7); }
+
+  .map-fallback {
+    width: 1232px; height: 968px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; color: rgba(255,255,255,0.3); font-size: 13px;
+    background: radial-gradient(ellipse at center, #0a1a2a 0%, #020817 100%);
+  }
+
+  .stop-detail {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(6,13,31,0.95);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(88,166,255,0.2);
+    padding: 14px 18px; z-index: 20;
+    transform: translateY(100%); transition: transform 0.25s;
+    pointer-events: none;
+  }
+  .stop-detail.visible { transform: translateY(0); pointer-events: all; }
+  .stop-detail h4 { font-size: 14px; color: #58a6ff; margin-bottom: 5px; }
+  .stop-detail p { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+  .stop-tag {
+    display: inline-block; background: rgba(46,160,67,0.15);
+    color: #3fb950; font-size: 10px; padding: 3px 10px;
+    border-radius: 20px; margin-top: 8px; font-weight: 700;
+    border: 1px solid rgba(46,160,67,0.2);
+  }
+  .stop-close {
+    position: absolute; top: 12px; right: 16px;
+    cursor: pointer; color: rgba(255,255,255,0.3); font-size: 18px;
+  }
+  .stop-close:hover { color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+
+<div class="glass-card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-icon">🦅</span>
+    <h1>PTERA PRIME ELDER</h1>
+    <p>THE ISLE · GATEWAY · EVRIMA &nbsp;—&nbsp; COMPLETE 5 OF 8 OBJECTIVES BEFORE 75% GROWTH</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('objectives')">📋 Objectives</div>
+    <div class="tab" onclick="switchTab('map')">🗺️ Route Map</div>
+  </div>
+
+  <!-- OBJECTIVES TAB -->
+  <div class="tab-body" id="tab-objectives">
+
+    <div class="prime-rule">
+      <div class="icon">⚡</div>
+      <div>
+        <h3>THE PRIME RULE</h3>
+        <p>Complete <strong style="color:#e6edf3">5 out of 8 objectives</strong> before reaching <strong style="color:#f0883e">75% growth</strong> to unlock Prime Elder. Miss the window → you get <strong style="color:#f85149">Frail</strong> instead. Confirmation: at 75%, if the <em>4th mutation slot</em> is clickable, you have Prime!</p>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>Objectives completed</span>
+        <span id="progress-count">0 / 5 needed</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="growth-timeline">
+      <h4>Growth Timeline</h4>
+      <div class="timeline-bar"></div>
+      <div class="timeline-markers">
+        <div class="tm"><span>0%</span>Hatch</div>
+        <div class="tm"><span>25%</span>Juvi</div>
+        <div class="tm"><span>50%</span>Sub-Adult</div>
+        <div class="tm warn"><span>75% ⚠️</span>DEADLINE</div>
+        <div class="tm"><span>87.5%</span>Decay</div>
+        <div class="tm"><span>100%</span>Adult</div>
+      </div>
+    </div>
+
+    <div class="phase-label">🥚 Phase 1 — Hatchling</div>
+
+    <div class="obj-card" id="obj-0" onclick="toggleObj(0)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,0)">✓</div>
+        <div class="obj-title">Survive as a Hatchling</div>
+        <div class="obj-badge easy">FREE</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Spawn into the server as a hatchling. Simply surviving the hatch counts this objective automatically — no extra actions needed.
+        <div class="obj-tip">💡 Every run starts with 1/5 already done if you hatch naturally.</div>
+      </div>
+    </div>
+
+    <div class="phase-label">🌿 Phase 2 — Juvenile</div>
+
+    <div class="obj-card" id="obj-1" onclick="toggleObj(1)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,1)">✓</div>
+        <div class="obj-title">Use a Sanctuary</div>
+        <div class="obj-badge easy">EASY</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Fly to a designated Sanctuary zone and rest. On Gateway, Water Access Sanctuary is closest to spawn — do this ASAP as a juvi.
+        <div class="obj-tip">💡 Sanctuaries are safe zones — no dino can attack you inside.</div>
+        <div class="obj-warn">⚠️ Don't skip this. Easy, close to spawn, stacks your count early.</div>
+      </div>
+    </div>
+
+    <div class="obj-card" id="obj-2" onclick="toggleObj(2)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,2)">✓</div>
+        <div class="obj-title">Achieve Perfect Diet</div>
+        <div class="obj-badge medium">MEDIUM</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Eat a varied diet across all required food categories. For Ptera: fish + small prey (insects, small lizards) + carrion. Keep all diet bars in the green.
+        <div class="obj-tip">💡 Fish near Water Access, hunt insects near Jungle Sector. Build gradually over juvi phase.</div>
+        <div class="obj-warn">⚠️ Never let hunger drain fully — broken diet streaks can reset your progress.</div>
+      </div>
+    </div>
+
+    <div class="phase-label">✈️ Phase 3 — Sub-Adult</div>
+
+    <div class="obj-card" id="obj-3" onclick="toggleObj(3)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,3)">✓</div>
+        <div class="obj-title">Complete Migration (3 zones)</div>
+        <div class="obj-badge medium">MEDIUM</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Fly through 3 designated Migration Zones. On Gateway: Northern Coast → River Delta → Swamp areas. Each zone registers when you fly through — no landing required.
+        <div class="obj-tip">💡 Plan one long loop flight to hit all 3 at once — saves time.</div>
+      </div>
+    </div>
+
+    <div class="obj-card" id="obj-4" onclick="toggleObj(4)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,4)">✓</div>
+        <div class="obj-title">Patrol Your Territory (4 zones)</div>
+        <div class="obj-badge medium">MEDIUM</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Visit 4 Patrol Zones — usually coastal cliffs, ridgelines, elevated areas. On Gateway: Northwest Ridge, West Rail Access cliffs, South Plains, SW Coast.
+        <div class="obj-tip">💡 Combine with migration — hit patrol zones on the same loop flight.</div>
+      </div>
+    </div>
+
+    <div class="obj-card" id="obj-5" onclick="toggleObj(5)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,5)">✓</div>
+        <div class="obj-title">Survive 3 In-Game Days</div>
+        <div class="obj-badge easy">EASY</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Stay alive for 3 full in-game day/night cycles. Each cycle is roughly 1–2 real hours depending on server settings.
+        <div class="obj-tip">💡 Play passively, avoid fights. Biggest risk is large carnivores at watering holes — stay airborne.</div>
+      </div>
+    </div>
+
+    <div class="phase-label">🤝 Phase 4 — Social (Optional)</div>
+
+    <div class="obj-card" id="obj-6" onclick="toggleObj(6)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,6)">✓</div>
+        <div class="obj-title">Form a Group / Bond with Others</div>
+        <div class="obj-badge hard">SOCIAL</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Travel with other Pteras for an extended period. Requires another player to group with you — the bond registers after enough time together.
+        <div class="obj-warn">⚠️ Skip this on solo runs — hardest to complete without a friend playing Ptera.</div>
+        <div class="obj-tip">💡 Great substitute if you have a server buddy — replaces a harder migration or patrol objective.</div>
+      </div>
+    </div>
+
+    <div class="obj-card" id="obj-7" onclick="toggleObj(7)">
+      <div class="obj-header">
+        <div class="obj-check" onclick="toggleDone(event,7)">✓</div>
+        <div class="obj-title">Successful Hunt (Prey Kill)</div>
+        <div class="obj-badge medium">MEDIUM</div>
+        <div class="obj-expand">▼</div>
+      </div>
+      <div class="obj-body">
+        Kill a qualifying prey animal. For Ptera: fish, insects, small lizards count. You must deal the killing blow yourself.
+        <div class="obj-tip">💡 Fish near Water Access or River Delta — easy to stack while building Perfect Diet.</div>
+        <div class="obj-warn">⚠️ Do NOT kill other Pteras — cannibalism can block Prime Elder.</div>
+      </div>
+    </div>
+
+    <div class="ptera-note">
+      <strong>📌 Ptera Notes:</strong> As a small dino, your server may require only <b>4 objectives instead of 5</b> — verify on your server. Ptera diet = fish + insects + small prey. Ptera may <b>NOT</b> eat other Pteras.
+    </div>
+
+  </div><!-- /tab-objectives -->
+
+  <!-- MAP TAB -->
+  <div class="tab-body" id="tab-map" style="display:none; padding: 16px 20px 20px;">
+    <div class="map-outer">
+      <div class="map-controls">
+        <button class="map-btn" onclick="zoom(1.25)">＋</button>
+        <button class="map-btn" onclick="zoom(0.8)">－</button>
+        <button class="map-btn" onclick="resetView()">Reset</button>
+        <button class="map-btn on" id="route-btn" onclick="toggleRoute()">🗺️ Route ON</button>
+        <span class="map-zoom-label" id="zoom-label">55%</span>
+      </div>
+      <div class="map-container" id="map-container"
+        onmousedown="startDrag(event)" onmousemove="doDrag(event)"
+        onmouseup="endDrag()" onmouseleave="endDrag()" onwheel="onWheel(event)"
+        ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd()">
+
+        <div class="map-inner" id="map-inner">
+          <img class="map-img" id="map-img" alt="Gateway Map"
+            style="display:none"
+            onload="this.style.display='block'; document.getElementById('map-fallback').style.display='none'">
+          <div class="map-fallback" id="map-fallback">
+            <div style="font-size:52px">🗺️</div>
+            <div style="color:#58a6ff;font-weight:700;font-size:14px">Map Image Loading...</div>
+            <div style="font-size:11px;max-width:320px;text-align:center;line-height:1.6">Drop your Gateway screenshot into the TheIsleProject folder and Brain will encode it in!</div>
+          </div>
+
+          <svg class="map-svg-overlay" id="route-svg" viewBox="0 0 1232 968">
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <path id="route-path"
+              d="M 595,310 L 600,360 L 520,175 L 370,235 L 615,490 L 760,215 L 640,700 L 410,630 L 560,840"
+              fill="none" stroke="rgba(88,166,255,0.6)" stroke-width="2.5"
+              stroke-dasharray="12,7" filter="url(#glow)"/>
+          </svg>
+
+          <div class="stop-marker start" style="left:595px;top:310px" onclick="showStop(0)">1</div>
+          <div class="stop-marker" style="left:600px;top:370px" onclick="showStop(1)">2</div>
+          <div class="stop-marker" style="left:520px;top:175px" onclick="showStop(2)">3</div>
+          <div class="stop-marker" style="left:370px;top:235px" onclick="showStop(3)">4</div>
+          <div class="stop-marker" style="left:615px;top:490px" onclick="showStop(4)">5</div>
+          <div class="stop-marker" style="left:760px;top:215px" onclick="showStop(5)">6</div>
+          <div class="stop-marker" style="left:640px;top:700px" onclick="showStop(6)">7</div>
+          <div class="stop-marker" style="left:410px;top:630px" onclick="showStop(7)">8</div>
+          <div class="stop-marker" style="left:560px;top:840px" onclick="showStop(8)">9</div>
+        </div>
+
+        <div class="stop-detail" id="stop-detail">
+          <span class="stop-close" onclick="closeStop()">✕</span>
+          <h4 id="stop-name"></h4>
+          <p id="stop-desc"></p>
+          <div id="stop-obj"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /glass-card -->
+
+<script>
+// TABS
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['objectives','map'][i] === name));
+  document.getElementById('tab-objectives').style.display = name === 'objectives' ? '' : 'none';
+  document.getElementById('tab-map').style.display = name === 'map' ? '' : 'none';
+  if (name === 'map' && !mapInited) initMap();
+}
+
+// OBJECTIVES
+let doneSet = new Set();
+function toggleDone(e, idx) {
+  e.stopPropagation();
+  const card = document.getElementById('obj-' + idx);
+  doneSet.has(idx) ? doneSet.delete(idx) : doneSet.add(idx);
+  card.classList.toggle('done', doneSet.has(idx));
+  updateProgress();
+}
+function toggleObj(idx) { document.getElementById('obj-' + idx).classList.toggle('open'); }
+function updateProgress() {
+  const n = doneSet.size, pct = Math.min(100, n / 5 * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-count').textContent = n + ' / 5 needed' + (n >= 5 ? ' ✅ PRIME ELIGIBLE!' : '');
+}
+
+// MAP STOPS
+const stops = [
+  { name: "1 · Water Access — START", desc: "Your spawn point. Stay near water — fish spawn here and keep your diet up. Safe area for hatchlings.", obj: "Objective: Survive as Hatchling (auto)" },
+  { name: "2 · Water Access Sanctuary", desc: "Short flight south of spawn. Land here ASAP as a juvenile — rest briefly and let it register. You're safe inside.", obj: "Objective: Use a Sanctuary ✅" },
+  { name: "3 · Northern Coast", desc: "Fly northwest to the northern shoreline. First Migration Zone — fly through the coastal stretch, no landing needed.", obj: "Objective: Migration Zone 1 of 3" },
+  { name: "4 · Northwest Ridge", desc: "Highland cliffs on the northwest side. First Patrol Zone. Good vantage, relatively safe from large predators up here.", obj: "Objective: Patrol Zone 1 of 4" },
+  { name: "5 · River / Jungle Sector", desc: "Follow the river south through Jungle Sector. Migration Zone 2 + great for diet — fish in river, insects at jungle edge.", obj: "Objectives: Migration Zone 2 + Diet + Hunt" },
+  { name: "6 · Northern Jungle", desc: "Loop northeast to dense Northern Jungle. Migration Zone 3 — final migration stop. North Lake nearby for water.", obj: "Objective: Migration Zone 3 of 3 ✅" },
+  { name: "7 · Swamps Center", desc: "Fly south to Swamps Center. Patrol Zone 2. Stay airborne — swamp is full of large predators. Fly through to register.", obj: "Objective: Patrol Zone 2 of 4" },
+  { name: "8 · West Rail / South Plains", desc: "Head west. Patrol Zone 3. Wide open area — easier to spot threats from above.", obj: "Objective: Patrol Zone 3 of 4" },
+  { name: "9 · Southern Beach", desc: "Finish your loop at Southern Beach. Patrol Zone 4 complete. Beach fish for a final diet top-up before hitting 75%.", obj: "Objective: Patrol Zone 4 of 4 ✅" }
+];
+
+function showStop(idx) {
+  const s = stops[idx];
+  document.getElementById('stop-name').textContent = s.name;
+  document.getElementById('stop-desc').textContent = s.desc;
+  document.getElementById('stop-obj').innerHTML = `<span class="stop-tag">${s.obj}</span>`;
+  document.getElementById('stop-detail').classList.add('visible');
+  document.querySelectorAll('.stop-marker').forEach((m,i) => m.classList.toggle('active', i === idx));
+}
+function closeStop() {
+  document.getElementById('stop-detail').classList.remove('visible');
+  document.querySelectorAll('.stop-marker').forEach(m => m.classList.remove('active'));
+}
+
+let routeOn = true;
+function toggleRoute() {
+  routeOn = !routeOn;
+  document.getElementById('route-svg').style.opacity = routeOn ? '1' : '0';
+  const btn = document.getElementById('route-btn');
+  btn.textContent = routeOn ? '🗺️ Route ON' : '🗺️ Route OFF';
+  btn.classList.toggle('on', routeOn);
+}
+
+// PAN / ZOOM
+let scale = 0.55, tx = 0, ty = 0, dragging = false, lastX = 0, lastY = 0, mapInited = false;
+
+function initMap() {
+  mapInited = true;
+  const c = document.getElementById('map-container');
+  tx = (c.offsetWidth - 1232 * scale) / 2;
+  ty = Math.max(0, (c.offsetHeight - 968 * scale) / 2);
+  applyTransform();
+}
+function applyTransform() {
+  document.getElementById('map-inner').style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+  document.getElementById('zoom-label').textContent = Math.round(scale * 100) + '%';
+}
+function clamp() {
+  const c = document.getElementById('map-container');
+  tx = Math.min(60, Math.max(c.offsetWidth - 1232 * scale - 60, tx));
+  ty = Math.min(60, Math.max(c.offsetHeight - 968 * scale - 60, ty));
+}
+function zoom(f) {
+  const c = document.getElementById('map-container');
+  const cx = c.offsetWidth / 2, cy = c.offsetHeight / 2;
+  const ns = Math.min(5, Math.max(0.25, scale * f));
+  tx = cx - (cx - tx) * ns / scale;
+  ty = cy - (cy - ty) * ns / scale;
+  scale = ns; clamp(); applyTransform();
+}
+function resetView() {
+  scale = 0.55; mapInited = false; initMap();
+}
+function startDrag(e) {
+  if (e.target.classList.contains('stop-marker') || e.target.classList.contains('stop-close')) return;
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+}
+function doDrag(e) {
+  if (!dragging) return;
+  tx += e.clientX - lastX; ty += e.clientY - lastY;
+  lastX = e.clientX; lastY = e.clientY; clamp(); applyTransform();
+}
+function endDrag() { dragging = false; }
+function onWheel(e) {
+  e.preventDefault();
+  const c = document.getElementById('map-container'), r = c.getBoundingClientRect();
+  const mx = e.clientX - r.left, my = e.clientY - r.top;
+  const f = e.deltaY < 0 ? 1.15 : 0.87;
+  const ns = Math.min(5, Math.max(0.25, scale * f));
+  tx = mx - (mx - tx) * ns / scale; ty = my - (my - ty) * ns / scale;
+  scale = ns; clamp(); applyTransform();
+}
+let lastDist = 0;
+function touchStart(e) {
+  if (e.touches.length === 1) { dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
+  if (e.touches.length === 2) lastDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+}
+function touchMove(e) {
+  e.preventDefault();
+  if (e.touches.length === 1 && dragging) {
+    tx += e.touches[0].clientX - lastX; ty += e.touches[0].clientY - lastY;
+    lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; clamp(); applyTransform();
+  }
+  if (e.touches.length === 2) {
+    const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    zoom(d / lastDist); lastDist = d;
+  }
+}
+function touchEnd() { dragging = false; }
+
+updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Ptera Prime Elder",
+  "schemaVersion": 1,
+  "description": "Ptera Prime Elder guide for The Isle - Gateway map with route overlay, objectives tracker, and growth timeline. Liquid glass UI, centered layout."
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ptera Prime Elder Guide</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 30% 20%, #0e2a1a 0%, #060d1f 40%, #0a0a0f 100%);
+    font-family: 'Segoe UI', sans-serif; color: #e6edf3;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px 16px 40px;
+  }
+  .glass-card {
+    width: 100%; max-width: 720px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.09); border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+  .header {
+    padding: 28px 28px 20px; text-align: center;
+    background: linear-gradient(180deg, rgba(46,160,67,0.12) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .header-icon { font-size: 48px; margin-bottom: 8px; display: block; }
+  .header h1 {
+    font-size: 24px; font-weight: 800; letter-spacing: 2px;
+    background: linear-gradient(135deg, #58a6ff, #2ea043);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 6px;
+  }
+  .header p { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; }
+
+  .tabs { display: flex; padding: 12px 20px 0; gap: 4px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .tab {
+    flex: 1; text-align: center; padding: 10px; cursor: pointer;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.35);
+    border-radius: 10px 10px 0 0; border-bottom: 2px solid transparent;
+    transition: all 0.2s; user-select: none;
+  }
+  .tab.active { color: #e6edf3; border-bottom-color: #58a6ff; background: rgba(88,166,255,0.07); }
+  .tab:hover:not(.active) { color: rgba(255,255,255,0.6); }
+  .tab-body { padding: 20px 24px 24px; }
+
+  /* shared */
+  .prime-rule {
+    background: linear-gradient(135deg, rgba(46,160,67,0.15), rgba(88,166,255,0.08));
+    border: 1px solid rgba(46,160,67,0.3); border-radius: 14px;
+    padding: 16px 18px; margin-bottom: 18px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .prime-rule .icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .prime-rule h3 { color: #3fb950; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 5px; }
+  .prime-rule p { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+  .progress-section { margin-bottom: 16px; }
+  .progress-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 7px; display: flex; justify-content: space-between; }
+  .progress-label span:last-child { color: #58a6ff; font-weight: 600; }
+  .progress-bar-wrap { background: rgba(255,255,255,0.07); border-radius: 8px; height: 8px; overflow: hidden; }
+  .progress-bar { background: linear-gradient(90deg, #2ea043, #58a6ff); height: 100%; transition: width 0.4s; border-radius: 8px; }
+  .growth-timeline { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; }
+  .growth-timeline h4 { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .timeline-bar { height: 8px; border-radius: 8px; overflow: hidden; background: linear-gradient(90deg, #1a7f37 0%, #2ea043 50%, #f0883e 75%, #da3633 87.5%, #6e40c9 100%); }
+  .timeline-markers { display: flex; justify-content: space-between; margin-top: 8px; }
+  .tm { font-size: 9px; color: rgba(255,255,255,0.3); text-align: center; }
+  .tm span { display: block; color: rgba(255,255,255,0.6); font-weight: 700; font-size: 10px; }
+  .tm.warn span { color: #f0883e; }
+  .phase-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 8px; }
+  .obj-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; margin-bottom: 8px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .obj-card:hover { border-color: rgba(88,166,255,0.3); background: rgba(88,166,255,0.04); }
+  .obj-card.done { border-color: rgba(46,160,67,0.4); background: rgba(46,160,67,0.06); }
+  .obj-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .obj-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(88,166,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; transition: all 0.2s; color: transparent; }
+  .obj-card.done .obj-check { background: #2ea043; border-color: #2ea043; color: #fff; }
+  .obj-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .obj-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 700; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
+  .obj-badge.easy { background: rgba(46,160,67,0.15); color: #3fb950; }
+  .obj-badge.medium { background: rgba(227,179,65,0.15); color: #e3b341; }
+  .obj-badge.hard { background: rgba(248,81,73,0.15); color: #f85149; }
+  .obj-expand { font-size: 10px; color: rgba(255,255,255,0.3); transition: transform 0.2s; }
+  .obj-card.open .obj-expand { transform: rotate(180deg); }
+  .obj-body { display: none; padding: 0 16px 14px; font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.7; border-top: 1px solid rgba(255,255,255,0.05); }
+  .obj-card.open .obj-body { display: block; padding-top: 12px; }
+  .obj-tip { background: rgba(46,160,67,0.1); border-left: 2px solid #2ea043; padding: 7px 10px; border-radius: 0 6px 6px 0; margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.6); }
+  .obj-warn { background: rgba(227,179,65,0.08); border-left: 2px solid #e3b341; padding: 7px 10px; border-radius: 0 6px 6px 0; margin-top: 6px; font-size: 11px; color: #e3b341; }
+  .ptera-note { background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.15); border-radius: 12px; padding: 12px 16px; margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+  .ptera-note strong { color: #e3b341; }
+  .ptera-note b { color: rgba(255,255,255,0.75); }
+
+  /* MAP */
+  .map-outer { display: flex; flex-direction: column; height: 560px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); background: #020817; }
+  .map-controls { padding: 8px 12px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .map-btn { padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: #e6edf3; font-size: 11px; cursor: pointer; transition: all 0.2s; font-weight: 600; white-space: nowrap; }
+  .map-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(88,166,255,0.4); }
+  .map-btn.on { background: rgba(46,160,67,0.15); border-color: rgba(46,160,67,0.4); color: #3fb950; }
+  .map-zoom-label { font-size: 11px; color: rgba(255,255,255,0.3); margin-left: auto; }
+
+  /* Filter row */
+  .filter-row { padding: 7px 12px; display: flex; gap: 5px; flex-wrap: wrap; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .layer-btn {
+    padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.18s;
+    user-select: none; display: flex; align-items: center; gap: 4px;
+  }
+  .layer-btn.on { color: #e6edf3; border-color: var(--lc); background: rgba(var(--lr),var(--lg),var(--lb),0.18); }
+
+  .map-container { flex: 1; position: relative; overflow: hidden; cursor: grab; user-select: none; }
+  .map-container:active { cursor: grabbing; }
+  .map-inner { position: absolute; transform-origin: 0 0; width: 1232px; height: 968px; }
+  .map-img { width: 1232px; height: 968px; display: block; }
+  .map-svg-overlay { position: absolute; top: 0; left: 0; width: 1232px; height: 968px; pointer-events: none; }
+  .map-fallback { width: 1232px; height: 968px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: rgba(255,255,255,0.3); font-size: 13px; background: radial-gradient(ellipse at center, #0a1a2a 0%, #020817 100%); }
+
+  /* Route stop markers */
+  .stop-marker {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(13,30,60,0.85); border: 2px solid rgba(88,166,255,0.8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #e6edf3;
+    cursor: pointer; pointer-events: all; z-index: 10;
+    transition: transform 0.15s, background 0.15s;
+    box-shadow: 0 0 8px rgba(88,166,255,0.3);
+  }
+  .stop-marker:hover, .stop-marker.active { background: #58a6ff; color: #0d1117; transform: translate(-50%,-50%) scale(1.3); }
+  .stop-marker.start { border-color: rgba(46,160,67,0.9); box-shadow: 0 0 8px rgba(46,160,67,0.3); }
+  .stop-marker.start:hover, .stop-marker.start.active { background: #2ea043; }
+
+  /* Location pins */
+  .loc-pin {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; cursor: pointer; pointer-events: all; z-index: 8;
+    transition: transform 0.15s, opacity 0.2s;
+    border: 2px solid rgba(255,255,255,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .loc-pin:hover { transform: translate(-50%,-50%) scale(1.3); z-index: 15; }
+  .loc-pin.hidden-pin { opacity: 0; pointer-events: none; }
+
+  .stop-detail { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(6,13,31,0.95); backdrop-filter: blur(16px); border-top: 1px solid rgba(88,166,255,0.2); padding: 12px 16px; z-index: 20; transform: translateY(100%); transition: transform 0.25s; pointer-events: none; }
+  .stop-detail.visible { transform: translateY(0); pointer-events: all; }
+  .stop-detail h4 { font-size: 13px; color: #58a6ff; margin-bottom: 4px; }
+  .stop-detail p { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+  .stop-tag { display: inline-block; background: rgba(46,160,67,0.15); color: #3fb950; font-size: 10px; padding: 2px 9px; border-radius: 20px; margin-top: 6px; font-weight: 700; border: 1px solid rgba(46,160,67,0.2); }
+  .stop-close { position: absolute; top: 10px; right: 14px; cursor: pointer; color: rgba(255,255,255,0.3); font-size: 18px; }
+  .stop-close:hover { color: rgba(255,255,255,0.7); }
+
+  /* MUTATIONS */
+  .mut-filter-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.45); cursor: pointer; transition: all 0.2s; user-select: none; }
+  .filter-btn.active { background: rgba(88,166,255,0.15); border-color: rgba(88,166,255,0.4); color: #58a6ff; }
+  .filter-btn.prime.active { background: rgba(46,160,67,0.15); border-color: rgba(46,160,67,0.4); color: #3fb950; }
+  .slot-section { margin-bottom: 20px; }
+  .slot-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .slot-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+  .mut-grid { display: flex; flex-direction: column; gap: 8px; }
+  .mut-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: all 0.2s; display: flex; gap: 12px; align-items: flex-start; }
+  .mut-card:hover { border-color: rgba(88,166,255,0.25); background: rgba(88,166,255,0.04); }
+  .mut-card.selected { border-color: rgba(88,166,255,0.5); background: rgba(88,166,255,0.08); }
+  .mut-card.hidden-mut { border-color: rgba(110,64,201,0.3); }
+  .mut-card.hidden-mut.selected { border-color: rgba(110,64,201,0.6); background: rgba(110,64,201,0.1); }
+  .mut-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .mut-info { flex: 1; }
+  .mut-name { font-size: 13px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .mut-desc { font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+  .mut-how { font-size: 10px; color: rgba(110,64,201,0.9); margin-top: 4px; }
+  .tag { font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 700; display: inline-block; }
+  .tag.hidden { background: rgba(110,64,201,0.2); color: #b392f0; border: 1px solid rgba(110,64,201,0.3); }
+  .tag.prime { background: rgba(46,160,67,0.2); color: #3fb950; border: 1px solid rgba(46,160,67,0.3); }
+  .tag.general { background: rgba(88,166,255,0.15); color: #79c0ff; border: 1px solid rgba(88,166,255,0.25); }
+  .combo-section { margin-top: 24px; }
+  .combo-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .combo-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+  .combo-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 18px; margin-bottom: 10px; transition: all 0.2s; }
+  .combo-card.prime-build { border-color: rgba(46,160,67,0.25); }
+  .combo-card.general-build { border-color: rgba(88,166,255,0.2); }
+  .combo-card.faded { opacity: 0.25; }
+  .combo-name { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .combo-slots { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .combo-slot { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 4px 10px; font-size: 11px; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); }
+  .combo-slot span { color: rgba(255,255,255,0.35); font-size: 9px; display: block; margin-bottom: 1px; }
+  .combo-why { font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.6; }
+  .combo-card.highlight { border-color: rgba(46,160,67,0.5) !important; background: rgba(46,160,67,0.06); }
+  .match-banner { background: linear-gradient(135deg, rgba(46,160,67,0.2), rgba(88,166,255,0.1)); border: 1px solid rgba(46,160,67,0.3); border-radius: 10px; padding: 10px 14px; font-size: 12px; color: #3fb950; margin-bottom: 14px; display: none; font-weight: 600; }
+  .match-banner.visible { display: block; }
+</style>
+</head>
+<body>
+<div class="glass-card">
+
+  <div class="header">
+    <span class="header-icon">🦅</span>
+    <h1>PTERA PRIME ELDER</h1>
+    <p>THE ISLE · GATEWAY · EVRIMA &nbsp;—&nbsp; COMPLETE 5 OF 8 OBJECTIVES BEFORE 75% GROWTH</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('objectives')">📋 Objectives</div>
+    <div class="tab" onclick="switchTab('map')">🗺️ Route Map</div>
+    <div class="tab" onclick="switchTab('mutations')">🧬 Mutations</div>
+  </div>
+
+  <!-- OBJECTIVES TAB -->
+  <div class="tab-body" id="tab-objectives">
+    <div class="prime-rule"><div class="icon">⚡</div><div><h3>THE PRIME RULE</h3><p>Complete <strong style="color:#e6edf3">5 out of 8 objectives</strong> before reaching <strong style="color:#f0883e">75% growth</strong> to unlock Prime Elder. Miss the window → you get <strong style="color:#f85149">Frail</strong> instead. Confirmation: at 75%, if the <em>4th mutation slot</em> is clickable, you have Prime!</p></div></div>
+    <div class="progress-section"><div class="progress-label"><span>Objectives completed</span><span id="progress-count">0 / 5 needed</span></div><div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div></div>
+    <div class="growth-timeline"><h4>Growth Timeline</h4><div class="timeline-bar"></div><div class="timeline-markers"><div class="tm"><span>0%</span>Hatch</div><div class="tm"><span>25%</span>Juvi</div><div class="tm"><span>50%</span>Sub-Adult</div><div class="tm warn"><span>75% ⚠️</span>DEADLINE</div><div class="tm"><span>87.5%</span>Decay</div><div class="tm"><span>100%</span>Adult</div></div></div>
+    <div class="phase-label">🥚 Phase 1 — Hatchling</div>
+    <div class="obj-card" id="obj-0" onclick="toggleObj(0)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,0)">✓</div><div class="obj-title">Survive as a Hatchling</div><div class="obj-badge easy">FREE</div><div class="obj-expand">▼</div></div><div class="obj-body">Surviving the hatch counts this automatically.<div class="obj-tip">💡 Every run starts with 1/5 done.</div></div></div>
+    <div class="phase-label">🌿 Phase 2 — Juvenile</div>
+    <div class="obj-card" id="obj-1" onclick="toggleObj(1)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,1)">✓</div><div class="obj-title">Use a Sanctuary</div><div class="obj-badge easy">EASY</div><div class="obj-expand">▼</div></div><div class="obj-body">Fly to Water Access Sanctuary ASAP as a juvi — rest briefly to register.<div class="obj-tip">💡 Easy, close to spawn.</div><div class="obj-warn">⚠️ Don't skip this.</div></div></div>
+    <div class="obj-card" id="obj-2" onclick="toggleObj(2)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,2)">✓</div><div class="obj-title">Achieve Perfect Diet</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">Fish + small prey + carrion. Keep all diet bars green.<div class="obj-tip">💡 Fish near Water Access, insects near Jungle Sector.</div><div class="obj-warn">⚠️ Never let hunger drain fully.</div></div></div>
+    <div class="phase-label">✈️ Phase 3 — Sub-Adult</div>
+    <div class="obj-card" id="obj-3" onclick="toggleObj(3)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,3)">✓</div><div class="obj-title">Complete Migration (3 zones)</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">Northern Coast → River Delta → Swamp. No landing needed.<div class="obj-tip">💡 One long loop hits all 3.</div></div></div>
+    <div class="obj-card" id="obj-4" onclick="toggleObj(4)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,4)">✓</div><div class="obj-title">Patrol Your Territory (4 zones)</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">NW Ridge, West Rail cliffs, South Plains, SW Coast.<div class="obj-tip">💡 Same loop as migration.</div></div></div>
+    <div class="obj-card" id="obj-5" onclick="toggleObj(5)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,5)">✓</div><div class="obj-title">Survive 3 In-Game Days</div><div class="obj-badge easy">EASY</div><div class="obj-expand">▼</div></div><div class="obj-body">3 full day/night cycles (~1–2 real hrs each).<div class="obj-tip">💡 Stay airborne near watering holes.</div></div></div>
+    <div class="phase-label">🤝 Phase 4 — Social (Optional)</div>
+    <div class="obj-card" id="obj-6" onclick="toggleObj(6)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,6)">✓</div><div class="obj-title">Form a Group / Bond</div><div class="obj-badge hard">SOCIAL</div><div class="obj-expand">▼</div></div><div class="obj-body">Travel with other Pteras long enough for bond to register.<div class="obj-warn">⚠️ Skip on solo runs.</div></div></div>
+    <div class="obj-card" id="obj-7" onclick="toggleObj(7)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,7)">✓</div><div class="obj-title">Successful Hunt (Prey Kill)</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">Fish, insects, small lizards — you must deal the killing blow.<div class="obj-tip">💡 Stack with Perfect Diet near Water Access.</div><div class="obj-warn">⚠️ Never kill other Pteras.</div></div></div>
+    <div class="ptera-note"><strong>📌 Ptera Notes:</strong> Small dino servers may require only <b>4 objectives</b>. Diet = fish + insects + small prey. No Ptera cannibalism.</div>
+  </div>
+
+  <!-- MAP TAB -->
+  <div id="tab-map" style="display:none;">
+    <div class="map-outer">
+
+      <!-- Zoom controls -->
+      <div class="map-controls">
+        <button class="map-btn" onclick="zoom(1.25)">＋</button>
+        <button class="map-btn" onclick="zoom(0.8)">－</button>
+        <button class="map-btn" onclick="resetView()">Reset</button>
+        <button class="map-btn on" id="route-btn" onclick="toggleLayer('route')">🗺️ Route</button>
+        <span class="map-zoom-label" id="zoom-label">55%</span>
+      </div>
+
+      <!-- Location filter toggles -->
+      <div class="filter-row">
+        <div class="layer-btn on" id="lb-water" style="--lc:#4fc3f7;--lr:79;--lg:195;--lb:247" onclick="toggleLayer('water')">💧 Water</div>
+        <div class="layer-btn on" id="lb-salt" style="--lc:#e0e0e0;--lr:224;--lg:224;--lb:224" onclick="toggleLayer('salt')">🧂 Salt Rock</div>
+        <div class="layer-btn on" id="lb-food" style="--lc:#81c784;--lr:129;--lg:199;--lb:132" onclick="toggleLayer('food')">🍖 Preferred Food</div>
+        <div class="layer-btn on" id="lb-sanctuary" style="--lc:#ffd54f;--lr:255;--lg:213;--lb:79" onclick="toggleLayer('sanctuary')">🏕️ Sanctuary</div>
+        <div class="layer-btn on" id="lb-migration" style="--lc:#4db6ac;--lr:77;--lg:182;--lb:172" onclick="toggleLayer('migration')">🌊 Migration</div>
+        <div class="layer-btn on" id="lb-patrol" style="--lc:#7986cb;--lr:121;--lg:134;--lb:203" onclick="toggleLayer('patrol')">👁️ Patrol</div>
+        <div class="layer-btn on" id="lb-danger" style="--lc:#ef5350;--lr:239;--lg:83;--lb:80" onclick="toggleLayer('danger')">⚠️ Danger</div>
+        <div class="layer-btn on" id="lb-egg" style="--lc:#ffb74d;--lr:255;--lg:183;--lb:77" onclick="toggleLayer('egg')">🥚 Eggs</div>
+        <div class="layer-btn on" id="lb-corpse" style="--lc:#a5d6a7;--lr:165;--lg:214;--lb:167" onclick="toggleLayer('corpse')">🦴 Corpse/Bones</div>
+      </div>
+
+      <div class="map-container" id="map-container"
+        onmousedown="startDrag(event)" onmousemove="doDrag(event)"
+        onmouseup="endDrag()" onmouseleave="endDrag()" onwheel="onWheel(event)"
+        ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd()">
+
+        <div class="map-inner" id="map-inner">
+          <img class="map-img" id="map-img" alt="Gateway Map" style="display:none"
+            onload="this.style.display='block';document.getElementById('map-fallback').style.display='none'">
+          <div class="map-fallback" id="map-fallback">
+            <div style="font-size:52px">🗺️</div>
+            <div style="color:#58a6ff;font-weight:700;font-size:14px">Map Image Loading...</div>
+            <div style="font-size:11px;max-width:320px;text-align:center;line-height:1.6">Drop your Gateway screenshot in the TheIsleProject folder — Brain will encode it in!</div>
+          </div>
+
+          <!-- Route SVG -->
+          <svg class="map-svg-overlay" id="svg-route" viewBox="0 0 1232 968">
+            <defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="cb"/><feMerge><feMergeNode in="cb"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <path d="M 595,310 L 600,360 L 520,175 L 370,235 L 615,490 L 760,215 L 640,700 L 410,630 L 560,840"
+              fill="none" stroke="rgba(88,166,255,0.65)" stroke-width="2.5" stroke-dasharray="12,7" filter="url(#glow)"/>
+          </svg>
+
+          <!-- Route stop numbers -->
+          <div class="stop-marker start" style="left:595px;top:310px" onclick="showStop(0)">1</div>
+          <div class="stop-marker" style="left:600px;top:370px" onclick="showStop(1)">2</div>
+          <div class="stop-marker" style="left:520px;top:175px" onclick="showStop(2)">3</div>
+          <div class="stop-marker" style="left:370px;top:235px" onclick="showStop(3)">4</div>
+          <div class="stop-marker" style="left:615px;top:490px" onclick="showStop(4)">5</div>
+          <div class="stop-marker" style="left:760px;top:215px" onclick="showStop(5)">6</div>
+          <div class="stop-marker" style="left:640px;top:700px" onclick="showStop(6)">7</div>
+          <div class="stop-marker" style="left:410px;top:630px" onclick="showStop(7)">8</div>
+          <div class="stop-marker" style="left:560px;top:840px" onclick="showStop(8)">9</div>
+
+          <!-- WATER SOURCES 💧 -->
+          <div class="loc-pin" data-layer="water" style="left:595px;top:295px;background:#1565c0" title="Water Access" onclick="showPin(this,'Water Access','Main freshwater spawn area. Dense fish spawns.')">💧</div>
+          <div class="loc-pin" data-layer="water" style="left:680px;top:240px;background:#1565c0" title="North Lake" onclick="showPin(this,'North Lake','Large freshwater body in the north. Safe for Ptera to drink.')">💧</div>
+          <div class="loc-pin" data-layer="water" style="left:640px;top:560px;background:#1565c0" title="River Delta" onclick="showPin(this,'River Delta','River branches here — fish, water, and migration zone.')">💧</div>
+          <div class="loc-pin" data-layer="water" style="left:590px;top:680px;background:#1565c0" title="Swamps Center" onclick="showPin(this,'Swamps Center','Standing water — drinkable but high predator risk. Stay airborne.')">💧</div>
+
+          <!-- SALT ROCKS 🧂 -->
+          <div class="loc-pin" data-layer="salt" style="left:310px;top:290px;background:#424242" title="West Coast Salt" onclick="showPin(this,'West Coast Salt Rock','Salt rock along the western cliffs. Unlocks Reniculate Kidneys if you drink saltwater here.')">🧂</div>
+          <div class="loc-pin" data-layer="salt" style="left:540px;top:155px;background:#424242" title="North Coast Salt" onclick="showPin(this,'Northern Coast Salt Rock','Salt rock on the northern shoreline. Combine with Migration Zone 1.')">🧂</div>
+          <div class="loc-pin" data-layer="salt" style="left:530px;top:855px;background:#424242" title="South Beach Salt" onclick="showPin(this,'Southern Beach Salt Rock','Salt rock on the southern coast near Patrol Zone 4.')">🧂</div>
+
+          <!-- PREFERRED FOOD 🍖 -->
+          <div class="loc-pin" data-layer="food" style="left:600px;top:280px;background:#2e7d32" title="Fish Spawn - Water Access" onclick="showPin(this,'Fish Spawn — Water Access','Dense fish here. Best early diet spot for Ptera hatchlings and juvies.')">🐟</div>
+          <div class="loc-pin" data-layer="food" style="left:645px;top:545px;background:#2e7d32" title="Fish Spawn - River" onclick="showPin(this,'Fish Spawn — River','River has consistent fish. Good for Perfect Diet grind mid-run.')">🐟</div>
+          <div class="loc-pin" data-layer="food" style="left:630px;top:460px;background:#1b5e20" title="Insects - Jungle Sector" onclick="showPin(this,'Insects — Jungle Sector','Small prey and insects in the jungle undergrowth. Rounds out your diet.')">🦟</div>
+          <div class="loc-pin" data-layer="food" style="left:740px;top:200px;background:#1b5e20" title="Insects - Northern Jungle" onclick="showPin(this,'Insects — Northern Jungle','Northern jungle edge has good insect density.')">🦟</div>
+
+          <!-- SANCTUARIES 🏕️ -->
+          <div class="loc-pin" data-layer="sanctuary" style="left:600px;top:355px;background:#f57f17" title="Water Access Sanctuary" onclick="showPin(this,'Water Access Sanctuary','Closest sanctuary to spawn. Do this ASAP as a juvi — counts as your Sanctuary objective.')">🏕️</div>
+          <div class="loc-pin" data-layer="sanctuary" style="left:625px;top:570px;background:#f57f17" title="Delta Sanctuary" onclick="showPin(this,'River Delta Sanctuary','Secondary sanctuary near the delta. Backup if Water Access is occupied or you die south.')">🏕️</div>
+
+          <!-- MIGRATION ZONES 🌊 -->
+          <div class="loc-pin" data-layer="migration" style="left:510px;top:160px;background:#00695c" title="Migration Zone 1" onclick="showPin(this,'Migration Zone 1 — Northern Coast','Fly along the northern coastline to register. No landing needed.')">🌊</div>
+          <div class="loc-pin" data-layer="migration" style="left:635px;top:530px;background:#00695c" title="Migration Zone 2" onclick="showPin(this,'Migration Zone 2 — River Delta','Fly through the river delta area heading south.')">🌊</div>
+          <div class="loc-pin" data-layer="migration" style="left:630px;top:680px;background:#00695c" title="Migration Zone 3" onclick="showPin(this,'Migration Zone 3 — Swamps','Final migration zone. Fly over the swamp center to complete.')">🌊</div>
+
+          <!-- PATROL ZONES 👁️ -->
+          <div class="loc-pin" data-layer="patrol" style="left:360px;top:225px;background:#4527a0" title="Patrol Zone 1" onclick="showPin(this,'Patrol Zone 1 — Northwest Ridge','Highland cliffs. Good elevation, low predator density.')">👁️</div>
+          <div class="loc-pin" data-layer="patrol" style="left:635px;top:710px;background:#4527a0" title="Patrol Zone 2" onclick="showPin(this,'Patrol Zone 2 — Swamps','Fly over swamp center. Stay airborne — high predator zone below.')">👁️</div>
+          <div class="loc-pin" data-layer="patrol" style="left:405px;top:620px;background:#4527a0" title="Patrol Zone 3" onclick="showPin(this,'Patrol Zone 3 — West Rail / South Plains','Open plains, easier to scan for threats.')">👁️</div>
+          <div class="loc-pin" data-layer="patrol" style="left:545px;top:850px;background:#4527a0" title="Patrol Zone 4" onclick="showPin(this,'Patrol Zone 4 — Southern Beach','Finish your patrol loop here. Fish nearby for diet top-up.')">👁️</div>
+
+          <!-- DANGER ZONES ⚠️ -->
+          <div class="loc-pin" data-layer="danger" style="left:480px;top:430px;background:#b71c1c" title="Highlands - Rex Territory" onclick="showPin(this,'⚠️ Highlands — Apex Predator Zone','High risk. Large carnivores hunt here. Fly high and fast, do not land.')">⚠️</div>
+          <div class="loc-pin" data-layer="danger" style="left:640px;top:660px;background:#b71c1c" title="Swamps - High Predator" onclick="showPin(this,'⚠️ Swamps — High Predator Density','Spinos and large predators stalk the water edges. Never land here as a Ptera.')">⚠️</div>
+          <div class="loc-pin" data-layer="danger" style="left:730px;top:390px;background:#b71c1c" title="East River - Ambush Zone" onclick="showPin(this,'⚠️ East River — Ambush Risk','Predators patrol the river banks. Drink and leave fast if you must land.')">⚠️</div>
+
+          <!-- EGGS 🥚 -->
+          <div class="loc-pin" data-layer="egg" style="left:570px;top:320px;background:#e65100" title="Nest Site - Water Access" onclick="showPin(this,'Nest Site — Water Access Cliffs','Common nesting area near spawn. Eggs may be found here.')">🥚</div>
+          <div class="loc-pin" data-layer="egg" style="left:390px;top:255px;background:#e65100" title="Nest Site - NW Ridge" onclick="showPin(this,'Nest Site — Northwest Ridge','Cliff ledges here are prime nesting spots for Ptera.')">🥚</div>
+
+          <!-- CORPSE / BONES 🦴 -->
+          <div class="loc-pin" data-layer="corpse" style="left:500px;top:440px;background:#4e342e" title="Corpse - Highlands" onclick="showPin(this,'Corpse/Bones — Highlands','Leftover kills from large predators. Carrion for your diet here.')">🦴</div>
+          <div class="loc-pin" data-layer="corpse" style="left:650px;top:640px;background:#4e342e" title="Corpse - Swamp Edge" onclick="showPin(this,'Corpse/Bones — Swamp Edge','Predator kill sites. Approach from above only.')">🦴</div>
+
+        </div><!-- /map-inner -->
+
+        <div class="stop-detail" id="stop-detail">
+          <span class="stop-close" onclick="closeStop()">✕</span>
+          <h4 id="stop-name"></h4>
+          <p id="stop-desc"></p>
+          <div id="stop-obj"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUTATIONS TAB -->
+  <div class="tab-body" id="tab-mutations" style="display:none;">
+    <div class="prime-rule" style="margin-bottom:16px;"><div class="icon">🧬</div><div><h3>HOW MUTATIONS WORK</h3><p>Pick 1 mutation per slot as you grow: <strong style="color:#e6edf3">Slot 1 at Juvenile, Slot 2 at Sub-Adult, Slot 3 at Adult</strong>. Slot 4 is for the Elder system. Tap mutations to mark what you have — combos will highlight your best matches.</p></div></div>
+    <div class="mut-filter-row">
+      <div class="filter-btn active" id="filter-all" onclick="setFilter('all')">All Builds</div>
+      <div class="filter-btn prime" id="filter-prime" onclick="setFilter('prime')">⚡ Prime Elder Only</div>
+    </div>
+    <div class="slot-section"><div class="slot-title">Slot 1 — Juvenile</div><div class="mut-grid">
+      <div class="mut-card hidden-mut" id="mut-reniculate" onclick="toggleMut('reniculate')"><div class="mut-icon">🌊</div><div class="mut-info"><div class="mut-name">Reniculate Kidneys <span class="tag hidden">🔒 Hidden</span></div><div class="mut-desc">Unlocks saltwater drinking — opens the entire coastline as a water source.</div><div class="mut-how">How to unlock: Drink saltwater until "Fluid Deficient" debuff disappears.</div></div></div>
+      <div class="mut-card" id="mut-digestion" onclick="toggleMut('digestion')"><div class="mut-icon">🍖</div><div class="mut-info"><div class="mut-name">Efficient Digestion</div><div class="mut-desc">Reduces food drain ~20%. Less time hunting, more time on objectives.</div></div></div>
+      <div class="mut-card hidden-mut" id="mut-tendons1" onclick="toggleMut('tendons1')"><div class="mut-icon">🦵</div><div class="mut-info"><div class="mut-name">Reinforced Tendons <span class="tag hidden">🔒 Hidden</span></div><div class="mut-desc">Reduces stamina cost for jumping and launching.</div><div class="mut-how">How to unlock: Jump 50 times before selecting this slot.</div></div></div>
+    </div></div>
+    <div class="slot-section"><div class="slot-title">Slot 2 — Sub-Adult</div><div class="mut-grid">
+      <div class="mut-card" id="mut-hydration" onclick="toggleMut('hydration')"><div class="mut-icon">💧</div><div class="mut-info"><div class="mut-name">Sustained Hydration</div><div class="mut-desc">Reduces water drain ~20%. Pairs perfectly with Efficient Digestion.</div></div></div>
+      <div class="mut-card hidden-mut" id="mut-tendons2" onclick="toggleMut('tendons2')"><div class="mut-icon">🦵</div><div class="mut-info"><div class="mut-name">Reinforced Tendons (Slot 2) <span class="tag hidden">🔒 Hidden</span></div><div class="mut-desc">Same effect if missed in Slot 1.</div><div class="mut-how">How to unlock: Jump 50 times before this slot opens.</div></div></div>
+      <div class="mut-card" id="mut-stamina" onclick="toggleMut('stamina')"><div class="mut-icon">⚡</div><div class="mut-info"><div class="mut-name">Enhanced Stamina</div><div class="mut-desc">Bigger stamina pool and faster recovery. Fly longer circuits.</div></div></div>
+    </div></div>
+    <div class="slot-section"><div class="slot-title">Slot 3 — Adult</div><div class="mut-grid">
+      <div class="mut-card" id="mut-keeneye" onclick="toggleMut('keeneye')"><div class="mut-icon">👁️</div><div class="mut-info"><div class="mut-name">Keen Eyesight</div><div class="mut-desc">Increases visual range. Spot prey and predators from much further away.</div></div></div>
+      <div class="mut-card hidden-mut" id="mut-tendons3" onclick="toggleMut('tendons3')"><div class="mut-icon">🦵</div><div class="mut-info"><div class="mut-name">Reinforced Tendons (Slot 3) <span class="tag hidden">🔒 Hidden</span></div><div class="mut-desc">Final chance if you haven't grabbed it.</div><div class="mut-how">How to unlock: Jump 50 times before this slot opens.</div></div></div>
+      <div class="mut-card" id="mut-toughskin" onclick="toggleMut('toughskin')"><div class="mut-icon">🛡️</div><div class="mut-info"><div class="mut-name">Tough Hide</div><div class="mut-desc">Increases damage resistance. Survive unexpected encounters late-game.</div></div></div>
+    </div></div>
+    <div class="combo-section">
+      <div class="combo-title">Recommended Builds</div>
+      <div class="match-banner" id="match-banner">✅ You have the mutations for this build!</div>
+      <div class="combo-card prime-build" id="combo-prime-survival" data-build="prime" data-muts="reniculate,digestion,hydration"><div class="combo-name"><span class="tag prime">⚡ Prime Elder</span> The Endurance Build</div><div class="combo-slots"><div class="combo-slot"><span>Slot 1</span>Reniculate Kidneys 🔒</div><div class="combo-slot"><span>Slot 2</span>Sustained Hydration</div><div class="combo-slot"><span>Slot 3</span>Keen Eyesight</div></div><div class="combo-why">Best solo Prime run. Saltwater anywhere on coast, hydration barely drains, Keen Eyesight keeps you alive.</div></div>
+      <div class="combo-card prime-build" id="combo-prime-stamina" data-build="prime" data-muts="digestion,stamina,keeneye"><div class="combo-name"><span class="tag prime">⚡ Prime Elder</span> The Loop Runner</div><div class="combo-slots"><div class="combo-slot"><span>Slot 1</span>Efficient Digestion</div><div class="combo-slot"><span>Slot 2</span>Enhanced Stamina</div><div class="combo-slot"><span>Slot 3</span>Keen Eyesight</div></div><div class="combo-why">Built for hitting migration and patrol fast. More stamina, less food stops, better threat detection.</div></div>
+      <div class="combo-card general-build" id="combo-general-tank" data-build="general" data-muts="tendons1,hydration,toughskin"><div class="combo-name"><span class="tag general">🦅 General Adult</span> The Survivalist</div><div class="combo-slots"><div class="combo-slot"><span>Slot 1</span>Reinforced Tendons 🔒</div><div class="combo-slot"><span>Slot 2</span>Sustained Hydration</div><div class="combo-slot"><span>Slot 3</span>Tough Hide</div></div><div class="combo-why">Cheap launches, slow thirst, can take a hit. Great for busy servers.</div></div>
+      <div class="combo-card general-build" id="combo-general-coastal" data-build="general" data-muts="reniculate,stamina,keeneye"><div class="combo-name"><span class="tag general">🦅 General Adult</span> The Coastal Flyer</div><div class="combo-slots"><div class="combo-slot"><span>Slot 1</span>Reniculate Kidneys 🔒</div><div class="combo-slot"><span>Slot 2</span>Enhanced Stamina</div><div class="combo-slot"><span>Slot 3</span>Keen Eyesight</div></div><div class="combo-why">Drink from the ocean, fly huge distances, see everything. Best all-rounder.</div></div>
+    </div>
+    <div class="ptera-note" style="margin-top:8px;"><strong>📌 Note:</strong> 🔒 Hidden mutations must be <b>unlocked before</b> the slot opens — do the action first, then open the mutation menu.</div>
+  </div>
+
+</div><!-- /glass-card -->
+
+<script>
+// TABS
+function switchTab(name) {
+  ['objectives','map','mutations'].forEach((t,i) => {
+    document.querySelectorAll('.tabs .tab')[i].classList.toggle('active', t===name);
+    document.getElementById('tab-'+t).style.display = t===name ? '' : 'none';
+  });
+  if (name==='map' && !mapInited) initMap();
+  if (name==='mutations') updateCombos();
+}
+
+// OBJECTIVES
+let doneSet = new Set();
+function toggleDone(e,idx){ e.stopPropagation(); doneSet.has(idx)?doneSet.delete(idx):doneSet.add(idx); document.getElementById('obj-'+idx).classList.toggle('done',doneSet.has(idx)); updateProgress(); }
+function toggleObj(idx){ document.getElementById('obj-'+idx).classList.toggle('open'); }
+function updateProgress(){ const n=doneSet.size,pct=Math.min(100,n/5*100); document.getElementById('progress-bar').style.width=pct+'%'; document.getElementById('progress-count').textContent=n+' / 5 needed'+(n>=5?' ✅ PRIME ELIGIBLE!':''); }
+
+// MAP STOPS
+const stops=[
+  {name:"1 · Water Access — START",desc:"Your spawn point. Fish here, stay near water for diet and safety.",obj:"Objective: Survive as Hatchling (auto)"},
+  {name:"2 · Water Access Sanctuary",desc:"Short flight south of spawn. Rest briefly to register. You're safe inside.",obj:"Objective: Use a Sanctuary ✅"},
+  {name:"3 · Northern Coast",desc:"Fly northwest to the northern shoreline. First Migration Zone.",obj:"Objective: Migration Zone 1 of 3"},
+  {name:"4 · Northwest Ridge",desc:"Highland cliffs. First Patrol Zone. Good elevation, low predator density.",obj:"Objective: Patrol Zone 1 of 4"},
+  {name:"5 · River / Jungle Sector",desc:"Follow the river south. Migration Zone 2 + diet opportunities.",obj:"Objectives: Migration Zone 2 + Diet + Hunt"},
+  {name:"6 · Northern Jungle",desc:"Loop northeast. Migration Zone 3 — final migration stop.",obj:"Objective: Migration Zone 3 of 3 ✅"},
+  {name:"7 · Swamps Center",desc:"Fly south. Patrol Zone 2. Stay airborne — predators below.",obj:"Objective: Patrol Zone 2 of 4"},
+  {name:"8 · West Rail / South Plains",desc:"Head west. Patrol Zone 3. Wide open, easy to spot threats.",obj:"Objective: Patrol Zone 3 of 4"},
+  {name:"9 · Southern Beach",desc:"Finish loop here. Patrol Zone 4 complete. Fish for diet top-up.",obj:"Objective: Patrol Zone 4 of 4 ✅"}
+];
+
+function showStop(idx){ const s=stops[idx]; document.getElementById('stop-name').textContent=s.name; document.getElementById('stop-desc').textContent=s.desc; document.getElementById('stop-obj').innerHTML='<span class="stop-tag">'+s.obj+'</span>'; document.getElementById('stop-detail').classList.add('visible'); document.querySelectorAll('.stop-marker').forEach((m,i)=>m.classList.toggle('active',i===idx)); }
+function showPin(el,name,desc){ document.getElementById('stop-name').textContent=name; document.getElementById('stop-desc').textContent=desc; document.getElementById('stop-obj').innerHTML=''; document.getElementById('stop-detail').classList.add('visible'); }
+function closeStop(){ document.getElementById('stop-detail').classList.remove('visible'); document.querySelectorAll('.stop-marker').forEach(m=>m.classList.remove('active')); }
+
+// LAYER TOGGLES
+const layerState = {};
+function toggleLayer(layer){
+  if(layer==='route'){
+    const svg=document.getElementById('svg-route');
+    const btn=document.getElementById('route-btn');
+    const on=svg.style.opacity!=='0';
+    svg.style.opacity=on?'0':'1';
+    btn.classList.toggle('on',!on);
+    // also toggle stop markers
+    document.querySelectorAll('.stop-marker').forEach(m=>m.style.opacity=on?'0':'1');
+    return;
+  }
+  const btn=document.getElementById('lb-'+layer);
+  const isOn=btn.classList.contains('on');
+  btn.classList.toggle('on',!isOn);
+  document.querySelectorAll('[data-layer="'+layer+'"]').forEach(p=>p.classList.toggle('hidden-pin',isOn));
+}
+
+// PAN/ZOOM
+let scale=0.55,tx=0,ty=0,dragging=false,lastX=0,lastY=0,mapInited=false;
+function initMap(){ mapInited=true; const c=document.getElementById('map-container'); tx=(c.offsetWidth-1232*scale)/2; ty=Math.max(0,(c.offsetHeight-968*scale)/2); applyTransform(); }
+function applyTransform(){ document.getElementById('map-inner').style.transform=`translate(${tx}px,${ty}px) scale(${scale})`; document.getElementById('zoom-label').textContent=Math.round(scale*100)+'%'; }
+function clamp(){ const c=document.getElementById('map-container'); tx=Math.min(60,Math.max(c.offsetWidth-1232*scale-60,tx)); ty=Math.min(60,Math.max(c.offsetHeight-968*scale-60,ty)); }
+function zoom(f){ const c=document.getElementById('map-container'),cx=c.offsetWidth/2,cy=c.offsetHeight/2,ns=Math.min(5,Math.max(0.25,scale*f)); tx=cx-(cx-tx)*ns/scale; ty=cy-(cy-ty)*ns/scale; scale=ns; clamp(); applyTransform(); }
+function resetView(){ scale=0.55; mapInited=false; initMap(); }
+function startDrag(e){ if(e.target.classList.contains('stop-marker')||e.target.classList.contains('loc-pin')||e.target.classList.contains('stop-close'))return; dragging=true; lastX=e.clientX; lastY=e.clientY; }
+function doDrag(e){ if(!dragging)return; tx+=e.clientX-lastX; ty+=e.clientY-lastY; lastX=e.clientX; lastY=e.clientY; clamp(); applyTransform(); }
+function endDrag(){ dragging=false; }
+function onWheel(e){ e.preventDefault(); const c=document.getElementById('map-container'),r=c.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,f=e.deltaY<0?1.15:0.87,ns=Math.min(5,Math.max(0.25,scale*f)); tx=mx-(mx-tx)*ns/scale; ty=my-(my-ty)*ns/scale; scale=ns; clamp(); applyTransform(); }
+let lastDist=0;
+function touchStart(e){ if(e.touches.length===1){dragging=true;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;} if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); }
+function touchMove(e){ e.preventDefault(); if(e.touches.length===1&&dragging){tx+=e.touches[0].clientX-lastX;ty+=e.touches[0].clientY-lastY;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;clamp();applyTransform();} if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom(d/lastDist);lastDist=d;} }
+function touchEnd(){ dragging=false; }
+
+// MUTATIONS
+let selectedMuts=new Set(),currentFilter='all';
+function toggleMut(id){ selectedMuts.has(id)?selectedMuts.delete(id):selectedMuts.add(id); document.getElementById('mut-'+id).classList.toggle('selected',selectedMuts.has(id)); updateCombos(); }
+function setFilter(f){ currentFilter=f; document.getElementById('filter-all').classList.toggle('active',f==='all'); document.getElementById('filter-prime').classList.toggle('active',f==='prime'); updateCombos(); }
+function updateCombos(){ let anyMatch=false; document.querySelectorAll('.combo-card').forEach(card=>{ const show=currentFilter==='all'||(currentFilter==='prime'&&card.dataset.build==='prime'); card.classList.toggle('faded',!show); if(show&&selectedMuts.size>0){ const has=card.dataset.muts.split(',').every(m=>selectedMuts.has(m)); card.classList.toggle('highlight',has); if(has)anyMatch=true; }else{ card.classList.remove('highlight'); } }); document.getElementById('match-banner').classList.toggle('visible',anyMatch&&selectedMuts.size>0); }
+
+updateProgress();
+</script>
+</body>
+</html>

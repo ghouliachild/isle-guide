@@ -1,0 +1,392 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Ptera Prime Elder",
+  "schemaVersion": 1,
+  "description": "Ptera Prime Elder guide for The Isle - Gateway map with route overlay, objectives tracker, and growth timeline. Liquid glass UI, centered layout."
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IsleGuide — Ptera Prime Elder</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { min-height:100vh; background:radial-gradient(ellipse at 30% 20%,#0e2a1a 0%,#060d1f 40%,#0a0a0f 100%); font-family:'Segoe UI',sans-serif; color:#e6edf3; display:flex; flex-direction:column; align-items:center; padding:24px 16px 40px; }
+  .glass-card { width:100%; max-width:720px; background:rgba(255,255,255,0.04); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.09); border-radius:20px; box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08); overflow:hidden; }
+  .header { padding:28px 28px 20px; text-align:center; background:linear-gradient(180deg,rgba(46,160,67,0.12) 0%,transparent 100%); border-bottom:1px solid rgba(255,255,255,0.06); position:relative; }
+  .header-icon { margin-bottom:10px; display:flex; justify-content:center; }
+  .site-brand { font-size:11px; font-weight:800; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; margin-bottom:6px; }
+  .header h1 { font-size:24px; font-weight:800; letter-spacing:2px; background:linear-gradient(135deg,#58a6ff,#2ea043); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:6px; }
+  .header p { font-size:12px; color:rgba(255,255,255,0.4); letter-spacing:0.5px; }
+  .tabs { display:flex; padding:12px 20px 0; gap:4px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .tab { flex:1; text-align:center; padding:10px; cursor:pointer; font-size:12px; font-weight:600; color:rgba(255,255,255,0.35); border-radius:10px 10px 0 0; border-bottom:2px solid transparent; transition:all 0.2s; user-select:none; }
+  .tab.active { color:#e6edf3; border-bottom-color:#58a6ff; background:rgba(88,166,255,0.07); }
+  .tab:hover:not(.active) { color:rgba(255,255,255,0.6); }
+  .tab-body { padding:20px 24px 24px; }
+  .prime-rule { background:linear-gradient(135deg,rgba(46,160,67,0.15),rgba(88,166,255,0.08)); border:1px solid rgba(46,160,67,0.3); border-radius:14px; padding:16px 18px; margin-bottom:18px; display:flex; gap:14px; align-items:flex-start; }
+  .prime-rule .icon { font-size:28px; flex-shrink:0; margin-top:2px; }
+  .prime-rule h3 { color:#3fb950; font-size:13px; letter-spacing:0.5px; margin-bottom:5px; }
+  .prime-rule p { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.6; }
+  .progress-section { margin-bottom:16px; }
+  .progress-label { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:7px; display:flex; justify-content:space-between; }
+  .progress-label span:last-child { color:#58a6ff; font-weight:600; }
+  .progress-bar-wrap { background:rgba(255,255,255,0.07); border-radius:8px; height:8px; overflow:hidden; }
+  .progress-bar { background:linear-gradient(90deg,#2ea043,#58a6ff); height:100%; transition:width 0.4s; border-radius:8px; }
+  .growth-timeline { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:14px 18px; margin-bottom:20px; }
+  .growth-timeline h4 { font-size:10px; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+  .timeline-bar { height:8px; border-radius:8px; overflow:hidden; background:linear-gradient(90deg,#1a7f37 0%,#2ea043 50%,#f0883e 75%,#da3633 87.5%,#6e40c9 100%); }
+  .timeline-markers { display:flex; justify-content:space-between; margin-top:8px; }
+  .tm { font-size:9px; color:rgba(255,255,255,0.3); text-align:center; }
+  .tm span { display:block; color:rgba(255,255,255,0.6); font-weight:700; font-size:10px; }
+  .tm.warn span { color:#f0883e; }
+  .phase-label { font-size:10px; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:1px; margin:18px 0 8px; }
+  .obj-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:12px; margin-bottom:8px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,background 0.2s; }
+  .obj-card:hover { border-color:rgba(88,166,255,0.3); background:rgba(88,166,255,0.04); }
+  .obj-card.done { border-color:rgba(46,160,67,0.4); background:rgba(46,160,67,0.06); }
+  .obj-header { display:flex; align-items:center; gap:12px; padding:12px 16px; }
+  .obj-check { width:24px; height:24px; border-radius:50%; border:2px solid rgba(88,166,255,0.5); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; transition:all 0.2s; color:transparent; }
+  .obj-card.done .obj-check { background:#2ea043; border-color:#2ea043; color:#fff; }
+  .obj-title { font-size:13px; font-weight:600; flex:1; }
+  .obj-badge { font-size:10px; padding:3px 9px; border-radius:20px; font-weight:700; background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); }
+  .obj-badge.easy { background:rgba(46,160,67,0.15); color:#3fb950; }
+  .obj-badge.medium { background:rgba(227,179,65,0.15); color:#e3b341; }
+  .obj-badge.hard { background:rgba(248,81,73,0.15); color:#f85149; }
+  .obj-expand { font-size:10px; color:rgba(255,255,255,0.3); transition:transform 0.2s; }
+  .obj-card.open .obj-expand { transform:rotate(180deg); }
+  .obj-body { display:none; padding:0 16px 14px; font-size:12px; color:rgba(255,255,255,0.55); line-height:1.7; border-top:1px solid rgba(255,255,255,0.05); }
+  .obj-card.open .obj-body { display:block; padding-top:12px; }
+  .obj-tip { background:rgba(46,160,67,0.1); border-left:2px solid #2ea043; padding:7px 10px; border-radius:0 6px 6px 0; margin-top:10px; font-size:11px; color:rgba(255,255,255,0.6); }
+  .obj-warn { background:rgba(227,179,65,0.08); border-left:2px solid #e3b341; padding:7px 10px; border-radius:0 6px 6px 0; margin-top:6px; font-size:11px; color:#e3b341; }
+  .ptera-note { background:rgba(88,166,255,0.06); border:1px solid rgba(88,166,255,0.15); border-radius:12px; padding:12px 16px; margin-top:16px; font-size:11px; color:rgba(255,255,255,0.45); line-height:1.6; }
+  .ptera-note strong { color:#e3b341; }
+  .ptera-note b { color:rgba(255,255,255,0.75); }
+  .map-outer { display:flex; flex-direction:column; height:580px; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.07); background:#020817; }
+  .map-controls { padding:7px 12px; display:flex; gap:6px; align-items:center; background:rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.07); flex-wrap:wrap; }
+  .map-btn { padding:4px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.06); color:#e6edf3; font-size:11px; cursor:pointer; transition:all 0.2s; font-weight:600; }
+  .map-btn:hover { background:rgba(255,255,255,0.1); border-color:rgba(88,166,255,0.4); }
+  .map-btn.on { background:rgba(46,160,67,0.15); border-color:rgba(46,160,67,0.4); color:#3fb950; }
+  .map-zoom-label { font-size:11px; color:rgba(255,255,255,0.3); margin-left:auto; }
+  .filter-row { padding:6px 10px; display:flex; gap:4px; flex-wrap:wrap; background:rgba(0,0,0,0.15); border-bottom:1px solid rgba(255,255,255,0.04); align-items:center; }
+  .filter-label { font-size:9px; color:rgba(255,255,255,0.2); text-transform:uppercase; letter-spacing:1px; margin-right:2px; white-space:nowrap; }
+  .layer-btn { padding:3px 9px; border-radius:20px; font-size:10px; font-weight:700; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.3); cursor:pointer; transition:all 0.18s; user-select:none; white-space:nowrap; }
+  .layer-btn.on { color:#e6edf3; border-color:var(--lc); background:color-mix(in srgb,var(--lc) 18%,transparent); }
+  .map-container { flex:1; position:relative; overflow:hidden; cursor:grab; user-select:none; }
+  .map-container:active { cursor:grabbing; }
+  .map-inner { position:absolute; transform-origin:0 0; width:1232px; height:968px; }
+  .map-img { width:1232px; height:968px; display:block; }
+  .map-svg-overlay { position:absolute; top:0; left:0; width:1232px; height:968px; pointer-events:none; }
+  .map-fallback { width:1232px; height:968px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:rgba(255,255,255,0.3); background:radial-gradient(ellipse at center,#0a1a2a 0%,#020817 100%); }
+  .stop-marker { position:absolute; transform:translate(-50%,-50%); width:26px; height:26px; border-radius:50%; background:rgba(13,30,60,0.85); border:2px solid rgba(88,166,255,0.8); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#e6edf3; cursor:pointer; pointer-events:all; z-index:10; transition:transform 0.15s,background 0.15s; box-shadow:0 0 8px rgba(88,166,255,0.3); }
+  .stop-marker:hover,.stop-marker.active { background:#58a6ff; color:#0d1117; transform:translate(-50%,-50%) scale(1.3); }
+  .stop-marker.start { border-color:rgba(46,160,67,0.9); box-shadow:0 0 8px rgba(46,160,67,0.3); }
+  .stop-marker.start:hover,.stop-marker.start.active { background:#2ea043; }
+  .loc-pin { position:absolute; transform:translate(-50%,-50%); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; pointer-events:all; z-index:8; transition:transform 0.15s,opacity 0.2s; border:2px solid rgba(255,255,255,0.12); box-shadow:0 2px 6px rgba(0,0,0,0.5); }
+  .loc-pin:hover { transform:translate(-50%,-50%) scale(1.35); z-index:15; }
+  .loc-pin.hidden-pin { opacity:0!important; pointer-events:none!important; }
+  .stop-detail { position:absolute; bottom:0; left:0; right:0; background:rgba(6,13,31,0.96); backdrop-filter:blur(16px); border-top:1px solid rgba(88,166,255,0.2); padding:12px 16px; z-index:20; transform:translateY(100%); transition:transform 0.25s; pointer-events:none; }
+  .stop-detail.visible { transform:translateY(0); pointer-events:all; }
+  .stop-detail h4 { font-size:13px; color:#58a6ff; margin-bottom:4px; }
+  .stop-detail p { font-size:11px; color:rgba(255,255,255,0.55); line-height:1.5; }
+  .stop-tag { display:inline-block; background:rgba(46,160,67,0.15); color:#3fb950; font-size:10px; padding:2px 9px; border-radius:20px; margin-top:6px; font-weight:700; border:1px solid rgba(46,160,67,0.2); }
+  .stop-close { position:absolute; top:10px; right:14px; cursor:pointer; color:rgba(255,255,255,0.3); font-size:18px; }
+  .stop-close:hover { color:rgba(255,255,255,0.7); }
+  .playstyle-bar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .ps-btn { padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.4); cursor:pointer; transition:all 0.2s; user-select:none; display:flex; align-items:center; gap:5px; }
+  .ps-btn:hover { border-color:rgba(255,255,255,0.25); color:rgba(255,255,255,0.7); }
+  .ps-btn.active { color:#e6edf3; border-color:var(--pc); background:color-mix(in srgb,var(--pc) 18%,transparent); box-shadow:0 0 12px color-mix(in srgb,var(--pc) 30%,transparent); }
+  .rec-card { background:linear-gradient(135deg,rgba(88,166,255,0.08),rgba(46,160,67,0.05)); border:1px solid rgba(88,166,255,0.2); border-radius:16px; padding:18px 20px; margin-bottom:20px; display:none; }
+  .rec-card.visible { display:block; }
+  .rec-card.cannibal { background:linear-gradient(135deg,rgba(218,54,51,0.1),rgba(110,64,201,0.08)); border-color:rgba(218,54,51,0.3); }
+  .rec-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .rec-icon { font-size:30px; }
+  .rec-title { font-size:15px; font-weight:800; }
+  .rec-subtitle { font-size:11px; color:rgba(255,255,255,0.4); margin-top:2px; }
+  .rec-pitch { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.7; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .rec-slots { display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+  .rec-slot { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:12px 14px; display:flex; gap:12px; align-items:flex-start; }
+  .rec-slot-num { width:26px; height:26px; border-radius:50%; flex-shrink:0; background:rgba(88,166,255,0.15); border:1px solid rgba(88,166,255,0.3); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#58a6ff; }
+  .rec-slot-info { flex:1; }
+  .rec-slot-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.3); margin-bottom:3px; }
+  .rec-slot-name { font-size:13px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+  .rec-slot-why { font-size:11px; color:rgba(255,255,255,0.45); line-height:1.5; }
+  .rec-slot-timing { font-size:10px; color:#e3b341; margin-top:4px; }
+  .rec-alt { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:10px 14px; margin-top:4px; }
+  .rec-alt-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.25); margin-bottom:5px; }
+  .rec-alt-item { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:3px; }
+  .rec-alt-item span { color:rgba(255,255,255,0.65); font-weight:600; }
+  .hidden-tag { font-size:9px; padding:2px 7px; border-radius:10px; font-weight:700; background:rgba(110,64,201,0.2); color:#b392f0; border:1px solid rgba(110,64,201,0.3); }
+  .prime-tag { font-size:9px; padding:2px 7px; border-radius:10px; font-weight:700; background:rgba(46,160,67,0.2); color:#3fb950; border:1px solid rgba(46,160,67,0.3); }
+  .no-selection { text-align:center; padding:32px 20px; color:rgba(255,255,255,0.25); font-size:13px; }
+  .no-selection div:first-child { font-size:36px; margin-bottom:10px; }
+</style>
+</head>
+<body>
+<div class="glass-card">
+  <div class="header">
+    <div class="header-icon">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glowgrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#2ea043" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#0a0a0f" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="claw1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c8f0c8"/>
+            <stop offset="100%" stop-color="#2ea043"/>
+          </linearGradient>
+          <linearGradient id="claw2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a0d8a0"/>
+            <stop offset="100%" stop-color="#1a7f37"/>
+          </linearGradient>
+          <linearGradient id="claw3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#78c878"/>
+            <stop offset="100%" stop-color="#145c28"/>
+          </linearGradient>
+          <filter id="iconGlow">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- glow bg -->
+        <circle cx="32" cy="38" r="24" fill="url(#glowgrad)"/>
+        <!-- three claws fanning out -->
+        <!-- left claw -->
+        <path d="M 30 52 C 28 48 20 40 14 24 C 13 20 15 17 17 19 C 19 21 22 30 26 40 C 27 43 28 47 30 52 Z" fill="url(#claw3)" filter="url(#iconGlow)" opacity="0.9"/>
+        <!-- center claw (tallest) -->
+        <path d="M 32 54 C 31 49 28 38 27 22 C 26.5 17 29 14 31 16 C 33 18 33 28 33 38 C 33 44 33 49 32 54 Z" fill="url(#claw1)" filter="url(#iconGlow)"/>
+        <!-- right claw -->
+        <path d="M 34 52 C 36 48 44 40 50 24 C 51 20 49 17 47 19 C 45 21 42 30 38 40 C 37 43 36 47 34 52 Z" fill="url(#claw2)" filter="url(#iconGlow)" opacity="0.9"/>
+        <!-- knuckle ridge -->
+        <path d="M 22 50 Q 32 46 42 50" stroke="rgba(46,160,67,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- claw tips glow dots -->
+        <circle cx="15" cy="21" r="1.5" fill="#58a6ff" opacity="0.7"/>
+        <circle cx="29" cy="15" r="1.5" fill="#58a6ff" opacity="0.9"/>
+        <circle cx="48" cy="21" r="1.5" fill="#58a6ff" opacity="0.7"/>
+      </svg>
+    </div>
+    <div class="site-brand">IsleGuide</div>
+    <h1>PTERA PRIME ELDER</h1>
+    <p>THE ISLE · GATEWAY · EVRIMA 0.20.109 &nbsp;—&nbsp; COMPLETE 5 OF 8 OBJECTIVES BEFORE 75% GROWTH</p>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('objectives')">📋 Objectives</div>
+    <div class="tab" onclick="switchTab('map')">🗺️ Route Map</div>
+    <div class="tab" onclick="switchTab('mutations')">🧬 Mutations</div>
+  </div>
+
+  <!-- OBJECTIVES TAB -->
+  <div class="tab-body" id="tab-objectives">
+    <div class="prime-rule"><div class="icon">⚡</div><div><h3>THE PRIME RULE</h3><p>Complete <strong style="color:#e6edf3">5 out of 8 objectives</strong> before reaching <strong style="color:#f0883e">75% growth</strong> to unlock Prime Elder. Miss the window → <strong style="color:#f85149">Frail</strong> instead. Confirmation: at 75%, if the <em>4th mutation slot</em> is clickable, you have Prime!</p></div></div>
+    <div class="progress-section"><div class="progress-label"><span>Objectives completed</span><span id="progress-count">0 / 5 needed</span></div><div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div></div>
+    <div class="growth-timeline"><h4>Growth Timeline</h4><div class="timeline-bar"></div><div class="timeline-markers"><div class="tm"><span>0%</span>Hatch</div><div class="tm"><span>25%</span>Juvi</div><div class="tm"><span>50%</span>Sub-Adult</div><div class="tm warn"><span>75% ⚠️</span>DEADLINE</div><div class="tm"><span>87.5%</span>Decay</div><div class="tm"><span>100%</span>Adult</div></div></div>
+    <div class="phase-label">🥚 Phase 1 — Hatchling</div>
+    <div class="obj-card" id="obj-0" onclick="toggleObj(0)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,0)">✓</div><div class="obj-title">Survive as a Hatchling</div><div class="obj-badge easy">FREE</div><div class="obj-expand">▼</div></div><div class="obj-body">Surviving the hatch counts automatically.<div class="obj-tip">💡 Every run starts with 1/5 done.</div></div></div>
+    <div class="phase-label">🌿 Phase 2 — Juvenile</div>
+    <div class="obj-card" id="obj-1" onclick="toggleObj(1)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,1)">✓</div><div class="obj-title">Use a Sanctuary</div><div class="obj-badge easy">EASY</div><div class="obj-expand">▼</div></div><div class="obj-body">Fly to Water Access Sanctuary ASAP as a juvi — rest briefly to register.<div class="obj-tip">💡 Easy, close to spawn.</div><div class="obj-warn">⚠️ Don't skip this.</div></div></div>
+    <div class="obj-card" id="obj-2" onclick="toggleObj(2)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,2)">✓</div><div class="obj-title">Achieve Perfect Diet</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">Fish + small prey + carrion. Keep all diet bars green.<div class="obj-tip">💡 Fish near Water Access, prey in plains and jungle edge.</div><div class="obj-warn">⚠️ Never let hunger drain fully.</div></div></div>
+    <div class="phase-label">✈️ Phase 3 — Sub-Adult</div>
+    <div class="obj-card" id="obj-3" onclick="toggleObj(3)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,3)">✓</div><div class="obj-title">Complete Migration (3 zones)</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">Northern Coast → River Delta → Swamp. No landing needed.<div class="obj-tip">💡 One long loop hits all 3.</div></div></div>
+    <div class="obj-card" id="obj-4" onclick="toggleObj(4)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,4)">✓</div><div class="obj-title">Patrol Your Territory (4 zones)</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">NW Ridge → West Rail → South Plains → SW Coast.<div class="obj-tip">💡 Same loop as migration.</div></div></div>
+    <div class="obj-card" id="obj-5" onclick="toggleObj(5)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,5)">✓</div><div class="obj-title">Survive 3 In-Game Days</div><div class="obj-badge easy">EASY</div><div class="obj-expand">▼</div></div><div class="obj-body">3 full day/night cycles.<div class="obj-tip">💡 Stay airborne near watering holes.</div></div></div>
+    <div class="phase-label">🤝 Phase 4 — Social (Optional)</div>
+    <div class="obj-card" id="obj-6" onclick="toggleObj(6)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,6)">✓</div><div class="obj-title">Form a Group / Bond</div><div class="obj-badge hard">SOCIAL</div><div class="obj-expand">▼</div></div><div class="obj-body">Travel with other Pteras long enough for bond to register.<div class="obj-warn">⚠️ Skip on solo runs.</div></div></div>
+    <div class="obj-card" id="obj-7" onclick="toggleObj(7)"><div class="obj-header"><div class="obj-check" onclick="toggleDone(event,7)">✓</div><div class="obj-title">Successful Hunt (Prey Kill)</div><div class="obj-badge medium">MEDIUM</div><div class="obj-expand">▼</div></div><div class="obj-body">Fish, crabs, small animals — you must deal the killing blow.<div class="obj-tip">💡 Stack with Perfect Diet near Water Access.</div><div class="obj-warn">⚠️ Never kill other Pteras.</div></div></div>
+    <div class="ptera-note"><strong>📌 Ptera Notes:</strong> Small dino servers may require only <b>4 objectives</b>. Diet = fish + crabs + small land prey. No Ptera cannibalism.</div>
+  </div>
+
+  <!-- MAP TAB -->
+  <div id="tab-map" style="display:none;">
+    <div class="map-outer">
+      <div class="map-controls">
+        <button class="map-btn" onclick="zoom(1.25)">＋</button>
+        <button class="map-btn" onclick="zoom(0.8)">－</button>
+        <button class="map-btn" onclick="resetView()">Reset</button>
+        <button class="map-btn on" id="route-btn" onclick="toggleLayer('route')">🗺️ Route</button>
+        <span class="map-zoom-label" id="zoom-label">55%</span>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Zones:</span>
+        <div class="layer-btn on" id="lb-water" style="--lc:#4fc3f7" onclick="toggleLayer('water')">💧 Water</div>
+        <div class="layer-btn on" id="lb-salt" style="--lc:#e0e0e0" onclick="toggleLayer('salt')">🧂 Salt</div>
+        <div class="layer-btn on" id="lb-sanctuary" style="--lc:#ffd54f" onclick="toggleLayer('sanctuary')">🏕️ Sanctuary</div>
+        <div class="layer-btn on" id="lb-migration" style="--lc:#4db6ac" onclick="toggleLayer('migration')">🌊 Migration</div>
+        <div class="layer-btn on" id="lb-patrol" style="--lc:#7986cb" onclick="toggleLayer('patrol')">👁️ Patrol</div>
+        <div class="layer-btn on" id="lb-danger" style="--lc:#ef5350" onclick="toggleLayer('danger')">⚠️ Danger</div>
+        <div class="layer-btn on" id="lb-nest" style="--lc:#ffb74d" onclick="toggleLayer('nest')">🥚 Nests</div>
+        <div class="layer-btn on" id="lb-corpse" style="--lc:#a5d6a7" onclick="toggleLayer('corpse')">🦴 Corpse</div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Prey:</span>
+        <div class="layer-btn on" id="lb-fish" style="--lc:#29b6f6" onclick="toggleLayer('fish')">🐟 Fish</div>
+        <div class="layer-btn on" id="lb-crab" style="--lc:#ef9a9a" onclick="toggleLayer('crab')">🦀 Crab</div>
+        <div class="layer-btn on" id="lb-turtle" style="--lc:#66bb6a" onclick="toggleLayer('turtle')">🐢 Turtle</div>
+        <div class="layer-btn on" id="lb-rabbit" style="--lc:#ce93d8" onclick="toggleLayer('rabbit')">🐇 Rabbit</div>
+        <div class="layer-btn on" id="lb-chicken" style="--lc:#ffcc02" onclick="toggleLayer('chicken')">🐔 Chicken</div>
+        <div class="layer-btn on" id="lb-frog" style="--lc:#81c784" onclick="toggleLayer('frog')">🐸 Bullfrog</div>
+        <div class="layer-btn on" id="lb-hypsilo" style="--lc:#ffb74d" onclick="toggleLayer('hypsilo')">🦎 Hypsilophodon</div>
+        <div class="layer-btn on" id="lb-smalldino" style="--lc:#f48fb1" onclick="toggleLayer('smalldino')">🦕 Small Dinos</div>
+      </div>
+      <div class="map-container" id="map-container"
+        onmousedown="startDrag(event)" onmousemove="doDrag(event)"
+        onmouseup="endDrag()" onmouseleave="endDrag()" onwheel="onWheel(event)"
+        ontouchstart="touchStart(event)" ontouchmove="touchMove(event)" ontouchend="touchEnd()">
+        <div class="map-inner" id="map-inner">
+          <img class="map-img" id="map-img" alt="Gateway Map" src="map.png" onload="this.style.display='block';document.getElementById('map-fallback').style.display='none'">
+          <div class="map-fallback" id="map-fallback">
+            <div style="font-size:52px">🗺️</div>
+            <div style="color:#58a6ff;font-weight:700;font-size:14px">Map Image Loading...</div>
+            <div style="font-size:11px;max-width:320px;text-align:center;line-height:1.6">map.png should be in the same folder as index.html</div>
+          </div>
+          <svg class="map-svg-overlay" id="svg-route" viewBox="0 0 1232 968">
+            <defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="cb"/><feMerge><feMergeNode in="cb"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <path d="M 595,310 L 600,360 L 520,175 L 370,235 L 615,490 L 760,215 L 640,700 L 410,630 L 560,840" fill="none" stroke="rgba(88,166,255,0.65)" stroke-width="2.5" stroke-dasharray="12,7" filter="url(#glow)"/>
+          </svg>
+          <div class="stop-marker start" style="left:595px;top:310px" onclick="showStop(0)">1</div>
+          <div class="stop-marker" style="left:600px;top:370px" onclick="showStop(1)">2</div>
+          <div class="stop-marker" style="left:520px;top:175px" onclick="showStop(2)">3</div>
+          <div class="stop-marker" style="left:370px;top:235px" onclick="showStop(3)">4</div>
+          <div class="stop-marker" style="left:615px;top:490px" onclick="showStop(4)">5</div>
+          <div class="stop-marker" style="left:760px;top:215px" onclick="showStop(5)">6</div>
+          <div class="stop-marker" style="left:640px;top:700px" onclick="showStop(6)">7</div>
+          <div class="stop-marker" style="left:410px;top:630px" onclick="showStop(7)">8</div>
+          <div class="stop-marker" style="left:560px;top:840px" onclick="showStop(8)">9</div>
+          <!-- WATER --><div class="loc-pin" data-layer="water" style="left:595px;top:295px;background:#0d47a1" onclick="showPin('Water Access','Main freshwater area. Dense fish. Safe for hatchlings.')">💧</div><div class="loc-pin" data-layer="water" style="left:685px;top:240px;background:#0d47a1" onclick="showPin('North Lake','Large freshwater lake.')">💧</div><div class="loc-pin" data-layer="water" style="left:645px;top:555px;background:#0d47a1" onclick="showPin('River Delta','River branches here. Fish, water, Migration Zone 2.')">💧</div><div class="loc-pin" data-layer="water" style="left:592px;top:685px;background:#0d47a1" onclick="showPin('Swamps Center','High predator risk. Stay airborne.')">💧</div>
+          <!-- SALT --><div class="loc-pin" data-layer="salt" style="left:308px;top:288px;background:#424242" onclick="showPin('West Coast Salt Rock','Drink here to unlock Reniculate Kidneys.')">🧂</div><div class="loc-pin" data-layer="salt" style="left:538px;top:152px;background:#424242" onclick="showPin('Northern Coast Salt Rock','Salt on north shore. Combine with Migration Zone 1.')">🧂</div><div class="loc-pin" data-layer="salt" style="left:528px;top:858px;background:#424242" onclick="showPin('Southern Beach Salt Rock','Salt near Patrol Zone 4.')">🧂</div>
+          <!-- SANCTUARY --><div class="loc-pin" data-layer="sanctuary" style="left:603px;top:358px;background:#e65100" onclick="showPin('Water Access Sanctuary','Do ASAP as juvi. Closest to spawn. Counts as Sanctuary objective.')">🏕️</div><div class="loc-pin" data-layer="sanctuary" style="left:628px;top:572px;background:#e65100" onclick="showPin('River Delta Sanctuary','Backup sanctuary if Water Access is camped.')">🏕️</div>
+          <!-- MIGRATION --><div class="loc-pin" data-layer="migration" style="left:510px;top:158px;background:#00695c" onclick="showPin('Migration Zone 1 — Northern Coast','Fly coastline heading west. No landing needed.')">🌊</div><div class="loc-pin" data-layer="migration" style="left:638px;top:532px;background:#00695c" onclick="showPin('Migration Zone 2 — River Delta','Fly through delta heading south.')">🌊</div><div class="loc-pin" data-layer="migration" style="left:632px;top:682px;background:#00695c" onclick="showPin('Migration Zone 3 — Swamps','Final migration zone.')">🌊</div>
+          <!-- PATROL --><div class="loc-pin" data-layer="patrol" style="left:362px;top:228px;background:#4527a0" onclick="showPin('Patrol Zone 1 — Northwest Ridge','Highland cliffs. Good elevation.')">👁️</div><div class="loc-pin" data-layer="patrol" style="left:637px;top:712px;background:#4527a0" onclick="showPin('Patrol Zone 2 — Swamps','Stay airborne.')">👁️</div><div class="loc-pin" data-layer="patrol" style="left:407px;top:622px;background:#4527a0" onclick="showPin('Patrol Zone 3 — West Rail / South Plains','Wide open area.')">👁️</div><div class="loc-pin" data-layer="patrol" style="left:548px;top:852px;background:#4527a0" onclick="showPin('Patrol Zone 4 — Southern Beach','Final patrol stop.')">👁️</div>
+          <!-- DANGER --><div class="loc-pin" data-layer="danger" style="left:480px;top:432px;background:#b71c1c" onclick="showPin('⚠️ Highlands — Apex Zone','Large carnivores. Fly high and fast.')">⚠️</div><div class="loc-pin" data-layer="danger" style="left:642px;top:662px;background:#b71c1c" onclick="showPin('⚠️ Swamps — High Predators','Never land here.')">⚠️</div><div class="loc-pin" data-layer="danger" style="left:732px;top:392px;background:#b71c1c" onclick="showPin('⚠️ East River — Ambush Risk','Predators patrol river banks.')">⚠️</div>
+          <!-- NESTS --><div class="loc-pin" data-layer="nest" style="left:572px;top:322px;background:#bf360c" onclick="showPin('Nest Site — Water Access Cliffs','Common Ptera nesting ledges.')">🥚</div><div class="loc-pin" data-layer="nest" style="left:392px;top:257px;background:#bf360c" onclick="showPin('Nest Site — Northwest Ridge','Prime Ptera nesting spots.')">🥚</div>
+          <!-- CORPSE --><div class="loc-pin" data-layer="corpse" style="left:502px;top:442px;background:#3e2723" onclick="showPin('Corpse — Highlands','Carrion from large predator kills.')">🦴</div><div class="loc-pin" data-layer="corpse" style="left:652px;top:642px;background:#3e2723" onclick="showPin('Corpse — Swamp Edge','Approach from above only.')">🦴</div>
+          <!-- FISH --><div class="loc-pin" data-layer="fish" style="left:598px;top:278px;background:#01579b" onclick="showPin('🐟 Fish — Water Access','Dense schooling fish. Best early diet spot.')">🐟</div><div class="loc-pin" data-layer="fish" style="left:648px;top:542px;background:#01579b" onclick="showPin('🐟 Fish — River Delta','Consistent fish mid-run.')">🐟</div><div class="loc-pin" data-layer="fish" style="left:688px;top:228px;background:#01579b" onclick="showPin('🐟 Fish — North Lake','Quieter fishing spot.')">🐟</div><div class="loc-pin" data-layer="fish" style="left:672px;top:470px;background:#01579b" onclick="showPin('🐟 Fish — Mid River','Fish along mid-river.')">🐟</div>
+          <!-- CRAB --><div class="loc-pin" data-layer="crab" style="left:318px;top:272px;background:#b71c1c" onclick="showPin('🦀 Crab — West Coast','Coastal crabs. Easy prey.')">🦀</div><div class="loc-pin" data-layer="crab" style="left:512px;top:148px;background:#b71c1c" onclick="showPin('🦀 Crab — Northern Coast','Grab while passing Migration Zone 1.')">🦀</div><div class="loc-pin" data-layer="crab" style="left:548px;top:862px;background:#b71c1c" onclick="showPin('🦀 Crab — Southern Beach','Easy pickup near Patrol Zone 4.')">🦀</div><div class="loc-pin" data-layer="crab" style="left:835px;top:482px;background:#b71c1c" onclick="showPin('🦀 Crab — East Coast','Eastern shoreline crabs.')">🦀</div>
+          <!-- TURTLE --><div class="loc-pin" data-layer="turtle" style="left:528px;top:868px;background:#1b5e20" onclick="showPin('🐢 Sea Turtle — Southern Beach','Turtles nest on southern shore.')">🐢</div><div class="loc-pin" data-layer="turtle" style="left:328px;top:280px;background:#1b5e20" onclick="showPin('🐢 Sea Turtle — West Coast','Turtles along western beaches.')">🐢</div><div class="loc-pin" data-layer="turtle" style="left:848px;top:495px;background:#1b5e20" onclick="showPin('🐢 Sea Turtle — East Coast','Eastern shoreline turtles.')">🐢</div>
+          <!-- RABBIT --><div class="loc-pin" data-layer="rabbit" style="left:448px;top:508px;background:#6a1b9a" onclick="showPin('🐇 Rabbit — South Plains','Burrow in open plains.')">🐇</div><div class="loc-pin" data-layer="rabbit" style="left:378px;top:348px;background:#6a1b9a" onclick="showPin('🐇 Rabbit — NW Highlands','Common in highland scrubland.')">🐇</div><div class="loc-pin" data-layer="rabbit" style="left:508px;top:398px;background:#6a1b9a" onclick="showPin('🐇 Rabbit — Highlands Edge','Along highland grassland.')">🐇</div><div class="loc-pin" data-layer="rabbit" style="left:658px;top:398px;background:#6a1b9a" onclick="showPin('🐇 Rabbit — Jungle Border','Jungle/plains edge.')">🐇</div>
+          <!-- CHICKEN --><div class="loc-pin" data-layer="chicken" style="left:468px;top:538px;background:#f57f17" onclick="showPin('🐔 Chicken — South Plains','Roam central south plains.')">🐔</div><div class="loc-pin" data-layer="chicken" style="left:418px;top:258px;background:#f57f17" onclick="showPin('🐔 Chicken — Northwest','Common in NW region.')">🐔</div><div class="loc-pin" data-layer="chicken" style="left:562px;top:742px;background:#f57f17" onclick="showPin('🐔 Chicken — Southern Region','South lowland area.')">🐔</div><div class="loc-pin" data-layer="chicken" style="left:698px;top:432px;background:#f57f17" onclick="showPin('🐔 Chicken — Jungle Clearings','In jungle clearings.')">🐔</div>
+          <!-- FROG --><div class="loc-pin" data-layer="frog" style="left:612px;top:608px;background:#2e7d32" onclick="showPin('🐸 Bullfrog — River Bank','On river banks and shallow edges.')">🐸</div><div class="loc-pin" data-layer="frog" style="left:568px;top:728px;background:#2e7d32" onclick="showPin('🐸 Bullfrog — South Lowlands','Common in wet southern areas.')">🐸</div><div class="loc-pin" data-layer="frog" style="left:618px;top:658px;background:#2e7d32" onclick="showPin('🐸 Bullfrog — Swamp Edge','Risky — stay quick.')">🐸</div><div class="loc-pin" data-layer="frog" style="left:678px;top:508px;background:#2e7d32" onclick="showPin('🐸 Bullfrog — Mid River','Along mid-river banks.')">🐸</div>
+          <!-- HYPSILO --><div class="loc-pin" data-layer="hypsilo" style="left:628px;top:458px;background:#e65100" onclick="showPin('🦎 Hypsilophodon — Jungle Sector','Playable prey. Other players may be here.')">🦎</div><div class="loc-pin" data-layer="hypsilo" style="left:762px;top:218px;background:#e65100" onclick="showPin('🦎 Hypsilophodon — Northern Jungle','Common in north jungle.')">🦎</div><div class="loc-pin" data-layer="hypsilo" style="left:478px;top:548px;background:#e65100" onclick="showPin('🦎 Hypsilophodon — South Plains','Easy to spot from the air.')">🦎</div>
+          <!-- SMALL DINOS --><div class="loc-pin" data-layer="smalldino" style="left:718px;top:308px;background:#880e4f" onclick="showPin('🦕 Small Dinos — NE Jungle','Troodon, Psittacosaurus, Beipiaosaurus.')">🦕</div><div class="loc-pin" data-layer="smalldino" style="left:648px;top:418px;background:#880e4f" onclick="showPin('🦕 Small Dinos — Jungle Sector','Mix of small dinos in central jungle.')">🦕</div><div class="loc-pin" data-layer="smalldino" style="left:498px;top:568px;background:#880e4f" onclick="showPin('🦕 Small Dinos — Plains Border','Occasional small dinos wandering.')">🦕</div>
+        </div>
+        <div class="stop-detail" id="stop-detail">
+          <span class="stop-close" onclick="closeStop()">✕</span>
+          <h4 id="stop-name"></h4><p id="stop-desc"></p><div id="stop-obj"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUTATIONS TAB -->
+  <div class="tab-body" id="tab-mutations" style="display:none;">
+    <div class="playstyle-bar" id="playstyle-bar">
+      <div class="ps-btn" style="--pc:#58a6ff" data-style="solo" onclick="setPlaystyle('solo')">🛡️ Solo Survivor</div>
+      <div class="ps-btn" style="--pc:#e3b341" data-style="speed" onclick="setPlaystyle('speed')">⚡ Speed Runner</div>
+      <div class="ps-btn" style="--pc:#f85149" data-style="hunter" onclick="setPlaystyle('hunter')">🗡️ Aggressive Hunter</div>
+      <div class="ps-btn" style="--pc:#3fb950" data-style="pack" onclick="setPlaystyle('pack')">🤝 Pack / Social</div>
+      <div class="ps-btn" style="--pc:#a5d6a7" data-style="scavenger" onclick="setPlaystyle('scavenger')">🦴 Scavenger</div>
+      <div class="ps-btn" style="--pc:#4db6ac" data-style="nomad" onclick="setPlaystyle('nomad')">🌍 Nomad</div>
+      <div class="ps-btn" style="--pc:#7986cb" data-style="ambush" onclick="setPlaystyle('ambush')">🌑 Ambush Predator</div>
+      <div class="ps-btn" style="--pc:#29b6f6" data-style="coastal" onclick="setPlaystyle('coastal')">🌊 Coastal Roamer</div>
+      <div class="ps-btn" style="--pc:#ffb74d" data-style="apex" onclick="setPlaystyle('apex')">🏔️ Apex Climber</div>
+      <div class="ps-btn" style="--pc:#ce93d8" data-style="support" onclick="setPlaystyle('support')">💚 Support</div>
+      <div class="ps-btn" style="--pc:#da3633" data-style="cannibal" onclick="setPlaystyle('cannibal')">🩸 Cannibal</div>
+    </div>
+    <div class="no-selection" id="no-selection">
+      <div>🧬</div>
+      <div>Pick a playstyle above to get your personalized mutation recommendation</div>
+    </div>
+    <div class="rec-card" id="rec-card"></div>
+    <div class="ptera-note" style="margin-top:8px;"><strong>📌 Note:</strong> 🔒 Hidden mutations must be <b>unlocked before</b> the slot opens — do the action first, then open the mutation menu. Slot 4 is reserved for the Elder system.</div>
+  </div>
+</div>
+
+<script>
+const playstyles = {
+  solo: { icon:'🛡️', title:'Solo Survivor', subtitle:'Stay alive, avoid conflict, grind quietly', color:'#58a6ff', pitch:'As a solo Ptera your biggest enemy is time — not predators. You need your bars to drain slowly so you spend less time at vulnerable watering holes and more time flying objectives safely. Every trip to the ground is a risk. Build to minimize those trips.', slots:[ { num:1, stage:'Juvenile', name:'Reniculate Kidneys', hidden:true, prime:true, why:'Opens the entire coastline as your water source. You never need to land at inland watering holes where predators camp. This single mutation removes your biggest vulnerability as a small solo dino.', timing:'Unlock early: drink saltwater on the coast before your Slot 1 opens.', alt:[{name:'Efficient Digestion', why:'If you miss the salt unlock, this buys you more time between hunts.'}] }, { num:2, stage:'Sub-Adult', name:'Sustained Hydration', hidden:false, prime:true, why:'Your thirst bar barely moves. Combined with coastal drinking from Slot 1, you are effectively self-sufficient. This is what lets you fly long migration and patrol loops without stopping.', timing:'Take this the moment Slot 2 unlocks — do not delay.', alt:[{name:'Enhanced Stamina', why:'If you skipped Reniculate Kidneys, stamina helps you escape danger faster.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'You see predators before they see you. As a small solo dino this is life or death — you can reroute, gain altitude, and never be caught off guard.', timing:'Take at adult stage. Pairs perfectly with your coastal freedom build.', alt:[{name:'Tough Hide', why:'If you find yourself getting clipped often, this lets you survive a hit and escape.'}] } ] },
+  speed: { icon:'⚡', title:'Speed Runner', subtitle:'Hit 5 objectives and Prime as fast as possible', color:'#e3b341', pitch:'The objective deadline at 75% is your real opponent. You need to cover massive ground in a short time — migration, patrol, diet, and sanctuary all in one efficient loop. Build for maximum flight endurance so you never have to stop.', slots:[ { num:1, stage:'Juvenile', name:'Efficient Digestion', hidden:false, prime:true, why:'Less food drain means fewer hunting stops during your objective loop. Every second you spend looking for prey is a second not spent flying zones.', timing:'Take immediately at Juvenile. No unlock needed.', alt:[{name:'Reniculate Kidneys', why:'If you want coastal flexibility over raw efficiency.'}] }, { num:2, stage:'Sub-Adult', name:'Enhanced Stamina', hidden:false, prime:true, why:'Bigger stamina pool means longer unbroken flights. You can hit all Migration and Patrol Zones in a single massive loop without stopping to recover stamina.', timing:'Take at Sub-Adult, then immediately plan your big objective loop.', alt:[{name:'Sustained Hydration', why:'If thirst is your bottleneck instead of stamina.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'Speed running means flying through high-traffic areas fast. Keen Eyesight lets you spot threats early and reroute without breaking your momentum.', timing:'Take at Adult. You should be close to the 75% deadline — stay focused.', alt:[{name:'Tough Hide', why:'If you\'re flying through danger zones frequently.'}] } ] },
+  hunter: { icon:'🗡️', title:'Aggressive Hunter', subtitle:'Fight, kill, dominate', color:'#f85149', pitch:'Ptera is a small dino — straight-up brawling is risky. Your edge as an aggressive hunter is mobility and surprise. You dive fast, strike, and get airborne again before anything can retaliate.', slots:[ { num:1, stage:'Juvenile', name:'Efficient Digestion', hidden:false, prime:false, why:'Hunting burns food fast. Less food drain means you can stay aggressive longer without breaking off to find prey.', timing:'Take immediately at Juvenile.', alt:[{name:'Reinforced Tendons', why:'If you fight from the ground frequently — cheaper launches let you escape after a kill.'}] }, { num:2, stage:'Sub-Adult', name:'Enhanced Stamina', hidden:false, prime:false, why:'More stamina means more dive attacks before you need to recover. You can dive, strike, regain altitude, and dive again.', timing:'Take at Sub-Adult. Start hunting larger prey and picking fights you can win.', alt:[{name:'Sustained Hydration', why:'If you prefer a more sustained aggressive playstyle over burst fights.'}] }, { num:3, stage:'Adult', name:'Tough Hide', hidden:false, prime:false, why:'You will take hits. Tough Hide lets you survive the counter-attack and get airborne. Without this you\'ll be one-tapped by anything that can reach you.', timing:'Take at Adult. By now you should be establishing territory and defending it.', alt:[{name:'Keen Eyesight', why:'If you want to pick fights on your terms — spot targets from a distance first.'}] } ] },
+  pack: { icon:'🤝', title:'Pack / Social', subtitle:'Built around grouping, bonding, and pack play', color:'#3fb950', pitch:'Pack Ptera is about being useful to your flock and surviving long enough to grow with them. You want to be the one who can fly furthest, scout threats, and keep the group fed.', slots:[ { num:1, stage:'Juvenile', name:'Reniculate Kidneys', hidden:true, prime:true, why:'Your pack needs water. As a saltwater drinker you can scout coastal sources and report safe drinking spots. You also don\'t need to compete at the same inland watering holes.', timing:'Unlock before Slot 1: drink saltwater on the coast repeatedly.', alt:[{name:'Efficient Digestion', why:'If you can\'t unlock Reniculate in time.'}] }, { num:2, stage:'Sub-Adult', name:'Sustained Hydration', hidden:false, prime:true, why:'Pack play means staying with the group through long sessions. Slow thirst means you\'re always there when the pack needs you.', timing:'Take at Sub-Adult. By now you should have your pack Bond objective progressing.', alt:[{name:'Enhanced Stamina', why:'If your pack flies long distances frequently and you struggle to keep up.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'Your most valuable role in a pack is scout. Keen Eyesight lets you spot threats, prey, and other players from high altitude and report back. You become the pack\'s eyes.', timing:'Take at Adult. Position yourself as the high-altitude scout for your group.', alt:[{name:'Tough Hide', why:'If your pack engages in combat frequently and you get dragged into fights.'}] } ] },
+  scavenger: { icon:'🦴', title:'Scavenger', subtitle:'Follow kills, eat carrion, stay low and invisible', color:'#a5d6a7', pitch:'Scavenger Ptera is about patience and opportunism. You follow large predators at a safe distance, wait for kills, and drop in fast to eat carrion and get airborne again.', slots:[ { num:1, stage:'Juvenile', name:'Efficient Digestion', hidden:false, prime:false, why:'Scavenging is unpredictable — you can\'t always control when your next meal comes. Less food drain means you can wait longer for a good opportunity without starving.', timing:'Take immediately at Juvenile.', alt:[{name:'Reniculate Kidneys', why:'Coastal access means you can at least always handle thirst between scavenging runs.'}] }, { num:2, stage:'Sub-Adult', name:'Sustained Hydration', hidden:false, prime:false, why:'Scavenging means unpredictable access to water. Slow your thirst drain and you spend more time watching for kills and less time searching for water.', timing:'Take at Sub-Adult.', alt:[{name:'Enhanced Stamina', why:'If you\'re covering huge distances tracking predators across the map.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'Scavenging from altitude is your whole strategy. You need to spot kills from high up, identify when the predator has moved on, and time your drop perfectly.', timing:'Take at Adult. By now you should have solid carrion spots mapped out.', alt:[{name:'Tough Hide', why:'If you\'re getting caught at carcasses by returning predators.'}] } ] },
+  nomad: { icon:'🌍', title:'Nomad', subtitle:'Always moving, never staying in one spot', color:'#4db6ac', pitch:'Nomad Ptera never stops moving. You\'re always in flight, always crossing zones, hitting migration and patrol naturally just by existing. Your biggest challenge is stamina and sustaining yourself across the whole map.', slots:[ { num:1, stage:'Juvenile', name:'Reniculate Kidneys', hidden:true, prime:true, why:'As a nomad you\'re constantly crossing coastlines. Saltwater drinking means you never have to divert inland for water — just skim the coast and keep moving.', timing:'Unlock before Slot 1 by drinking saltwater.', alt:[{name:'Efficient Digestion', why:'If you can\'t unlock Reniculate in time.'}] }, { num:2, stage:'Sub-Adult', name:'Enhanced Stamina', hidden:false, prime:true, why:'The nomad playstyle lives and dies on stamina. Bigger pool, faster recovery. This lets you fly the entire island perimeter in one session and hit every zone effortlessly.', timing:'Take at Sub-Adult. Plan your first full island loop immediately after.', alt:[{name:'Sustained Hydration', why:'If you\'re finding thirst is your bottleneck more than stamina.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'Nomads cross through every biome and danger zone. Keen Eyesight lets you identify threats from altitude and plot safe routes without slowing down.', timing:'Take at Adult.', alt:[{name:'Tough Hide', why:'If you keep getting intercepted mid-flight.'}] } ] },
+  ambush: { icon:'🌑', title:'Ambush Predator', subtitle:'Patient, strike fast, retreat immediately', color:'#7986cb', pitch:'Ptera is a natural ambush predator — you control altitude and the element of surprise. The ambush playstyle is about picking exact moments, diving at full speed, landing the kill, and being airborne again before anything reacts.', slots:[ { num:1, stage:'Juvenile', name:'Reinforced Tendons', hidden:true, prime:false, why:'Ambush Ptera often needs to launch from a perched position when prey appears below. Cheaper launches mean you can strike more frequently without stamina gating your attacks.', timing:'Unlock before Slot 1: jump 50 times.', alt:[{name:'Efficient Digestion', why:'If you prefer not to grind the jump unlock.'}] }, { num:2, stage:'Sub-Adult', name:'Enhanced Stamina', hidden:false, prime:false, why:'The ambush dive and escape sequence burns stamina fast. A bigger pool means more attack windows per hunt, and faster recovery means you can reposition for a second strike.', timing:'Take at Sub-Adult.', alt:[{name:'Sustained Hydration', why:'If you find yourself spending too much time managing thirst between ambushes.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'Ambush success is all about identifying the right target at the right moment. Keen Eyesight lets you assess prey from safe altitude before committing to the dive.', timing:'Take at Adult.', alt:[{name:'Tough Hide', why:'For when your ambush gets turned on you.'}] } ] },
+  coastal: { icon:'🌊', title:'Coastal Roamer', subtitle:'Water-dependent, shoreline-focused, ocean freedom', color:'#29b6f6', pitch:'The coast is your kingdom. You live along the shoreline, fish constantly, drink from the ocean, and use coastal updrafts to stay airborne for hours. This perfectly supports the Prime Elder route.', slots:[ { num:1, stage:'Juvenile', name:'Reniculate Kidneys', hidden:true, prime:true, why:'This mutation was literally made for you. Saltwater access means the entire coastline is your personal water fountain. You never need to go inland.', timing:'Priority unlock — drink saltwater before anything else.', alt:[{name:'Efficient Digestion', why:'Fallback only.'}] }, { num:2, stage:'Sub-Adult', name:'Sustained Hydration', hidden:false, prime:true, why:'You\'re already drinking saltwater constantly. Slow your thirst drain further and you become an endurance machine — capable of flying the entire coastline without a single stop.', timing:'Take immediately at Sub-Adult.', alt:[{name:'Enhanced Stamina', why:'If long flight distance is more important to you than thirst management.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'From high altitude over the ocean you can see everything on the coastline below — prey, threats, other players. Coastal roaming at altitude with Keen Eyesight makes you nearly untouchable.', timing:'Take at Adult.', alt:[{name:'Tough Hide', why:'If you land on beaches frequently and get ambushed.'}] } ] },
+  apex: { icon:'🏔️', title:'Apex Climber', subtitle:'Territory control, high ground dominance', color:'#ffb74d', pitch:'Ptera owns the sky. The Apex Climber playstyle is about establishing airspace and cliff territory that no other creature can contest. You patrol your domain from above, defend nest sites, and only engage on your terms.', slots:[ { num:1, stage:'Juvenile', name:'Reinforced Tendons', hidden:true, prime:false, why:'Cliff-based Pteras launch from perched positions constantly. Cheaper launches mean you can pop off cliff edges repeatedly without burning through stamina, critical for territory defense.', timing:'Unlock before Slot 1: jump 50 times on your cliff territory.', alt:[{name:'Reniculate Kidneys', why:'If your territory includes coastal cliffs and you want water freedom.'}] }, { num:2, stage:'Sub-Adult', name:'Enhanced Stamina', hidden:false, prime:false, why:'Holding aerial territory requires sustained flight. You\'re circling, patrolling, and intercepting threats constantly. Bigger stamina pool means you stay airborne longer.', timing:'Take at Sub-Adult. Begin actively patrolling your territory.', alt:[{name:'Sustained Hydration', why:'If thirst is cutting your patrol sessions short.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'From high altitude, Keen Eyesight lets you see threats entering your territory from far away. You\'re always first to know what\'s approaching.', timing:'Take at Adult.', alt:[{name:'Tough Hide', why:'If your territory gets contested frequently by other flyers.'}] } ] },
+  support: { icon:'💚', title:'Support', subtitle:'Pack scout, guardian, and group enabler', color:'#ce93d8', pitch:'Support Ptera is the eyes and ears of the group. You fly high, spot threats before anyone else, call out prey locations, and keep the pack moving safely. You\'re not the one making kills — you\'re the reason everyone else can.', slots:[ { num:1, stage:'Juvenile', name:'Reniculate Kidneys', hidden:true, prime:true, why:'Support Ptera scouts coastal routes for the pack. Saltwater access means you can do long scouting runs along the entire coast without needing to return for water.', timing:'Unlock before Slot 1 by drinking saltwater.', alt:[{name:'Efficient Digestion', why:'If scouting keeps you away from food sources for long stretches.'}] }, { num:2, stage:'Sub-Adult', name:'Sustained Hydration', hidden:false, prime:true, why:'Long scouting sessions need sustainable bars. The slower your thirst drains, the longer you can stay in the air providing coverage for your group.', timing:'Take at Sub-Adult.', alt:[{name:'Enhanced Stamina', why:'If your pack operates over very large areas and you need flight range.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'This is the support mutation. Keen Eyesight from altitude means you spot threats, prey herds, and player positions before anyone in your pack. You become the early warning system.', timing:'Take at Adult.', alt:[{name:'Tough Hide', why:'If your scouting routes take you through dangerous territory.'}] } ] },
+  cannibal: { icon:'🩸', title:'Cannibal', subtitle:'Hunt your own kind — high risk, high reward', color:'#da3633', pitch:'Cannibal Ptera is one of the most dangerous builds in the game. Eating another Ptera causes Muscle Spasms debuff — but once it clears, it can unlock special cannibal mutations. You\'re playing a high-risk long game.', slots:[ { num:1, stage:'Juvenile', name:'Efficient Digestion', hidden:false, prime:false, why:'The Muscle Spasms debuff after eating a Ptera will wreck your stats temporarily. Efficient Digestion helps you stay fed during the debuff window when hunting is harder.', timing:'Take immediately at Juvenile. You\'ll need the buffer before your first cannibal act.', alt:[{name:'Reniculate Kidneys', why:'If you want coastal water access during the debuff window.'}] }, { num:2, stage:'Sub-Adult', name:'Sustained Hydration', hidden:false, prime:false, why:'During Muscle Spasms your mobility is reduced. Slow your thirst drain so you can minimize water trips while the debuff runs its course.', timing:'Take at Sub-Adult. By now you may have already eaten a Ptera and survived the first debuff.', alt:[{name:'Enhanced Stamina', why:'If you need mobility to escape retaliation after a cannibal kill.'}] }, { num:3, stage:'Adult', name:'Keen Eyesight', hidden:false, prime:false, why:'Cannibal Ptera needs to identify and track other Pteras from altitude without being spotted. Keen Eyesight lets you select vulnerable targets — isolated juvies, weakened adults.', timing:'Take at Adult. By now the cannibal path has either unlocked hidden mutations or you\'ve pivoted.', alt:[{name:'Tough Hide', why:'Other Pteras will try to retaliate. Tough Hide helps you survive counter-attacks.'}] } ], warning:'⚠️ Eating other Pteras causes the Muscle Spasms debuff and will block the standard Prime Elder path. Cannibal builds are for players who accept that trade-off or are targeting cannibal-specific hidden mutations.' }
+};
+
+let currentPlaystyle = null;
+function setPlaystyle(style) {
+  currentPlaystyle = style;
+  document.querySelectorAll('.ps-btn').forEach(b => b.classList.toggle('active', b.dataset.style === style));
+  document.getElementById('no-selection').style.display = 'none';
+  renderRec(playstyles[style]);
+}
+function renderRec(ps) {
+  const card = document.getElementById('rec-card');
+  card.className = 'rec-card visible' + (ps.warning ? ' cannibal' : '');
+  let slotsHTML = ps.slots.map(s => `
+    <div class="rec-slot">
+      <div class="rec-slot-num">${s.num}</div>
+      <div class="rec-slot-info">
+        <div class="rec-slot-label">Slot ${s.num} — ${s.stage}</div>
+        <div class="rec-slot-name">${s.name}${s.hidden ? ' <span class="hidden-tag">🔒 Hidden</span>' : ''}${s.prime ? ' <span class="prime-tag">⚡ Prime</span>' : ''}</div>
+        <div class="rec-slot-why">${s.why}</div>
+        <div class="rec-slot-timing">⏱ ${s.timing}</div>
+        ${s.alt.length ? `<div class="rec-alt" style="margin-top:8px;"><div class="rec-alt-label">Alternatives</div>${s.alt.map(a=>`<div class="rec-alt-item"><span>${a.name}:</span> ${a.why}</div>`).join('')}</div>` : ''}
+      </div>
+    </div>`).join('');
+  card.innerHTML = `
+    <div class="rec-header"><div class="rec-icon">${ps.icon}</div><div><div class="rec-title" style="color:${ps.color}">${ps.title}</div><div class="rec-subtitle">${ps.subtitle}</div></div></div>
+    <div class="rec-pitch">${ps.pitch}</div>
+    <div class="rec-slots">${slotsHTML}</div>
+    ${ps.warning ? `<div style="background:rgba(218,54,51,0.1);border:1px solid rgba(218,54,51,0.3);border-radius:8px;padding:10px 12px;font-size:11px;color:#f85149;margin-top:4px;">${ps.warning}</div>` : ''}`;
+}
+function switchTab(name){
+  ['objectives','map','mutations'].forEach((t,i)=>{
+    document.querySelectorAll('.tabs .tab')[i].classList.toggle('active',t===name);
+    document.getElementById('tab-'+t).style.display=t===name?'':'none';
+  });
+  if(name==='map'&&!mapInited)initMap();
+}
+let doneSet=new Set();
+function toggleDone(e,idx){e.stopPropagation();doneSet.has(idx)?doneSet.delete(idx):doneSet.add(idx);document.getElementById('obj-'+idx).classList.toggle('done',doneSet.has(idx));updateProgress();}
+function toggleObj(idx){document.getElementById('obj-'+idx).classList.toggle('open');}
+function updateProgress(){const n=doneSet.size,pct=Math.min(100,n/5*100);document.getElementById('progress-bar').style.width=pct+'%';document.getElementById('progress-count').textContent=n+' / 5 needed'+(n>=5?' ✅ PRIME ELIGIBLE!':'');}
+const stops=[
+  {name:"1 · Water Access — START",desc:"Your spawn. Fish here, stay near water.",obj:"Objective: Survive as Hatchling (auto)"},
+  {name:"2 · Water Access Sanctuary",desc:"Rest briefly to register.",obj:"Objective: Use a Sanctuary ✅"},
+  {name:"3 · Northern Coast",desc:"Fly northwest. First Migration Zone.",obj:"Objective: Migration Zone 1 of 3"},
+  {name:"4 · Northwest Ridge",desc:"Patrol Zone 1. Good elevation.",obj:"Objective: Patrol Zone 1 of 4"},
+  {name:"5 · River / Jungle Sector",desc:"Migration Zone 2 + diet.",obj:"Objectives: Migration Zone 2 + Diet + Hunt"},
+  {name:"6 · Northern Jungle",desc:"Migration Zone 3.",obj:"Objective: Migration Zone 3 of 3 ✅"},
+  {name:"7 · Swamps Center",desc:"Patrol Zone 2. Stay airborne.",obj:"Objective: Patrol Zone 2 of 4"},
+  {name:"8 · West Rail / South Plains",desc:"Patrol Zone 3.",obj:"Objective: Patrol Zone 3 of 4"},
+  {name:"9 · Southern Beach",desc:"Patrol Zone 4. Fish for diet top-up.",obj:"Objective: Patrol Zone 4 of 4 ✅"}
+];
+function showStop(idx){const s=stops[idx];document.getElementById('stop-name').textContent=s.name;document.getElementById('stop-desc').textContent=s.desc;document.getElementById('stop-obj').innerHTML='<span class="stop-tag">'+s.obj+'</span>';document.getElementById('stop-detail').classList.add('visible');document.querySelectorAll('.stop-marker').forEach((m,i)=>m.classList.toggle('active',i===idx));}
+function showPin(name,desc){document.getElementById('stop-name').textContent=name;document.getElementById('stop-desc').textContent=desc;document.getElementById('stop-obj').innerHTML='';document.getElementById('stop-detail').classList.add('visible');}
+function closeStop(){document.getElementById('stop-detail').classList.remove('visible');document.querySelectorAll('.stop-marker').forEach(m=>m.classList.remove('active'));}
+function toggleLayer(layer){
+  if(layer==='route'){const svg=document.getElementById('svg-route'),btn=document.getElementById('route-btn'),on=svg.style.opacity!=='0';svg.style.opacity=on?'0':'1';btn.classList.toggle('on',!on);document.querySelectorAll('.stop-marker').forEach(m=>m.style.opacity=on?'0':'1');return;}
+  const btn=document.getElementById('lb-'+layer),isOn=btn.classList.contains('on');btn.classList.toggle('on',!isOn);document.querySelectorAll('[data-layer="'+layer+'"]').forEach(p=>p.classList.toggle('hidden-pin',isOn));
+}
+let scale=0.55,tx=0,ty=0,dragging=false,lastX=0,lastY=0,mapInited=false;
+function initMap(){mapInited=true;const c=document.getElementById('map-container');tx=(c.offsetWidth-1232*scale)/2;ty=Math.max(0,(c.offsetHeight-968*scale)/2);applyTransform();}
+function applyTransform(){document.getElementById('map-inner').style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;document.getElementById('zoom-label').textContent=Math.round(scale*100)+'%';}
+function clamp(){const c=document.getElementById('map-container');tx=Math.min(60,Math.max(c.offsetWidth-1232*scale-60,tx));ty=Math.min(60,Math.max(c.offsetHeight-968*scale-60,ty));}
+function zoom(f){const c=document.getElementById('map-container'),cx=c.offsetWidth/2,cy=c.offsetHeight/2,ns=Math.min(5,Math.max(0.25,scale*f));tx=cx-(cx-tx)*ns/scale;ty=cy-(cy-ty)*ns/scale;scale=ns;clamp();applyTransform();}
+function resetView(){scale=0.55;mapInited=false;initMap();}
+function startDrag(e){if(e.target.classList.contains('stop-marker')||e.target.classList.contains('loc-pin')||e.target.classList.contains('stop-close'))return;dragging=true;lastX=e.clientX;lastY=e.clientY;}
+function doDrag(e){if(!dragging)return;tx+=e.clientX-lastX;ty+=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;clamp();applyTransform();}
+function endDrag(){dragging=false;}
+function onWheel(e){e.preventDefault();const c=document.getElementById('map-container'),r=c.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,f=e.deltaY<0?1.15:0.87,ns=Math.min(5,Math.max(0.25,scale*f));tx=mx-(mx-tx)*ns/scale;ty=my-(my-ty)*ns/scale;scale=ns;clamp();applyTransform();}
+let lastDist=0;
+function touchStart(e){if(e.touches.length===1){dragging=true;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;}if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}
+function touchMove(e){e.preventDefault();if(e.touches.length===1&&dragging){tx+=e.touches[0].clientX-lastX;ty+=e.touches[0].clientY-lastY;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;clamp();applyTransform();}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom(d/lastDist);lastDist=d;}}
+function touchEnd(){dragging=false;}
+updateProgress();
+</script>
+</body>
+</html>
