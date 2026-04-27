@@ -7,7 +7,31 @@
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { min-height:100vh; background:radial-gradient(ellipse at 30% 20%,#0e2a1a 0%,#060d1f 40%,#0a0a0f 100%); font-family:'Segoe UI',sans-serif; color:#e6edf3; display:flex; flex-direction:column; align-items:center; padding:24px 16px 40px; }
+  body { min-height:100vh; background:#000; font-family:'Segoe UI',sans-serif; color:#e6edf3; display:flex; flex-direction:column; align-items:center; padding:0 16px 40px; position:relative; overflow-x:hidden; }
+  /* ── Jungle silhouette header ── */
+  .jungle-header { position:relative; width:100vw; left:50%; transform:translateX(-50%); height:220px; margin-bottom:32px; flex-shrink:0; pointer-events:none; overflow:hidden; }
+  .jungle-bg { position:absolute; inset:0; background:linear-gradient(to bottom, #000 0%, #050505 60%, #000 100%); }
+  .lightning-layer { position:absolute; inset:0; }
+  .lightning-bolt { position:absolute; opacity:0; }
+  .lightning-bolt.bolt-l { left:28%; top:0; animation:bolt-flash 7s 1.2s infinite; }
+  .lightning-bolt.bolt-r { right:22%; top:0; animation:bolt-flash 7s 3.8s infinite; }
+  @keyframes bolt-flash {
+    0%,100% { opacity:0; }
+    1% { opacity:0.9; }
+    2% { opacity:0.2; }
+    3% { opacity:0.85; }
+    5% { opacity:0; }
+  }
+  .lightning-glow { position:absolute; inset:0; opacity:0; background:radial-gradient(ellipse 60% 80% at 35% 0%, rgba(180,220,255,0.18) 0%, transparent 70%); animation:glow-flash 7s 1.2s infinite; }
+  .lightning-glow-r { position:absolute; inset:0; opacity:0; background:radial-gradient(ellipse 50% 70% at 72% 0%, rgba(180,220,255,0.14) 0%, transparent 70%); animation:glow-flash 7s 3.8s infinite; }
+  @keyframes glow-flash {
+    0%,100% { opacity:0; }
+    1% { opacity:1; }
+    2% { opacity:0.3; }
+    3% { opacity:0.9; }
+    5% { opacity:0; }
+  }
+  .jungle-silhouette { position:absolute; bottom:0; left:0; width:100%; }
   .glass-card { width:100%; max-width:720px; background:rgba(255,255,255,0.04); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.09); border-radius:20px; box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.08); overflow:hidden; }
   .header { padding:28px 28px 20px; text-align:center; background:linear-gradient(180deg,rgba(46,160,67,0.12) 0%,transparent 100%); border-bottom:1px solid rgba(255,255,255,0.06); }
   .header-icon { margin-bottom:10px; display:flex; justify-content:center; }
@@ -197,6 +221,159 @@
 </style>
 </head>
 <body>
+
+<!-- Jungle silhouette header -->
+<div class="jungle-header">
+  <div class="jungle-bg"></div>
+  <div class="lightning-layer">
+    <div class="lightning-glow"></div>
+    <div class="lightning-glow-r"></div>
+    <!-- Left bolt -->
+    <svg class="lightning-bolt bolt-l" width="40" height="160" viewBox="0 0 40 160" fill="none">
+      <polyline points="22,0 10,60 20,60 4,160" stroke="rgba(200,230,255,0.9)" stroke-width="1.5" stroke-linejoin="round"/>
+      <polyline points="22,0 10,60 20,60 4,160" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+    </svg>
+    <!-- Right bolt -->
+    <svg class="lightning-bolt bolt-r" width="35" height="140" viewBox="0 0 35 140" fill="none">
+      <polyline points="12,0 24,55 14,55 28,140" stroke="rgba(200,230,255,0.85)" stroke-width="1.5" stroke-linejoin="round"/>
+      <polyline points="12,0 24,55 14,55 28,140" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <!-- Jungle treeline SVG — peaks in center, slopes down to edges -->
+  <svg class="jungle-silhouette" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="
+      M0,220
+      L0,185
+      C20,182 35,178 50,170
+      C60,164 65,155 75,148
+      C82,143 88,148 95,142
+      C100,138 103,130 110,124
+      C116,119 122,125 128,118
+      C133,113 135,105 142,100
+      C148,95 154,102 160,95
+      C165,90 167,82 175,76
+      C182,70 190,78 196,71
+      C202,65 204,57 212,52
+      C220,46 228,54 234,47
+      C240,41 242,33 250,28
+      C258,22 266,30 272,23
+      C278,17 280,9 290,5
+      C300,1 310,8 318,3
+      C325,0 330,0 340,4
+      C350,8 355,16 365,11
+      C372,7 376,0 385,0
+      C395,0 400,8 410,5
+      C418,2 422,0 432,3
+      C442,6 446,14 455,10
+      C463,6 467,0 477,0
+      C488,0 492,8 500,5
+      C508,2 512,0 520,0
+      C530,0 534,6 542,3
+      C550,0 554,0 560,0
+      C568,0 572,6 580,4
+      C588,2 592,0 600,0
+      C610,0 614,6 620,3
+      C626,0 628,0 636,3
+      C644,6 648,14 655,10
+      C663,6 667,0 677,0
+      C688,0 692,8 700,5
+      C708,2 712,0 722,3
+      C732,6 736,14 745,10
+      C753,6 757,0 767,0
+      C778,0 782,8 790,5
+      C798,2 802,0 812,3
+      C820,6 822,16 830,11
+      C838,7 840,0 850,4
+      C860,8 865,16 875,11
+      C882,7 886,0 895,0
+      C905,0 910,8 918,5
+      C925,2 928,0 938,3
+      C948,6 952,14 960,10
+      C968,6 972,0 982,0
+      C992,0 998,9 1005,5
+      C1012,1 1018,0 1028,5
+      C1038,10 1042,18 1050,14
+      C1058,10 1062,4 1070,8
+      C1078,12 1080,22 1088,18
+      C1096,13 1100,6 1110,10
+      C1118,14 1120,24 1128,20
+      C1136,16 1140,10 1148,14
+      C1156,18 1158,28 1165,33
+      C1172,38 1178,31 1184,38
+      C1190,44 1192,52 1200,57
+      C1208,63 1214,56 1220,63
+      C1226,69 1228,77 1236,82
+      C1244,88 1250,81 1256,88
+      C1262,94 1264,102 1272,107
+      C1280,112 1286,105 1292,112
+      C1298,118 1300,128 1308,133
+      C1315,138 1320,132 1328,138
+      C1335,144 1338,154 1348,158
+      C1358,162 1368,156 1380,162
+      C1392,167 1400,176 1420,180
+      L1440,183
+      L1440,220 Z
+    " fill="#000"/>
+    <!-- Second layer for depth — slightly lighter, shifted -->
+    <path d="
+      M0,220 L0,200
+      C30,196 55,190 80,183
+      C95,178 105,170 120,164
+      C132,159 140,165 152,158
+      C162,152 165,144 178,140
+      C190,136 198,142 208,136
+      C218,130 220,122 232,118
+      C244,114 252,120 262,114
+      C272,108 274,100 286,97
+      C298,93 305,100 315,94
+      C324,88 326,81 336,77
+      C348,72 356,79 366,73
+      C374,68 376,61 386,57
+      C398,52 406,59 416,53
+      C424,48 426,41 436,38
+      C448,34 456,41 466,35
+      C474,30 476,23 488,20
+      C500,16 508,23 520,18
+      C530,13 534,8 544,12
+      C554,16 558,24 568,20
+      C576,16 580,10 590,13
+      C600,16 604,24 614,20
+      C622,16 626,10 636,13
+      C646,16 650,24 660,20
+      C668,16 672,10 682,13
+      C692,16 696,24 706,20
+      C714,16 718,10 730,14
+      C742,18 746,26 756,22
+      C764,18 768,12 780,16
+      C792,20 796,28 806,24
+      C814,20 818,14 828,18
+      C838,22 842,30 852,26
+      C860,22 864,16 876,20
+      C888,24 892,32 902,28
+      C910,25 915,18 926,23
+      C936,28 940,36 950,32
+      C960,28 964,22 974,26
+      C984,30 988,38 998,34
+      C1006,30 1010,24 1022,28
+      C1034,32 1038,40 1048,37
+      C1056,34 1062,28 1074,33
+      C1086,38 1090,46 1100,43
+      C1108,40 1114,34 1126,40
+      C1138,45 1142,54 1152,51
+      C1160,48 1166,42 1176,48
+      C1186,54 1190,63 1200,68
+      C1210,73 1216,68 1228,74
+      C1240,80 1244,89 1254,86
+      C1262,83 1268,77 1280,83
+      C1292,89 1296,98 1310,103
+      C1322,108 1330,104 1345,112
+      C1358,119 1368,128 1390,135
+      L1440,140
+      L1440,220 Z
+    " fill="#0a0a0a"/>
+  </svg>
+</div>
+
 <div class="glass-card">
   <div class="header">
     <div class="header-icon">
@@ -714,4 +891,4 @@ function touchEnd(){dragging=false;}
 updateProgress();
 </script>
 </body>
-</html>                                                                                                                                                                                                                                                                                
+</html>
