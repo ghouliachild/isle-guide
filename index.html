@@ -197,6 +197,31 @@
   .stat-b .stat-food-tag { background:rgba(46,160,67,0.12); color:#3fb950; border:1px solid rgba(46,160,67,0.2); }
   .stat-y .stat-food-tag { background:rgba(227,179,65,0.12); color:#e3b341; border:1px solid rgba(227,179,65,0.2); }
   .stat-divider { height:1px; background:rgba(255,255,255,0.05); margin:14px 0; }
+
+  /* ── Overview Tab ── */
+  .overview-hook { padding:60px 0 48px; max-width:860px; }
+  .overview-hook-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:18px; }
+  .overview-hook-title { font-size:42px; font-weight:900; line-height:1.15; color:#c9b99a; margin-bottom:24px; letter-spacing:1px; }
+  .overview-hook-body { font-size:16px; color:rgba(255,255,255,0.45); line-height:1.8; max-width:680px; }
+  .overview-scroll-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:24px; }
+  .overview-footer { padding:60px 0 20px; font-size:14px; color:rgba(255,255,255,0.2); font-style:italic; letter-spacing:0.5px; }
+
+  /* ── Horizontal scroll-jack ── */
+  .horiz-scroll-outer { position:relative; }
+  .horiz-scroll-sticky { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+  .horiz-track { display:flex; gap:0; transition:transform 0.6s cubic-bezier(0.77,0,0.175,1); will-change:transform; }
+  .horiz-tile { position:relative; min-width:100vw; height:80vh; cursor:pointer; overflow:hidden; display:flex; align-items:flex-end; border-right:1px solid rgba(255,255,255,0.06); transition:filter 0.3s; }
+  .horiz-tile:hover { filter:brightness(1.15); }
+  .horiz-tile-bg { position:absolute; inset:0; }
+  .horiz-tile-content { position:relative; z-index:2; padding:60px; width:100%; }
+  .horiz-tile-num { font-size:11px; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; margin-bottom:16px; }
+  .horiz-tile-name { font-size:52px; font-weight:900; color:#c9b99a; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; line-height:1; }
+  .horiz-tile-line { width:48px; height:2px; background:#8a7a60; margin-bottom:20px; }
+  .horiz-tile-desc { font-size:16px; color:rgba(255,255,255,0.45); line-height:1.7; max-width:540px; margin-bottom:32px; }
+  .horiz-tile-cta { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#c9b99a; }
+  .horiz-dots { display:flex; gap:8px; justify-content:center; padding:20px 0 0; }
+  .horiz-dot { width:24px; height:2px; background:rgba(255,255,255,0.15); transition:all 0.3s; }
+  .horiz-dot.active { background:#c9b99a; width:48px; }
 </style>
 </head>
 <body>
@@ -238,14 +263,87 @@
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('gameplay')">Gameplay</div>
+    <div class="tab active" onclick="switchTab('overview')">Overview</div>
+    <div class="tab" onclick="switchTab('gameplay')">Dinosaurs</div>
     <div class="tab" onclick="switchTab('mutations')">Mutations</div>
     <div class="tab" onclick="switchTab('objectives')">Pathway to Prime</div>
     <div class="tab" onclick="switchTab('map')">Map</div>
   </div>
 
+  <!-- OVERVIEW TAB -->
+  <div class="tab-body" id="tab-overview">
+
+    <div class="overview-hook">
+      <div class="overview-hook-label">So you've chosen The Isle.</div>
+      <h2 class="overview-hook-title">And you have no idea why you keep dying at the bottom of the food chain.</h2>
+      <p class="overview-hook-body">Welcome. You picked a game where everything is bigger than you, faster than you, and significantly more interested in eating you than making friends. This guide won't fix your instincts — but it might keep you alive long enough to develop some.</p>
+    </div>
+
+    <div class="overview-scroll-label">What's in this guide</div>
+
+    <!-- Scroll-jacked horizontal tile section -->
+    <div class="horiz-scroll-outer" id="horizOuter">
+      <div class="horiz-scroll-sticky" id="horizSticky">
+        <div class="horiz-track" id="horizTrack">
+          <div class="horiz-tile" onclick="switchTab('gameplay')">
+            <div class="horiz-tile-bg" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a0a0a 100%);"></div>
+            <div class="horiz-tile-content">
+              <div class="horiz-tile-num">01</div>
+              <div class="horiz-tile-name">Dinosaurs</div>
+              <div class="horiz-tile-line"></div>
+              <div class="horiz-tile-desc">Pick your creature. Learn its limits. Stop making the same mistakes every spawn.</div>
+              <div class="horiz-tile-cta">Enter &rarr;</div>
+            </div>
+          </div>
+          <div class="horiz-tile" onclick="switchTab('mutations')">
+            <div class="horiz-tile-bg" style="background:linear-gradient(135deg,#0d0d0d 0%,#0a1a0a 100%);"></div>
+            <div class="horiz-tile-content">
+              <div class="horiz-tile-num">02</div>
+              <div class="horiz-tile-name">Mutations</div>
+              <div class="horiz-tile-line"></div>
+              <div class="horiz-tile-desc">Three slots. Choose wrong and you're just a snack with extra steps.</div>
+              <div class="horiz-tile-cta">Enter &rarr;</div>
+            </div>
+          </div>
+          <div class="horiz-tile" onclick="switchTab('objectives')">
+            <div class="horiz-tile-bg" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a1200 100%);"></div>
+            <div class="horiz-tile-content">
+              <div class="horiz-tile-num">03</div>
+              <div class="horiz-tile-name">Pathway to Prime</div>
+              <div class="horiz-tile-line"></div>
+              <div class="horiz-tile-desc">There's a progression system. Yes, you have to do objectives. No, you cannot skip them.</div>
+              <div class="horiz-tile-cta">Enter &rarr;</div>
+            </div>
+          </div>
+          <div class="horiz-tile" onclick="switchTab('map')">
+            <div class="horiz-tile-bg" style="background:linear-gradient(135deg,#0d0d0d 0%,#0a0a1a 100%);"></div>
+            <div class="horiz-tile-content">
+              <div class="horiz-tile-num">04</div>
+              <div class="horiz-tile-name">Map</div>
+              <div class="horiz-tile-line"></div>
+              <div class="horiz-tile-desc">You will get lost. This helps. Slightly. At least you'll know where you died.</div>
+              <div class="horiz-tile-cta">Enter &rarr;</div>
+            </div>
+          </div>
+        </div>
+        <!-- Progress dots -->
+        <div class="horiz-dots" id="horizDots">
+          <div class="horiz-dot active" id="dot-0"></div>
+          <div class="horiz-dot" id="dot-1"></div>
+          <div class="horiz-dot" id="dot-2"></div>
+          <div class="horiz-dot" id="dot-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-footer">
+      <p>Good luck out there. You're going to need it.</p>
+    </div>
+
+  </div>
+
   <!-- GAMEPLAY TAB -->
-  <div class="tab-body" id="tab-gameplay">
+  <div class="tab-body" id="tab-gameplay" style="display:none;">
     <div class="htp-intro">
       <strong>Pteranodon is a flying reptile, not a fighter.</strong> Your survival is built on three things: altitude, mobility, and knowing when to leave. You are fast, fragile, and completely useless on the ground against anything larger than a rabbit. Stay airborne as much as possible — the ground is where you die.
     </div>
@@ -696,8 +794,8 @@ const playstyles={solo:{icon:'🛡️',title:'Solo Survivor',subtitle:'Stay aliv
 function setPlaystyle(style){if(!style)return;document.getElementById('no-selection').style.display='none';renderRec(playstyles[style]);}
 function renderRec(ps){const card=document.getElementById('rec-card');card.className='rec-card visible'+(ps.warning?' cannibal':'');let slotsHTML=ps.slots.map(s=>`<div class="rec-slot"><div class="rec-slot-num">${s.num}</div><div class="rec-slot-info"><div class="rec-slot-label">Slot ${s.num} — ${s.stage}</div><div class="rec-slot-name">${s.name}${s.hidden?' <span class="hidden-tag">🔒 Hidden</span>':''}${s.prime?' <span class="prime-tag">⚡ Prime</span>':''}</div><div class="rec-slot-why">${s.why}</div><div class="rec-slot-timing">⏱ ${s.timing}</div>${s.alt.length?`<div class="rec-alt" style="margin-top:8px;"><div class="rec-alt-label">Alternatives</div>${s.alt.map(a=>`<div class="rec-alt-item"><span>${a.name}:</span> ${a.why}</div>`).join('')}</div>`:''}</div></div>`).join('');card.innerHTML=`<div class="rec-header"><div class="rec-icon">${ps.icon}</div><div><div class="rec-title" style="color:${ps.color}">${ps.title}</div><div class="rec-subtitle">${ps.subtitle}</div></div></div><div class="rec-pitch">${ps.pitch}</div><div class="rec-slots">${slotsHTML}</div>${ps.warning?`<div style="background:rgba(218,54,51,0.1);border:1px solid rgba(218,54,51,0.3);border-radius:8px;padding:10px 12px;font-size:11px;color:#f85149;margin-top:4px;">${ps.warning}</div>`:''}`;}
 function togglePanel(id){document.getElementById('panel-'+id).classList.toggle('open');}
-const TABS=['gameplay','mutations','objectives','map'];
-function switchTab(name){TABS.forEach((t,i)=>{document.querySelectorAll('.tabs .tab')[i].classList.toggle('active',t===name);const el=document.getElementById('tab-'+t);if(el)el.style.display=t===name?'':'none';});if(name==='map'&&!mapInited)initMap();}
+const TABS=['overview','gameplay','mutations','objectives','map'];
+function switchTab(name){TABS.forEach((t,i)=>{document.querySelectorAll('.tabs .tab')[i].classList.toggle('active',t===name);const el=document.getElementById('tab-'+t);if(el)el.style.display=t===name?'':'none';});if(name==='map'&&!mapInited)initMap();window.scrollTo({top:0,behavior:'smooth'});}
 let doneSet=new Set();
 function toggleDone(e,idx){e.stopPropagation();doneSet.has(idx)?doneSet.delete(idx):doneSet.add(idx);document.getElementById('obj-'+idx).classList.toggle('done',doneSet.has(idx));updateProgress();}
 function toggleObj(idx){document.getElementById('obj-'+idx).classList.toggle('open');}
@@ -722,6 +820,33 @@ function touchStart(e){if(e.touches.length===1){dragging=true;lastX=e.touches[0]
 function touchMove(e){e.preventDefault();if(e.touches.length===1&&dragging){tx+=e.touches[0].clientX-lastX;ty+=e.touches[0].clientY-lastY;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;clamp();applyTransform();}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom(d/lastDist);lastDist=d;}}
 function touchEnd(){dragging=false;}
 updateProgress();
-</script>
-</body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
+// ── Horizontal scroll-jack ──
+(function(){
+  const TILE_COUNT = 4;
+  let currentTile = 0;
+  let isLocked = false;
+  let lockCooldown = false;
+  let accumulatedDelta = 0;
+  const DELTA_THRESHOLD = 80;
+
+  function getOuter(){ return document.getElementById('horizOuter'); }
+  function getTrack(){ return document.getElementById('horizTrack'); }
+  function isOverviewActive(){ return document.getElementById('tab-overview') && document.getElementById('tab-overview').style.display !== 'none'; }
+
+  function goToTile(idx){
+    if(idx < 0 || idx >= TILE_COUNT) return false;
+    currentTile = idx;
+    getTrack().style.transform = 'translateX(-' + (idx * 100) + 'vw)';
+    document.querySelectorAll('.horiz-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+    return true;
+  }
+
+  function isScrolledToSection(){
+    const outer = getOuter();
+    if(!outer) return false;
+    const rect = outer.getBoundingClientRect();
+    return rect.top <= 1 && rect.bottom > window.innerHeight * 0.5;
+  }
+
+  function
