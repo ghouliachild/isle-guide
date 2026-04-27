@@ -199,31 +199,24 @@
   .stat-divider { height:1px; background:rgba(255,255,255,0.05); margin:14px 0; }
 
   /* ── Overview Tab ── */
-  .overview-hook { padding:60px 0 48px; max-width:860px; }
+  .overview-hook { padding:60px 60px 28px; max-width:860px; }
   .overview-hook-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:18px; }
   .overview-hook-title { font-size:42px; font-weight:900; line-height:1.15; color:#c9b99a; margin-bottom:24px; letter-spacing:1px; }
   .overview-hook-body { font-size:16px; color:rgba(255,255,255,0.45); line-height:1.8; max-width:680px; }
-  .overview-scroll-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:24px; }
+  .overview-scroll-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:16px; padding:0 60px; }
   .overview-footer { padding:60px 0 20px; font-size:14px; color:rgba(255,255,255,0.2); font-style:italic; letter-spacing:0.5px; }
 
-  /* ── Horizontal scroll-jack ── */
-  .horiz-scroll-outer { position:relative; height:500vh; }
-  .horiz-scroll-sticky { position:sticky; top:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; justify-content:center; padding:0 60px; }
-  .horiz-viewport { overflow:hidden; width:100%; }
-  .horiz-track { display:flex; gap:24px; transition:transform 0.55s cubic-bezier(0.77,0,0.175,1); will-change:transform; padding:8px 0; }
-  .horiz-tile { position:relative; min-width:340px; width:340px; height:460px; cursor:pointer; overflow:hidden; display:flex; align-items:flex-end; border:1px solid rgba(255,255,255,0.07); flex-shrink:0; transition:border-color 0.3s, transform 0.3s; }
-  .horiz-tile:hover { border-color:rgba(201,185,154,0.3); transform:translateY(-4px); }
-  .horiz-tile.active-tile { border-color:rgba(201,185,154,0.5); }
+  /* ── Section tiles ── */
+  .horiz-track { display:flex; gap:24px; padding:8px 60px 40px; }
+  .horiz-tile { position:relative; flex:1; min-width:0; height:400px; cursor:pointer; overflow:hidden; display:flex; align-items:flex-end; border:1px solid rgba(255,255,255,0.07); transition:border-color 0.3s, transform 0.3s; }
+  .horiz-tile:hover { border-color:rgba(201,185,154,0.35); transform:translateY(-4px); }
   .horiz-tile-bg { position:absolute; inset:0; }
-  .horiz-tile-content { position:relative; z-index:2; padding:32px; width:100%; }
+  .horiz-tile-content { position:relative; z-index:2; padding:28px 32px; width:100%; }
   .horiz-tile-num { font-size:10px; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; margin-bottom:12px; }
-  .horiz-tile-name { font-size:28px; font-weight:900; color:#c9b99a; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; line-height:1.1; }
-  .horiz-tile-line { width:32px; height:2px; background:#8a7a60; margin-bottom:14px; }
-  .horiz-tile-desc { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.7; margin-bottom:24px; }
+  .horiz-tile-name { font-size:24px; font-weight:900; color:#c9b99a; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; line-height:1.1; }
+  .horiz-tile-line { width:32px; height:2px; background:#8a7a60; margin-bottom:12px; }
+  .horiz-tile-desc { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.7; margin-bottom:20px; }
   .horiz-tile-cta { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#c9b99a; }
-  .horiz-dots { display:flex; gap:8px; margin-top:24px; }
-  .horiz-dot { width:24px; height:2px; background:rgba(255,255,255,0.15); transition:all 0.3s; cursor:pointer; }
-  .horiz-dot.active { background:#c9b99a; width:48px; }
 </style>
 </head>
 <body>
@@ -283,11 +276,8 @@
 
     <div class="overview-scroll-label">What's in this guide</div>
 
-    <!-- Scroll-jacked horizontal tile section -->
-    <div class="horiz-scroll-outer" id="horizOuter">
-      <div class="horiz-scroll-sticky" id="horizSticky">
-        <div class="horiz-viewport">
-        <div class="horiz-track" id="horizTrack">
+    <!-- Section tiles -->
+    <div class="horiz-track" id="horizTrack">
           <div class="horiz-tile" onclick="switchTab('gameplay')">
             <div class="horiz-tile-bg" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a0a0a 100%);"></div>
             <div class="horiz-tile-content">
@@ -329,15 +319,6 @@
             </div>
           </div>
         </div>
-        </div><!-- end horiz-viewport -->
-        <!-- Progress dots -->
-        <div class="horiz-dots" id="horizDots">
-          <div class="horiz-dot active" id="dot-0" onclick="horizGoTo(0)"></div>
-          <div class="horiz-dot" id="dot-1" onclick="horizGoTo(1)"></div>
-          <div class="horiz-dot" id="dot-2" onclick="horizGoTo(2)"></div>
-          <div class="horiz-dot" id="dot-3" onclick="horizGoTo(3)"></div>
-        </div>
-      </div>
     </div>
 
     <div class="overview-footer">
@@ -825,20 +806,6 @@ function touchMove(e){e.preventDefault();if(e.touches.length===1&&dragging){tx+=
 function touchEnd(){dragging=false;}
 updateProgress();
 
-// ── Horizontal scroll-jack ──
-const TILE_COUNT = 4;
-const TILE_W = 364; // tile width + gap
-
-function horizGoTo(idx){
-  const track = document.getElementById('horizTrack');
-  if(!track) return;
-  const offset = Math.max(0, idx) * TILE_W;
-  track.style.transform = 'translateX(-' + offset + 'px)';
-  document.querySelectorAll('.horiz-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
-  document.querySelectorAll('.horiz-tile').forEach((t,i) => t.classList.toggle('active-tile', i===idx));
-}
-
-(function(){
-  function isOverviewActive(){
-    const t = document.getElementById('tab-overview');
-    return t
+</script>
+</body>
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
