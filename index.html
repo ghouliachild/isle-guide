@@ -198,6 +198,33 @@
   .stat-y .stat-food-tag { background:rgba(227,179,65,0.12); color:#e3b341; border:1px solid rgba(227,179,65,0.2); }
   .stat-divider { height:1px; background:rgba(255,255,255,0.05); margin:14px 0; }
 
+  /* ── Dino Roster ── */
+  .dino-roster { padding:32px 60px 24px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .dino-roster-label { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.2); margin-bottom:16px; }
+  .dino-grid { display:flex; flex-wrap:wrap; gap:8px; }
+  .dino-chip { padding:10px 16px; border:1px solid rgba(255,255,255,0.08); cursor:pointer; transition:border-color 0.2s, background 0.2s; display:flex; flex-direction:column; gap:4px; min-width:120px; }
+  .dino-chip:hover { border-color:rgba(201,185,154,0.3); background:rgba(255,255,255,0.02); }
+  .dino-chip.active { border-color:#c9b99a; background:rgba(201,185,154,0.05); }
+  .dino-chip-name { font-size:12px; font-weight:700; color:#d4cfc8; letter-spacing:0.3px; }
+  .dino-chip-diet { font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:700; }
+  .diet-carnivore { color:#c06050; }
+  .diet-herbivore { color:#7aaa6a; }
+  .diet-omnivore { color:#c9a84c; }
+  .diet-piscivore { color:#6a8aaa; }
+  .dino-tag { font-size:10px; padding:2px 8px; border:1px solid rgba(255,255,255,0.08); color:rgba(255,255,255,0.35); letter-spacing:0.5px; }
+  .dino-tag.diet-carnivore { color:#c06050; border-color:rgba(192,96,80,0.3); }
+  .dino-tag.diet-herbivore { color:#7aaa6a; border-color:rgba(122,170,106,0.3); }
+  .dino-tag.diet-omnivore { color:#c9a84c; border-color:rgba(201,168,76,0.3); }
+  .dino-tag.diet-piscivore { color:#6a8aaa; border-color:rgba(106,138,170,0.3); }
+
+  /* ── Dino Panel ── */
+  .dino-panel { }
+  .dino-panel-header { padding:32px 60px 24px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:0; }
+  .dino-panel-name { font-size:36px; font-weight:900; color:#c9b99a; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+  .dino-panel-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+  .dino-panel-desc { font-size:14px; color:rgba(255,255,255,0.45); line-height:1.8; max-width:680px; }
+  .dino-stub-notice { padding:48px 60px; font-size:13px; color:rgba(255,255,255,0.2); letter-spacing:1px; text-transform:uppercase; border-top:1px solid rgba(255,255,255,0.04); }
+
   /* ── Overview Tab ── */
   .overview-hook { padding:60px 60px 28px; max-width:860px; }
   .overview-hook-label { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:18px; }
@@ -329,6 +356,92 @@
 
   <!-- GAMEPLAY TAB -->
   <div class="tab-body" id="tab-gameplay" style="display:none;">
+
+    <!-- Dino Roster -->
+    <div class="dino-roster">
+      <div class="dino-roster-label">Select a Dinosaur</div>
+      <div class="dino-grid">
+        <div class="dino-chip active" onclick="selectDino('pteranodon')">
+          <div class="dino-chip-name">Pteranodon</div>
+          <div class="dino-chip-diet diet-piscivore">Piscivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('herrerasaurus')">
+          <div class="dino-chip-name">Herrerasaurus</div>
+          <div class="dino-chip-diet diet-carnivore">Carnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('maiasaura')">
+          <div class="dino-chip-name">Maiasaura</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('omniraptor')">
+          <div class="dino-chip-name">Omniraptor</div>
+          <div class="dino-chip-diet diet-omnivore">Omnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('deinosuchus')">
+          <div class="dino-chip-name">Deinosuchus</div>
+          <div class="dino-chip-diet diet-carnivore">Carnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('beipiaosaurus')">
+          <div class="dino-chip-name">Beipiaosaurus</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('stegosaurus')">
+          <div class="dino-chip-name">Stegosaurus</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('carnotaurus')">
+          <div class="dino-chip-name">Carnotaurus</div>
+          <div class="dino-chip-diet diet-carnivore">Carnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('ceratosaurus')">
+          <div class="dino-chip-name">Ceratosaurus</div>
+          <div class="dino-chip-diet diet-carnivore">Carnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('dilophosaurus')">
+          <div class="dino-chip-name">Dilophosaurus</div>
+          <div class="dino-chip-diet diet-carnivore">Carnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('diabloceratops')">
+          <div class="dino-chip-name">Diabloceratops</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('gallimimus')">
+          <div class="dino-chip-name">Gallimimus</div>
+          <div class="dino-chip-diet diet-omnivore">Omnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('troodon')">
+          <div class="dino-chip-name">Troodon</div>
+          <div class="dino-chip-diet diet-omnivore">Omnivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('dryosaurus')">
+          <div class="dino-chip-name">Dryosaurus</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('tenontosaurus')">
+          <div class="dino-chip-name">Tenontosaurus</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+        <div class="dino-chip" onclick="selectDino('hypsilophodon')">
+          <div class="dino-chip-name">Hypsilophodon</div>
+          <div class="dino-chip-diet diet-herbivore">Herbivore</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PTERANODON PANEL (full content) -->
+    <div class="dino-panel" id="dino-pteranodon">
+    <div class="dino-panel-header">
+      <div class="dino-panel-meta">
+        <div class="dino-panel-name">Pteranodon</div>
+        <div class="dino-panel-tags">
+          <span class="dino-tag diet-piscivore">Piscivore</span>
+          <span class="dino-tag">Medium</span>
+          <span class="dino-tag">6m Wingspan</span>
+          <span class="dino-tag">~40 min growth</span>
+        </div>
+        <div class="dino-panel-desc">A flying reptile, not a fighter. Fast-growing and incredibly mobile — but completely helpless on the ground. Survival is built on altitude, stamina management, and knowing when to leave.</div>
+      </div>
+    </div>
     <div class="htp-intro">
       <strong>Pteranodon is a flying reptile, not a fighter.</strong> Your survival is built on three things: altitude, mobility, and knowing when to leave. You are fast, fragile, and completely useless on the ground against anything larger than a rabbit. Stay airborne as much as possible — the ground is where you die.
     </div>
@@ -641,7 +754,145 @@
         <div class="keybind-row"><span class="key">F1</span><div class="key-desc"><strong>Toggle HUD</strong>Hide/show all UI elements</div></div>
       </div>
     </div>
-  </div>
+    </div><!-- end dino-panel pteranodon -->
+
+    <!-- STUB PANELS for other dinos -->
+    <div class="dino-panel dino-stub" id="dino-herrerasaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Herrerasaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Small</span><span class="dino-tag">~100 min growth</span></div>
+        <div class="dino-panel-desc">An early predatory dinosaur from the Late Triassic. One of the smallest carnivores — scrappy and fast, with strong pack hunting potential.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-maiasaura" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Maiasaura</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Large</span><span class="dino-tag">~8m length</span></div>
+        <div class="dino-panel-desc">A hadrosaur known for parental care and herd behavior. Safety in numbers — and in size. One of the more social herbivore experiences in the game.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-omniraptor" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Omniraptor</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-omnivore">Omnivore</span><span class="dino-tag">Small</span></div>
+        <div class="dino-panel-desc">A flexible raptor variant that can eat both plants and meat. Rare dietary adaptability means you're never far from a meal — if you're fast enough to catch it.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-deinosuchus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Deinosuchus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Large</span><span class="dino-tag">Semi-Aquatic</span></div>
+        <div class="dino-panel-desc">A massive semi-aquatic ambush predator. Lurks in rivers and swamps, creating ripples to lure prey — including overconfident Pteranodons fishing near the surface.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-beipiaosaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Beipiaosaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Small</span><span class="dino-tag">~50 min growth</span></div>
+        <div class="dino-panel-desc">A small feathered theropod representing the evolutionary bridge toward birds. Primitive but capable of reaching elevated food sources other herbivores can't.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-stegosaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Stegosaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Large</span><span class="dino-tag">~9m length</span></div>
+        <div class="dino-panel-desc">The iconic plated tank. Slow, but those tail spikes mean even large predators think twice. A defensive herbivore that rewards patience and positioning.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-carnotaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Carnotaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Large</span><span class="dino-tag">~9m length</span></div>
+        <div class="dino-panel-desc">A horned, bull-like predator built for charging. High damage, aggressive playstyle, and head strikes that can stagger larger prey. Not subtle — and doesn't need to be.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-ceratosaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Ceratosaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Large</span><span class="dino-tag">~9m length</span></div>
+        <div class="dino-panel-desc">A crested mid-tier predator with horn attacks and strong pack hunting capability. Dominant and aggressive — effective alone but dangerous in a group.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-dilophosaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Dilophosaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Medium</span><span class="dino-tag">~7m length</span></div>
+        <div class="dino-panel-desc">The dual-crested medium carnivore. Balanced and versatile, capable of both ambush and sustained pursuit. Its crest isn't just decoration — it's a dominance signal.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-diabloceratops" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Diabloceratops</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Small</span></div>
+        <div class="dino-panel-desc">Small but horned and surprisingly dangerous. Can charge and deal real damage to predators that underestimate it. The classic underdog herbivore experience.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-gallimimus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Gallimimus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-omnivore">Omnivore</span><span class="dino-tag">Medium</span></div>
+        <div class="dino-panel-desc">The fastest thing on two legs in the game. Survival strategy is simple: be somewhere else before danger arrives. Flexible diet means food is rarely an issue.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-troodon" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Troodon</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-omnivore">Omnivore</span><span class="dino-tag">Very Small</span><span class="dino-tag">~30-45 min growth</span></div>
+        <div class="dino-panel-desc">Tiny but coordinated. Troodon is a pack hunter that relies on numbers, enhanced senses, and intelligence-based mechanics. Alone you're prey. Together you're terrifying.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-dryosaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Dryosaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Small</span></div>
+        <div class="dino-panel-desc">Agile, quick, and hard to corner. Dryosaurus survives by never being where predators expect it. Navigation through tight spaces and high-speed evasion are its greatest strengths.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-tenontosaurus" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Tenontosaurus</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Medium</span><span class="dino-tag">~8m length</span></div>
+        <div class="dino-panel-desc">A social herbivore with a powerful tail and coordinated herd defense mechanics. Protect the group, protect yourself — Tenontosaurus rewards cooperative play.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+    <div class="dino-panel dino-stub" id="dino-hypsilophodon" style="display:none;">
+      <div class="dino-panel-header"><div class="dino-panel-meta">
+        <div class="dino-panel-name">Hypsilophodon</div>
+        <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Very Small</span></div>
+        <div class="dino-panel-desc">Small, fast, and one of the only dinosaurs that can climb trees to access elevated food sources. Survival through avoidance — if they can't reach you, they can't eat you.</div>
+      </div></div>
+      <div class="dino-stub-notice">Full guide coming soon.</div>
+    </div>
+
+  </div><!-- end tab-gameplay -->
 
   <!-- MUTATIONS TAB -->
   <div class="tab-body" id="tab-mutations" style="display:none;">
@@ -774,38 +1025,4 @@
 </div>
 
 <script>
-const playstyles={solo:{icon:'🛡️',title:'Solo Survivor',subtitle:'Stay alive, avoid conflict, grind quietly',color:'#58a6ff',pitch:'As a solo Ptera your biggest enemy is time — not predators. You need your bars to drain slowly so you spend less time at vulnerable watering holes and more time flying objectives safely. Every trip to the ground is a risk. Build to minimize those trips.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'Opens the entire coastline as your water source. You never need to land at inland watering holes where predators camp. This single mutation removes your biggest vulnerability as a small solo dino.',timing:'Unlock early: drink saltwater on the coast before your Slot 1 opens.',alt:[{name:'Efficient Digestion',why:'If you miss the salt unlock, this buys you more time between hunts.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:true,why:'Your thirst bar barely moves. Combined with coastal drinking from Slot 1, you are effectively self-sufficient. This is what lets you fly long migration and patrol loops without stopping.',timing:'Take this the moment Slot 2 unlocks — do not delay.',alt:[{name:'Enhanced Stamina',why:'If you skipped Reniculate Kidneys, stamina helps you escape danger faster.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'You see predators before they see you. As a small solo dino this is life or death — you can reroute, gain altitude, and never be caught off guard.',timing:'Take at adult stage. Pairs perfectly with your coastal freedom build.',alt:[{name:'Tough Hide',why:'If you find yourself getting clipped often, this lets you survive a hit and escape.'}]}]},speed:{icon:'⚡',title:'Speed Runner',subtitle:'Hit 5 objectives and Prime as fast as possible',color:'#e3b341',pitch:'The objective deadline at 75% is your real opponent. You need to cover massive ground in a short time — migration, patrol, diet, and sanctuary all in one efficient loop. Build for maximum flight endurance so you never have to stop.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:true,why:'Less food drain means fewer hunting stops during your objective loop. Every second you spend looking for prey is a second not spent flying zones.',timing:'Take immediately at Juvenile. No unlock needed.',alt:[{name:'Reniculate Kidneys',why:'If you want coastal flexibility over raw efficiency.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:true,why:'Bigger stamina pool means longer unbroken flights. You can hit all Migration and Patrol Zones in a single massive loop without stopping to recover stamina.',timing:'Take at Sub-Adult, then immediately plan your big objective loop.',alt:[{name:'Sustained Hydration',why:'If thirst is your bottleneck instead of stamina.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Speed running means flying through high-traffic areas fast. Keen Eyesight lets you spot threats early and reroute without breaking your momentum.',timing:'Take at Adult. You should be close to the 75% deadline — stay focused.',alt:[{name:'Tough Hide',why:'If you\'re flying through danger zones frequently.'}]}]},hunter:{icon:'🗡️',title:'Aggressive Hunter',subtitle:'Fight, kill, dominate',color:'#f85149',pitch:'Ptera is a small dino — straight-up brawling is risky. Your edge as an aggressive hunter is mobility and surprise. You dive fast, strike, and get airborne again before anything can retaliate.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:false,why:'Hunting burns food fast. Less food drain means you can stay aggressive longer without breaking off to find prey.',timing:'Take immediately at Juvenile.',alt:[{name:'Reinforced Tendons',why:'If you fight from the ground frequently — cheaper launches let you escape after a kill.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:false,why:'More stamina means more dive attacks before you need to recover. You can dive, strike, regain altitude, and dive again.',timing:'Take at Sub-Adult. Start hunting larger prey and picking fights you can win.',alt:[{name:'Sustained Hydration',why:'If you prefer a more sustained aggressive playstyle over burst fights.'}]},{num:3,stage:'Adult',name:'Tough Hide',hidden:false,prime:false,why:'You will take hits. Tough Hide lets you survive the counter-attack and get airborne. Without this you\'ll be one-tapped by anything that can reach you.',timing:'Take at Adult. By now you should be establishing territory and defending it.',alt:[{name:'Keen Eyesight',why:'If you want to pick fights on your terms — spot targets from a distance first.'}]}]},pack:{icon:'🤝',title:'Pack / Social',subtitle:'Built around grouping, bonding, and pack play',color:'#3fb950',pitch:'Pack Ptera is about being useful to your flock and surviving long enough to grow with them. You want to be the one who can fly furthest, scout threats, and keep the group fed.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'Your pack needs water. As a saltwater drinker you can scout coastal sources and report safe drinking spots. You also don\'t need to compete at the same inland watering holes.',timing:'Unlock before Slot 1: drink saltwater on the coast repeatedly.',alt:[{name:'Efficient Digestion',why:'If you can\'t unlock Reniculate in time.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:true,why:'Pack play means staying with the group through long sessions. Slow your thirst means you\'re always there when the pack needs you.',timing:'Take at Sub-Adult. By now you should have your pack Bond objective progressing.',alt:[{name:'Enhanced Stamina',why:'If your pack flies long distances frequently and you struggle to keep up.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Your most valuable role in a pack is scout. Keen Eyesight lets you spot threats, prey, and other players from high altitude and report back. You become the pack\'s eyes.',timing:'Take at Adult. Position yourself as the high-altitude scout for your group.',alt:[{name:'Tough Hide',why:'If your pack engages in combat frequently and you get dragged into fights.'}]}]},scavenger:{icon:'🦴',title:'Scavenger',subtitle:'Follow kills, eat carrion, stay low and invisible',color:'#a5d6a7',pitch:'Scavenger Ptera is about patience and opportunism. You follow large predators at a safe distance, wait for kills, and drop in fast to eat carrion and get airborne again.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:false,why:'Scavenging is unpredictable — you can\'t always control when your next meal comes. Less food drain means you can wait longer for a good opportunity without starving.',timing:'Take immediately at Juvenile.',alt:[{name:'Reniculate Kidneys',why:'Coastal access means you can at least always handle thirst between scavenging runs.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:false,why:'Scavenging means unpredictable access to water. Slow your thirst drain and you spend more time watching for kills and less time searching for water.',timing:'Take at Sub-Adult.',alt:[{name:'Enhanced Stamina',why:'If you\'re covering huge distances tracking predators across the map.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Scavenging from altitude is your whole strategy. You need to spot kills from high up, identify when the predator has moved on, and time your drop perfectly.',timing:'Take at Adult. By now you should have solid carrion spots mapped out.',alt:[{name:'Tough Hide',why:'If you\'re getting caught at carcasses by returning predators.'}]}]},nomad:{icon:'🌍',title:'Nomad',subtitle:'Always moving, never staying in one spot',color:'#4db6ac',pitch:'Nomad Ptera never stops moving. You\'re always in flight, always crossing zones, hitting migration and patrol naturally just by existing. Your biggest challenge is stamina and sustaining yourself across the whole map.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'As a nomad you\'re constantly crossing coastlines. Saltwater drinking means you never have to divert inland for water — just skim the coast and keep moving.',timing:'Unlock before Slot 1 by drinking saltwater.',alt:[{name:'Efficient Digestion',why:'If you can\'t unlock Reniculate in time.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:true,why:'The nomad playstyle lives and dies on stamina. Bigger pool, faster recovery. This lets you fly the entire island perimeter in one session and hit every zone effortlessly.',timing:'Take at Sub-Adult. Plan your first full island loop immediately after.',alt:[{name:'Sustained Hydration',why:'If you\'re finding thirst is your bottleneck more than stamina.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Nomads cross through every biome and danger zone. Keen Eyesight lets you identify threats from altitude and plot safe routes without slowing down.',timing:'Take at Adult.',alt:[{name:'Tough Hide',why:'If you keep getting intercepted mid-flight.'}]}]},ambush:{icon:'🌑',title:'Ambush Predator',subtitle:'Patient, strike fast, retreat immediately',color:'#7986cb',pitch:'Ptera is a natural ambush predator — you control altitude and the element of surprise. The ambush playstyle is about picking exact moments, diving at full speed, landing the kill, and being airborne again before anything reacts.',slots:[{num:1,stage:'Juvenile',name:'Reinforced Tendons',hidden:true,prime:false,why:'Ambush Ptera often needs to launch from a perched position when prey appears below. Cheaper launches mean you can strike more frequently without stamina gating your attacks.',timing:'Unlock before Slot 1: jump 50 times.',alt:[{name:'Efficient Digestion',why:'If you prefer not to grind the jump unlock.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:false,why:'The ambush dive and escape sequence burns stamina fast. A bigger pool means more attack windows per hunt, and faster recovery means you can reposition for a second strike.',timing:'Take at Sub-Adult.',alt:[{name:'Sustained Hydration',why:'If you find yourself spending too much time managing thirst between ambushes.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Ambush success is all about identifying the right target at the right moment. Keen Eyesight lets you assess prey from safe altitude before committing to the dive.',timing:'Take at Adult.',alt:[{name:'Tough Hide',why:'For when your ambush gets turned on you.'}]}]},coastal:{icon:'🌊',title:'Coastal Roamer',subtitle:'Water-dependent, shoreline-focused, ocean freedom',color:'#29b6f6',pitch:'The coast is your kingdom. You live along the shoreline, fish constantly, drink from the ocean, and use coastal updrafts to stay airborne for hours. This perfectly supports the Prime Elder route.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'This mutation was literally made for you. Saltwater access means the entire coastline is your personal water fountain. You never need to go inland.',timing:'Priority unlock — drink saltwater before anything else.',alt:[{name:'Efficient Digestion',why:'Fallback only.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:true,why:'You\'re already drinking saltwater constantly. Slow your thirst drain further and you become an endurance machine — capable of flying the entire coastline without a single stop.',timing:'Take immediately at Sub-Adult.',alt:[{name:'Enhanced Stamina',why:'If long flight distance is more important to you than thirst management.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'From high altitude over the ocean you can see everything on the coastline below — prey, threats, other players. Coastal roaming at altitude with Keen Eyesight makes you nearly untouchable.',timing:'Take at Adult.',alt:[{name:'Tough Hide',why:'If you land on beaches frequently and get ambushed.'}]}]},apex:{icon:'🏔️',title:'Apex Climber',subtitle:'Territory control, high ground dominance',color:'#ffb74d',pitch:'Ptera owns the sky. The Apex Climber playstyle is about establishing airspace and cliff territory that no other creature can contest. You patrol your domain from above, defend nest sites, and only engage on your terms.',slots:[{num:1,stage:'Juvenile',name:'Reinforced Tendons',hidden:true,prime:false,why:'Cliff-based Pteras launch from perched positions constantly. Cheaper launches mean you can pop off cliff edges repeatedly without burning through stamina, critical for territory defense.',timing:'Unlock before Slot 1: jump 50 times on your cliff territory.',alt:[{name:'Reniculate Kidneys',why:'If your territory includes coastal cliffs and you want water freedom.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:false,why:'Holding aerial territory requires sustained flight. You\'re circling, patrolling, and intercepting threats constantly. Bigger stamina pool means you stay airborne longer.',timing:'Take at Sub-Adult. Begin actively patrolling your territory.',alt:[{name:'Sustained Hydration',why:'If thirst is cutting your patrol sessions short.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'From high altitude, Keen Eyesight lets you see threats entering your territory from far away. You\'re always first to know what\'s approaching.',timing:'Take at Adult.',alt:[{name:'Tough Hide',why:'If your territory gets contested frequently by other flyers.'}]}]},support:{icon:'💚',title:'Support',subtitle:'Pack scout, guardian, and group enabler',color:'#ce93d8',pitch:'Support Ptera is the eyes and ears of the group. You fly high, spot threats before anyone else, call out prey locations, and keep the pack moving safely. You\'re not the one making kills — you\'re the reason everyone else can.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'Support Ptera scouts coastal routes for the pack. Saltwater access means you can do long scouting runs along the entire coast without needing to return for water.',timing:'Unlock before Slot 1 by drinking saltwater.',alt:[{name:'Efficient Digestion',why:'If scouting keeps you away from food sources for long stretches.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:true,why:'Long scouting sessions need sustainable bars. The slower your thirst drains, the longer you can stay in the air providing coverage for your group.',timing:'Take at Sub-Adult.',alt:[{name:'Enhanced Stamina',why:'If your pack operates over very large areas and you need flight range.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'This is the support mutation. Keen Eyesight from altitude means you spot threats, prey herds, and player positions before anyone in your pack. You become the early warning system.',timing:'Take at Adult.',alt:[{name:'Tough Hide',why:'If your scouting routes take you through dangerous territory.'}]}]},cannibal:{icon:'🩸',title:'Cannibal',subtitle:'Hunt your own kind — high risk, high reward',color:'#da3633',pitch:'Cannibal Ptera is one of the most dangerous builds in the game. Eating another Ptera causes Muscle Spasms debuff — but once it clears, it can unlock special cannibal mutations. You\'re playing a high-risk long game.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:false,why:'The Muscle Spasms debuff after eating a Ptera will wreck your stats temporarily. Efficient Digestion helps you stay fed during the debuff window when hunting is harder.',timing:'Take immediately at Juvenile. You\'ll need the buffer before your first cannibal act.',alt:[{name:'Reniculate Kidneys',why:'If you want coastal water access during the debuff window.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:false,why:'During Muscle Spasms your mobility is reduced. Slow your thirst drain so you can minimize water trips while the debuff runs its course.',timing:'Take at Sub-Adult. By now you may have already eaten a Ptera and survived the first debuff.',alt:[{name:'Enhanced Stamina',why:'If you need mobility to escape retaliation after a cannibal kill.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Cannibal Ptera needs to identify and track other Pteras from altitude without being spotted. Keen Eyesight lets you select vulnerable targets — isolated juvies, weakened adults.',timing:'Take at Adult. By now the cannibal path has either unlocked hidden mutations or you\'ve pivoted.',alt:[{name:'Tough Hide',why:'Other Pteras will try to retaliate. Tough Hide helps you survive counter-attacks.'}]}],warning:'⚠️ Eating other Pteras causes the Muscle Spasms debuff and will block the standard Prime Elder path. Cannibal builds are for players who accept that trade-off or are targeting cannibal-specific hidden mutations.'}};
-
-function setPlaystyle(style){if(!style)return;document.getElementById('no-selection').style.display='none';renderRec(playstyles[style]);}
-function renderRec(ps){const card=document.getElementById('rec-card');card.className='rec-card visible'+(ps.warning?' cannibal':'');let slotsHTML=ps.slots.map(s=>`<div class="rec-slot"><div class="rec-slot-num">${s.num}</div><div class="rec-slot-info"><div class="rec-slot-label">Slot ${s.num} — ${s.stage}</div><div class="rec-slot-name">${s.name}${s.hidden?' <span class="hidden-tag">🔒 Hidden</span>':''}${s.prime?' <span class="prime-tag">⚡ Prime</span>':''}</div><div class="rec-slot-why">${s.why}</div><div class="rec-slot-timing">⏱ ${s.timing}</div>${s.alt.length?`<div class="rec-alt" style="margin-top:8px;"><div class="rec-alt-label">Alternatives</div>${s.alt.map(a=>`<div class="rec-alt-item"><span>${a.name}:</span> ${a.why}</div>`).join('')}</div>`:''}</div></div>`).join('');card.innerHTML=`<div class="rec-header"><div class="rec-icon">${ps.icon}</div><div><div class="rec-title" style="color:${ps.color}">${ps.title}</div><div class="rec-subtitle">${ps.subtitle}</div></div></div><div class="rec-pitch">${ps.pitch}</div><div class="rec-slots">${slotsHTML}</div>${ps.warning?`<div style="background:rgba(218,54,51,0.1);border:1px solid rgba(218,54,51,0.3);border-radius:8px;padding:10px 12px;font-size:11px;color:#f85149;margin-top:4px;">${ps.warning}</div>`:''}`;}
-function togglePanel(id){document.getElementById('panel-'+id).classList.toggle('open');}
-const TABS=['overview','gameplay','mutations','objectives','map'];
-function switchTab(name){TABS.forEach((t,i)=>{document.querySelectorAll('.tabs .tab')[i].classList.toggle('active',t===name);const el=document.getElementById('tab-'+t);if(el)el.style.display=t===name?'':'none';});if(name==='map'&&!mapInited)initMap();window.scrollTo({top:0,behavior:'smooth'});}
-let doneSet=new Set();
-function toggleDone(e,idx){e.stopPropagation();doneSet.has(idx)?doneSet.delete(idx):doneSet.add(idx);document.getElementById('obj-'+idx).classList.toggle('done',doneSet.has(idx));updateProgress();}
-function toggleObj(idx){document.getElementById('obj-'+idx).classList.toggle('open');}
-function updateProgress(){const n=doneSet.size,pct=Math.min(100,n/5*100);document.getElementById('progress-bar').style.width=pct+'%';document.getElementById('progress-count').textContent=n+' / 5 needed'+(n>=5?' ✅ PRIME ELIGIBLE!':'');}
-const stops=[{name:"1 · Water Access — START",desc:"Your spawn. Fish here, stay near water.",obj:"Objective: Survive as Hatchling (auto)"},{name:"2 · Water Access Sanctuary",desc:"Rest briefly to register.",obj:"Objective: Use a Sanctuary ✅"},{name:"3 · Northern Coast",desc:"Fly northwest. First Migration Zone.",obj:"Objective: Migration Zone 1 of 3"},{name:"4 · Northwest Ridge",desc:"Patrol Zone 1. Good elevation.",obj:"Objective: Patrol Zone 1 of 4"},{name:"5 · River / Jungle Sector",desc:"Migration Zone 2 + diet.",obj:"Objectives: Migration Zone 2 + Diet + Hunt"},{name:"6 · Northern Jungle",desc:"Migration Zone 3.",obj:"Objective: Migration Zone 3 of 3 ✅"},{name:"7 · Swamps Center",desc:"Patrol Zone 2. Stay airborne.",obj:"Objective: Patrol Zone 2 of 4"},{name:"8 · West Rail / South Plains",desc:"Patrol Zone 3.",obj:"Objective: Patrol Zone 3 of 4"},{name:"9 · Southern Beach",desc:"Patrol Zone 4. Fish for diet top-up.",obj:"Objective: Patrol Zone 4 of 4 ✅"}];
-function showStop(idx){const s=stops[idx];document.getElementById('stop-name').textContent=s.name;document.getElementById('stop-desc').textContent=s.desc;document.getElementById('stop-obj').innerHTML='<span class="stop-tag">'+s.obj+'</span>';document.getElementById('stop-detail').classList.add('visible');document.querySelectorAll('.stop-marker').forEach((m,i)=>m.classList.toggle('active',i===idx));}
-function showPin(name,desc){document.getElementById('stop-name').textContent=name;document.getElementById('stop-desc').textContent=desc;document.getElementById('stop-obj').innerHTML='';document.getElementById('stop-detail').classList.add('visible');}
-function closeStop(){document.getElementById('stop-detail').classList.remove('visible');document.querySelectorAll('.stop-marker').forEach(m=>m.classList.remove('active'));}
-function toggleLayer(layer){if(layer==='route'){const svg=document.getElementById('svg-route'),btn=document.getElementById('route-btn'),on=svg.style.opacity!=='0';svg.style.opacity=on?'0':'1';btn.classList.toggle('on',!on);document.querySelectorAll('.stop-marker').forEach(m=>m.style.opacity=on?'0':'1');return;}const btn=document.getElementById('lb-'+layer),isOn=btn.classList.contains('on');btn.classList.toggle('on',!isOn);document.querySelectorAll('[data-layer="'+layer+'"]').forEach(p=>p.classList.toggle('hidden-pin',isOn));}
-let scale=0.55,tx=0,ty=0,dragging=false,lastX=0,lastY=0,mapInited=false;
-function initMap(){mapInited=true;const c=document.getElementById('map-container');tx=(c.offsetWidth-1232*scale)/2;ty=Math.max(0,(c.offsetHeight-968*scale)/2);applyTransform();}
-function applyTransform(){document.getElementById('map-inner').style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;document.getElementById('zoom-label').textContent=Math.round(scale*100)+'%';}
-function clamp(){const c=document.getElementById('map-container');tx=Math.min(60,Math.max(c.offsetWidth-1232*scale-60,tx));ty=Math.min(60,Math.max(c.offsetHeight-968*scale-60,ty));}
-function zoom(f){const c=document.getElementById('map-container'),cx=c.offsetWidth/2,cy=c.offsetHeight/2,ns=Math.min(5,Math.max(0.25,scale*f));tx=cx-(cx-tx)*ns/scale;ty=cy-(cy-ty)*ns/scale;scale=ns;clamp();applyTransform();}
-function resetView(){scale=0.55;mapInited=false;initMap();}
-function startDrag(e){if(e.target.classList.contains('stop-marker')||e.target.classList.contains('loc-pin')||e.target.classList.contains('stop-close'))return;dragging=true;lastX=e.clientX;lastY=e.clientY;}
-function doDrag(e){if(!dragging)return;tx+=e.clientX-lastX;ty+=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;clamp();applyTransform();}
-function endDrag(){dragging=false;}
-function onWheel(e){e.preventDefault();const c=document.getElementById('map-container'),r=c.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,f=e.deltaY<0?1.15:0.87,ns=Math.min(5,Math.max(0.25,scale*f));tx=mx-(mx-tx)*ns/scale;ty=my-(my-ty)*ns/scale;scale=ns;clamp();applyTransform();}
-let lastDist=0;
-function touchStart(e){if(e.touches.length===1){dragging=true;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;}if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}
-function touchMove(e){e.preventDefault();if(e.touches.length===1&&dragging){tx+=e.touches[0].clientX-lastX;ty+=e.touches[0].clientY-lastY;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;clamp();applyTransform();}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom(d/lastDist);lastDist=d;}}
-function touchEnd(){dragging=false;}
-updateProgress();
-
-</script>
-</body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+const playstyles={solo:{icon:'🛡️',title:'Solo Survivor',subtitle:'Stay alive, avoid conflict, grind quietly',color:'#58a6ff',pitch:'As a solo Ptera your biggest enemy is time — not predators. You need your bars to drain slowly so you spend less time at vulnerable watering holes and more time flying objectives safely. Every trip to the ground is a risk. Build to minimize those trips.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'Opens the entire coastline as your water source. You never need to land at inland watering holes where predators camp. This single mutation removes your biggest vulnerability as a small solo dino.',timing:'Unlock early: drink saltwater on the coast before your Slot 1 opens.',alt:[{name:'Efficient Digestion',why:'If you miss the salt unlock, this buys you more time between hunts.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:true,why:'Your thirst bar barely moves. Combined with coastal drinking from Slot 1, you are effectively self-sufficient. This is what lets you fly long migration and patrol loops without stopping.',timing:'Take this the moment Slot 2 unlocks — do not delay.',alt:[{name:'Enhanced Stamina',why:'If you skipped Reniculate Kidneys, stamina helps you escape danger faster.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'You see predators before they see you. As a small solo dino this is life or death — you can reroute, gain altitude, and never be caught off guard.',timing:'Take at adult stage. Pairs perfectly with your coastal freedom build.',alt:[{name:'Tough Hide',why:'If you find yourself getting clipped often, this lets you survive a hit and escape.'}]}]},speed:{icon:'⚡',title:'Speed Runner',subtitle:'Hit 5 objectives and Prime as fast as possible',color:'#e3b341',pitch:'The objective deadline at 75% is your real opponent. You need to cover massive ground in a short time — migration, patrol, diet, and sanctuary all in one efficient loop. Build for maximum flight endurance so you never have to stop.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:true,why:'Less food drain means fewer hunting stops during your objective loop. Every second you spend looking for prey is a second not spent flying zones.',timing:'Take immediately at Juvenile. No unlock needed.',alt:[{name:'Reniculate Kidneys',why:'If you want coastal flexibility over raw efficiency.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:true,why:'Bigger stamina pool means longer unbroken flights. You can hit all Migration and Patrol Zones in a single massive loop without stopping to recover stamina.',timing:'Take at Sub-Adult, then immediately plan your big objective loop.',alt:[{name:'Sustained Hydration',why:'If thirst is your bottleneck instead of stamina.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Speed running means flying through high-traffic areas fast. Keen Eyesight lets you spot threats early and reroute without breaking your momentum.',timing:'Take at Adult. You should be close to the 75% deadline — stay focused.',alt:[{name:'Tough Hide',why:'If you\'re flying through danger zones frequently.'}]}]},hunter:{icon:'🗡️',title:'Aggressive Hunter',subtitle:'Fight, kill, dominate',color:'#f85149',pitch:'Ptera is a small dino — straight-up brawling is risky. Your edge as an aggressive hunter is mobility and surprise. You dive fast, strike, and get airborne again before anything can retaliate.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:false,why:'Hunting burns food fast. Less food drain means you can stay aggressive longer without breaking off to find prey.',timing:'Take immediately at Juvenile.',alt:[{name:'Reinforced Tendons',why:'If you fight from the ground frequently — cheaper launches let you escape after a kill.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:false,why:'More stamina means more dive attacks before you need to recover. You can dive, strike, regain altitude, and dive again.',timing:'Take at Sub-Adult. Start hunting larger prey and picking fights you can win.',alt:[{name:'Sustained Hydration',why:'If you prefer a more sustained aggressive playstyle over burst fights.'}]},{num:3,stage:'Adult',name:'Tough Hide',hidden:false,prime:false,why:'You will take hits. Tough Hide lets you survive the counter-attack and get airborne. Without this you\'ll be one-tapped by anything that can reach you.',timing:'Take at Adult. By now you should be establishing territory and defending it.',alt:[{name:'Keen Eyesight',why:'If you want to pick fights on your terms — spot targets from a distance first.'}]}]},pack:{icon:'🤝',title:'Pack / Social',subtitle:'Built around grouping, bonding, and pack play',color:'#3fb950',pitch:'Pack Ptera is about being useful to your flock and surviving long enough to grow with them. You want to be the one who can fly furthest, scout threats, and keep the group fed.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'Your pack needs water. As a saltwater drinker you can scout coastal sources and report safe drinking spots. You also don\'t need to compete at the same inland watering holes.',timing:'Unlock before Slot 1: drink saltwater on the coast repeatedly.',alt:[{name:'Efficient Digestion',why:'If you can\'t unlock Reniculate in time.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:true,why:'Pack play means staying with the group through long sessions. Slow your thirst means you\'re always there when the pack needs you.',timing:'Take at Sub-Adult. By now you should have your pack Bond objective progressing.',alt:[{name:'Enhanced Stamina',why:'If your pack flies long distances frequently and you struggle to keep up.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Your most valuable role in a pack is scout. Keen Eyesight lets you spot threats, prey, and other players from high altitude and report back. You become the pack\'s eyes.',timing:'Take at Adult. Position yourself as the high-altitude scout for your group.',alt:[{name:'Tough Hide',why:'If your pack engages in combat frequently and you get dragged into fights.'}]}]},scavenger:{icon:'🦴',title:'Scavenger',subtitle:'Follow kills, eat carrion, stay low and invisible',color:'#a5d6a7',pitch:'Scavenger Ptera is about patience and opportunism. You follow large predators at a safe distance, wait for kills, and drop in fast to eat carrion and get airborne again.',slots:[{num:1,stage:'Juvenile',name:'Efficient Digestion',hidden:false,prime:false,why:'Scavenging is unpredictable — you can\'t always control when your next meal comes. Less food drain means you can wait longer for a good opportunity without starving.',timing:'Take immediately at Juvenile.',alt:[{name:'Reniculate Kidneys',why:'Coastal access means you can at least always handle thirst between scavenging runs.'}]},{num:2,stage:'Sub-Adult',name:'Sustained Hydration',hidden:false,prime:false,why:'Scavenging means unpredictable access to water. Slow your thirst drain and you spend more time watching for kills and less time searching for water.',timing:'Take at Sub-Adult.',alt:[{name:'Enhanced Stamina',why:'If you\'re covering huge distances tracking predators across the map.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Scavenging from altitude is your whole strategy. You need to spot kills from high up, identify when the predator has moved on, and time your drop perfectly.',timing:'Take at Adult. By now you should have solid carrion spots mapped out.',alt:[{name:'Tough Hide',why:'If you\'re getting caught at carcasses by returning predators.'}]}]},nomad:{icon:'🌍',title:'Nomad',subtitle:'Always moving, never staying in one spot',color:'#4db6ac',pitch:'Nomad Ptera never stops moving. You\'re always in flight, always crossing zones, hitting migration and patrol naturally just by existing. Your biggest challenge is stamina and sustaining yourself across the whole map.',slots:[{num:1,stage:'Juvenile',name:'Reniculate Kidneys',hidden:true,prime:true,why:'As a nomad you\'re constantly crossing coastlines. Saltwater drinking means you never have to divert inland for water — just skim the coast and keep moving.',timing:'Unlock before Slot 1 by drinking saltwater.',alt:[{name:'Efficient Digestion',why:'If you can\'t unlock Reniculate in time.'}]},{num:2,stage:'Sub-Adult',name:'Enhanced Stamina',hidden:false,prime:true,why:'The nomad playstyle lives and dies on stamina. Bigger pool, faster recovery. This lets you fly the entire island perimeter in one session and hit every zone effortlessly.',timing:'Take at Sub-Adult. Plan your first full island loop immediately after.',alt:[{name:'Sustained Hydration',why:'If you\'re finding thirst is your bottleneck more than stamina.'}]},{num:3,stage:'Adult',name:'Keen Eyesight',hidden:false,prime:false,why:'Nomads cross through every biome and danger zone. Keen Eyesight lets you identify threats from altitude and plot safe routes without slowing down.',timing:'Take at Adult.',alt:[{name:'Tough Hide',why:'If you keep getting intercepted mid-flight.'}]}]},ambush:{icon:'🌑',title:'Ambush Predator',subtitle:'Patient, strike fast, retreat immediately',color:'#7986cb',pitch:'Ptera is a natural ambush predator — you control altitude and the element of surprise. The ambush playstyle is about picking exact moments, diving at full speed, landing the kill, and being airborne ag
