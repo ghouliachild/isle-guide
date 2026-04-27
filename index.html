@@ -251,6 +251,22 @@
  .dino-panel-desc { font-size:14px; color:rgba(255,255,255,0.85); line-height:1.8; max-width:680px; }
  .dino-stub-notice { padding:48px 60px; font-size:13px; color:rgba(255,255,255,0.2); letter-spacing:1px; text-transform:uppercase; border-top:1px solid rgba(255,255,255,0.04); }
 
+
+  /* ── Dino Hero Card ── */
+  .dino-hero { display:flex; align-items:stretch; min-height:420px; position:relative; overflow:hidden; border-bottom:1px solid rgba(255,255,255,0.06); background:linear-gradient(100deg,#0d0d0d 0%,#111 50%,#0d0d0d 100%); }
+  .dino-hero-left { flex:1; padding:52px 60px 48px; display:flex; flex-direction:column; justify-content:center; z-index:2; }
+  .dino-hero-name { font-size:56px; font-weight:900; color:#ffffff; letter-spacing:4px; text-transform:uppercase; line-height:1; margin-bottom:16px; }
+  .dino-hero-tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+  .dino-hero-tag { font-size:10px; padding:4px 12px; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.5); letter-spacing:1.5px; text-transform:uppercase; font-weight:700; }
+  .dino-hero-tag.diet-carnivore { color:#c06050; border-color:rgba(192,96,80,0.4); }
+  .dino-hero-tag.diet-herbivore { color:#7aaa6a; border-color:rgba(122,170,106,0.4); }
+  .dino-hero-tag.diet-omnivore { color:#c9a84c; border-color:rgba(201,168,76,0.4); }
+  .dino-hero-desc { font-size:15px; color:rgba(255,255,255,0.7); line-height:1.8; max-width:520px; }
+  .dino-hero-right { width:520px; position:relative; flex-shrink:0; }
+  .dino-hero-img { position:absolute; bottom:0; right:-20px; height:110%; width:auto; object-fit:contain; object-position:bottom right; filter:drop-shadow(-20px 0 60px rgba(0,0,0,0.8)); }
+  .dino-hero-fade { position:absolute; top:0; left:0; width:60%; height:100%; background:linear-gradient(to right,#0d0d0d,transparent); z-index:1; pointer-events:none; }
+  .dino-stub-hero { display:flex; align-items:center; justify-content:center; height:100%; color:rgba(255,255,255,0.08); font-size:11px; letter-spacing:3px; text-transform:uppercase; }
+
 </style>
 </head>
 <body>
@@ -710,154 +726,234 @@
 
  <!-- PTERANODON PANEL -->
  <div class="dino-panel" id="dino-pteranodon" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Pteranodon</div>
- <div class="dino-panel-tags">
- <span class="dino-tag diet-carnivore">Carnivore</span>
- <span class="dino-tag">Medium</span>
- <span class="dino-tag">6m Wingspan</span>
- <span class="dino-tag">~40 min growth</span>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Pteranodon</div>
+   <div class="dino-hero-tags">
+    <span class="dino-hero-tag diet-carnivore">Carnivore</span>
+    <span class="dino-hero-tag">Medium</span>
+    <span class="dino-hero-tag">6m Wingspan</span>
+    <span class="dino-hero-tag">~40 min growth</span>
+   </div>
+   <div class="dino-hero-desc">A flying reptile, not a fighter. Fast-growing and incredibly mobile — but completely helpless on the ground. Survival is built on altitude, stamina management, and knowing when to leave.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-hero-fade"></div>
+   <img class="dino-hero-img" src="ptera.png" alt="Pteranodon" />
+  </div>
  </div>
- <div class="dino-panel-desc">A flying reptile, not a fighter. Fast-growing and incredibly mobile — but completely helpless on the ground. Survival is built on altitude, stamina management, and knowing when to leave.</div>
- </div></div>
- <div class="dino-stub-notice">See the Gameplay tab above for full Pteranodon content — survival tips, mutations, controls, and diet.</div>
- </div>
+ <div class="dino-stub-notice">See the Gameplay tab for full Pteranodon content — survival tips, mutations, controls, and diet.</div>
 
  <!-- STUB PANELS -->
  <div class="dino-panel dino-stub" id="dino-herrerasaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Herrerasaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Small</span><span class="dino-tag">~100 min growth</span></div>
- <div class="dino-panel-desc">An early predatory dinosaur from the Late Triassic. One of the smallest carnivores — scrappy and fast, with strong pack hunting potential.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Herrerasaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-carnivore">Carnivore</span><span class="dino-hero-tag">Small</span><span class="dino-hero-tag">~100 min growth</span></div>
+   <div class="dino-hero-desc">An early predatory dinosaur from the Late Triassic. One of the smallest carnivores — scrappy and fast, with strong pack hunting potential.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-maiasaura" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Maiasaura</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Large</span><span class="dino-tag">~8m length</span></div>
- <div class="dino-panel-desc">A hadrosaur known for parental care and herd behavior. Safety in numbers — and in size.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Maiasaura</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Large</span><span class="dino-hero-tag">~8m length</span></div>
+   <div class="dino-hero-desc">A hadrosaur known for parental care and herd behavior. Safety in numbers — and in size.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-omniraptor" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Omniraptor</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-omnivore">Omnivore</span><span class="dino-tag">Small</span></div>
- <div class="dino-panel-desc">A flexible raptor variant that can eat both plants and meat. Never far from a meal — if you're fast enough to catch it.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Omniraptor</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-omnivore">Omnivore</span><span class="dino-hero-tag">Small</span></div>
+   <div class="dino-hero-desc">A flexible raptor variant that can eat both plants and meat. Never far from a meal — if you're fast enough to catch it.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-deinosuchus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Deinosuchus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Large</span><span class="dino-tag">Semi-Aquatic</span></div>
- <div class="dino-panel-desc">A massive semi-aquatic ambush predator. Lurks in rivers and swamps — and it can fake fishing ripples to lure overconfident Pteranodons to their death.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Deinosuchus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-carnivore">Carnivore</span><span class="dino-hero-tag">Large</span><span class="dino-hero-tag">Semi-Aquatic</span></div>
+   <div class="dino-hero-desc">A massive semi-aquatic ambush predator. Lurks in rivers and swamps — and it can fake fishing ripples to lure overconfident Pteranodons to their death.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-beipiaosaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Beipiaosaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Small</span><span class="dino-tag">~50 min growth</span></div>
- <div class="dino-panel-desc">A small feathered theropod bridging the gap toward birds. Can reach elevated food sources other herbivores can't.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Beipiaosaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Small</span><span class="dino-hero-tag">~50 min growth</span></div>
+   <div class="dino-hero-desc">A small feathered theropod bridging the gap toward birds. Can reach elevated food sources other herbivores can't.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-stegosaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Stegosaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Large</span><span class="dino-tag">~9m length</span></div>
- <div class="dino-panel-desc">The iconic plated tank. Slow, but those tail spikes mean even large predators think twice.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Stegosaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Large</span><span class="dino-hero-tag">~9m length</span></div>
+   <div class="dino-hero-desc">The iconic plated tank. Slow, but those tail spikes mean even large predators think twice.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-carnotaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Carnotaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Large</span><span class="dino-tag">~9m length</span></div>
- <div class="dino-panel-desc">A horned, bull-like predator built for charging. High damage, aggressive playstyle. Not subtle — doesn't need to be.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Carnotaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-carnivore">Carnivore</span><span class="dino-hero-tag">Large</span><span class="dino-hero-tag">~9m length</span></div>
+   <div class="dino-hero-desc">A horned, bull-like predator built for charging. High damage, aggressive playstyle. Not subtle — doesn't need to be.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-ceratosaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Ceratosaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Large</span><span class="dino-tag">~9m length</span></div>
- <div class="dino-panel-desc">A crested mid-tier predator with horn attacks and strong pack hunting capability. Dominant alone, terrifying in a group.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Ceratosaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-carnivore">Carnivore</span><span class="dino-hero-tag">Large</span><span class="dino-hero-tag">~9m length</span></div>
+   <div class="dino-hero-desc">A crested mid-tier predator with horn attacks and strong pack hunting capability. Dominant alone, terrifying in a group.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-dilophosaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Dilophosaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-carnivore">Carnivore</span><span class="dino-tag">Medium</span><span class="dino-tag">~7m length</span></div>
- <div class="dino-panel-desc">The dual-crested medium carnivore. Balanced and versatile — its crest isn't just decoration, it's a dominance signal.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Dilophosaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-carnivore">Carnivore</span><span class="dino-hero-tag">Medium</span><span class="dino-hero-tag">~7m length</span></div>
+   <div class="dino-hero-desc">The dual-crested medium carnivore. Balanced and versatile — its crest isn't just decoration, it's a dominance signal.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-diabloceratops" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Diabloceratops</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Small</span></div>
- <div class="dino-panel-desc">Small but horned and surprisingly dangerous. Can charge and deal real damage to predators that underestimate it.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Diabloceratops</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Small</span></div>
+   <div class="dino-hero-desc">Small but horned and surprisingly dangerous. Can charge and deal real damage to predators that underestimate it.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-gallimimus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Gallimimus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-omnivore">Omnivore</span><span class="dino-tag">Medium</span></div>
- <div class="dino-panel-desc">The fastest thing on two legs. Survival strategy: be somewhere else before danger arrives.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Gallimimus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-omnivore">Omnivore</span><span class="dino-hero-tag">Medium</span></div>
+   <div class="dino-hero-desc">The fastest thing on two legs. Survival strategy: be somewhere else before danger arrives.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-troodon" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Troodon</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-omnivore">Omnivore</span><span class="dino-tag">Very Small</span><span class="dino-tag">~30-45 min growth</span></div>
- <div class="dino-panel-desc">Tiny but coordinated. Alone you're prey. In a pack you're terrifying.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Troodon</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-omnivore">Omnivore</span><span class="dino-hero-tag">Very Small</span><span class="dino-hero-tag">~30-45 min growth</span></div>
+   <div class="dino-hero-desc">Tiny but coordinated. Alone you're prey. In a pack you're terrifying.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-dryosaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Dryosaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Small</span></div>
- <div class="dino-panel-desc">Agile, quick, and hard to corner. Survives by never being where predators expect it.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Dryosaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Small</span></div>
+   <div class="dino-hero-desc">Agile, quick, and hard to corner. Survives by never being where predators expect it.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-tenontosaurus" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Tenontosaurus</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Medium</span><span class="dino-tag">~8m length</span></div>
- <div class="dino-panel-desc">A social herbivore with a powerful tail and coordinated herd defense. Protect the group, protect yourself.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Tenontosaurus</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Medium</span><span class="dino-hero-tag">~8m length</span></div>
+   <div class="dino-hero-desc">A social herbivore with a powerful tail and coordinated herd defense. Protect the group, protect yourself.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  <div class="dino-panel dino-stub" id="dino-hypsilophodon" style="display:none;">
- <div class="dino-panel-header"><div class="dino-panel-meta">
- <div class="dino-panel-name">Hypsilophodon</div>
- <div class="dino-panel-tags"><span class="dino-tag diet-herbivore">Herbivore</span><span class="dino-tag">Very Small</span></div>
- <div class="dino-panel-desc">Small, fast, and one of the few that can climb trees to reach elevated food. If they can't reach you, they can't eat you.</div>
- </div></div>
- <div class="dino-stub-notice">Full guide coming soon.</div>
+ <div class="dino-hero">
+  <div class="dino-hero-left">
+   <div class="dino-hero-name">Hypsilophodon</div>
+   <div class="dino-hero-tags"><span class="dino-hero-tag diet-herbivore">Herbivore</span><span class="dino-hero-tag">Very Small</span></div>
+   <div class="dino-hero-desc">Small, fast, and one of the few that can climb trees to reach elevated food. If they can't reach you, they can't eat you.</div>
+  </div>
+  <div class="dino-hero-right">
+   <div class="dino-stub-hero">Art coming soon</div>
+  </div>
  </div>
+ <div class="dino-stub-notice">Full guide coming soon.</div>
+</div>
 
  </div>
 
@@ -1032,5 +1128,7 @@ function touchEnd(){dragging=false;}
 updateProgress();
 
 </script>
+
+</div>
 </body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+</html>
