@@ -207,20 +207,22 @@
   .overview-footer { padding:60px 0 20px; font-size:14px; color:rgba(255,255,255,0.2); font-style:italic; letter-spacing:0.5px; }
 
   /* ── Horizontal scroll-jack ── */
-  .horiz-scroll-outer { position:relative; }
-  .horiz-scroll-sticky { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
-  .horiz-track { display:flex; gap:0; transition:transform 0.6s cubic-bezier(0.77,0,0.175,1); will-change:transform; }
-  .horiz-tile { position:relative; min-width:100vw; height:80vh; cursor:pointer; overflow:hidden; display:flex; align-items:flex-end; border-right:1px solid rgba(255,255,255,0.06); transition:filter 0.3s; }
-  .horiz-tile:hover { filter:brightness(1.15); }
+  .horiz-scroll-outer { position:relative; height:500vh; }
+  .horiz-scroll-sticky { position:sticky; top:0; height:100vh; overflow:hidden; display:flex; flex-direction:column; justify-content:center; padding:0 60px; }
+  .horiz-viewport { overflow:hidden; width:100%; }
+  .horiz-track { display:flex; gap:24px; transition:transform 0.55s cubic-bezier(0.77,0,0.175,1); will-change:transform; padding:8px 0; }
+  .horiz-tile { position:relative; min-width:340px; width:340px; height:460px; cursor:pointer; overflow:hidden; display:flex; align-items:flex-end; border:1px solid rgba(255,255,255,0.07); flex-shrink:0; transition:border-color 0.3s, transform 0.3s; }
+  .horiz-tile:hover { border-color:rgba(201,185,154,0.3); transform:translateY(-4px); }
+  .horiz-tile.active-tile { border-color:rgba(201,185,154,0.5); }
   .horiz-tile-bg { position:absolute; inset:0; }
-  .horiz-tile-content { position:relative; z-index:2; padding:60px; width:100%; }
-  .horiz-tile-num { font-size:11px; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; margin-bottom:16px; }
-  .horiz-tile-name { font-size:52px; font-weight:900; color:#c9b99a; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; line-height:1; }
-  .horiz-tile-line { width:48px; height:2px; background:#8a7a60; margin-bottom:20px; }
-  .horiz-tile-desc { font-size:16px; color:rgba(255,255,255,0.45); line-height:1.7; max-width:540px; margin-bottom:32px; }
-  .horiz-tile-cta { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#c9b99a; }
-  .horiz-dots { display:flex; gap:8px; justify-content:center; padding:20px 0 0; }
-  .horiz-dot { width:24px; height:2px; background:rgba(255,255,255,0.15); transition:all 0.3s; }
+  .horiz-tile-content { position:relative; z-index:2; padding:32px; width:100%; }
+  .horiz-tile-num { font-size:10px; letter-spacing:4px; color:rgba(255,255,255,0.2); text-transform:uppercase; margin-bottom:12px; }
+  .horiz-tile-name { font-size:28px; font-weight:900; color:#c9b99a; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; line-height:1.1; }
+  .horiz-tile-line { width:32px; height:2px; background:#8a7a60; margin-bottom:14px; }
+  .horiz-tile-desc { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.7; margin-bottom:24px; }
+  .horiz-tile-cta { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#c9b99a; }
+  .horiz-dots { display:flex; gap:8px; margin-top:24px; }
+  .horiz-dot { width:24px; height:2px; background:rgba(255,255,255,0.15); transition:all 0.3s; cursor:pointer; }
   .horiz-dot.active { background:#c9b99a; width:48px; }
 </style>
 </head>
@@ -284,6 +286,7 @@
     <!-- Scroll-jacked horizontal tile section -->
     <div class="horiz-scroll-outer" id="horizOuter">
       <div class="horiz-scroll-sticky" id="horizSticky">
+        <div class="horiz-viewport">
         <div class="horiz-track" id="horizTrack">
           <div class="horiz-tile" onclick="switchTab('gameplay')">
             <div class="horiz-tile-bg" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a0a0a 100%);"></div>
@@ -326,12 +329,13 @@
             </div>
           </div>
         </div>
+        </div><!-- end horiz-viewport -->
         <!-- Progress dots -->
         <div class="horiz-dots" id="horizDots">
-          <div class="horiz-dot active" id="dot-0"></div>
-          <div class="horiz-dot" id="dot-1"></div>
-          <div class="horiz-dot" id="dot-2"></div>
-          <div class="horiz-dot" id="dot-3"></div>
+          <div class="horiz-dot active" id="dot-0" onclick="horizGoTo(0)"></div>
+          <div class="horiz-dot" id="dot-1" onclick="horizGoTo(1)"></div>
+          <div class="horiz-dot" id="dot-2" onclick="horizGoTo(2)"></div>
+          <div class="horiz-dot" id="dot-3" onclick="horizGoTo(3)"></div>
         </div>
       </div>
     </div>
@@ -822,31 +826,19 @@ function touchEnd(){dragging=false;}
 updateProgress();
 
 // ── Horizontal scroll-jack ──
+const TILE_COUNT = 4;
+const TILE_W = 364; // tile width + gap
+
+function horizGoTo(idx){
+  const track = document.getElementById('horizTrack');
+  if(!track) return;
+  const offset = Math.max(0, idx) * TILE_W;
+  track.style.transform = 'translateX(-' + offset + 'px)';
+  document.querySelectorAll('.horiz-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  document.querySelectorAll('.horiz-tile').forEach((t,i) => t.classList.toggle('active-tile', i===idx));
+}
+
 (function(){
-  const TILE_COUNT = 4;
-  let currentTile = 0;
-  let isLocked = false;
-  let lockCooldown = false;
-  let accumulatedDelta = 0;
-  const DELTA_THRESHOLD = 80;
-
-  function getOuter(){ return document.getElementById('horizOuter'); }
-  function getTrack(){ return document.getElementById('horizTrack'); }
-  function isOverviewActive(){ return document.getElementById('tab-overview') && document.getElementById('tab-overview').style.display !== 'none'; }
-
-  function goToTile(idx){
-    if(idx < 0 || idx >= TILE_COUNT) return false;
-    currentTile = idx;
-    getTrack().style.transform = 'translateX(-' + (idx * 100) + 'vw)';
-    document.querySelectorAll('.horiz-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
-    return true;
-  }
-
-  function isScrolledToSection(){
-    const outer = getOuter();
-    if(!outer) return false;
-    const rect = outer.getBoundingClientRect();
-    return rect.top <= 1 && rect.bottom > window.innerHeight * 0.5;
-  }
-
-  function
+  function isOverviewActive(){
+    const t = document.getElementById('tab-overview');
+    return t
