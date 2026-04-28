@@ -130,7 +130,7 @@ body {
   width: 75%;
   pointer-events: none;
   z-index: 0;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateX(clamp(0%, calc((1700px - 100vw) * 0.5), 100%));
 }
 
 .overview-hero-image img {
@@ -285,29 +285,15 @@ body {
   font-style: italic;
 }
 
+@media (max-width: 1700px) {
+  .overview-hero {
+    padding: 60px 80px 60px;
+  }
+}
+
 @media (max-width: 1200px) {
   .overview-hero {
-    padding: 60px 60px 60px;
-  }
-  .overview-hero-image {
-    opacity: 0.6;
-  }
-}
-
-@media (max-width: 900px) {
-  .overview-hero {
-    padding: 40px 40px 40px;
-  }
-  .overview-hero-image {
-    opacity: 0.25;
-    width: 90%;
-  }
-}
-
-@media (max-width: 600px) {
-  .overview-hero-image {
-    opacity: 0;
-    transform: translateX(100%);
+    padding: 40px 80px 40px;
   }
 }
 
@@ -399,7 +385,9 @@ body {
   <div style="padding:120px 80px; color:rgba(255,255,255,0.15); font-size:11px; letter-spacing:3px; text-transform:uppercase;">Coming soon</div>
 </div>
 
-<!-- ── Mdocument.querySelectorAll('.nav-tab').forEach((t, i) => {
+<!-- ── MAP TAB (stub) ── -->
+<div class="tab-body" id="tab-map">
+  <div style="padding:120px 80px; color:rgba(255,255,255,0.15); font-size:11px; letter-spacing:3px; text-transform:uppercase;">Coming soon</document.querySelectorAll('.nav-tab').forEach((t, i) => {
     t.classList.toggle('active', TABS[i] === name);
   });
   document.querySelectorAll('.tab-body').forEach((b, i) => {
