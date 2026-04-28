@@ -105,24 +105,29 @@ body {
    OVERVIEW — HERO
 ───────────────────────────────────────────── */
 .overview-hero {
-  padding: 100px 80px 80px;
+  padding: 80px 80px 0;
   max-width: none;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  min-height: 60vh;
 }
 
 .overview-hero-text {
-  max-width: 860px;
+  max-width: 500px;
   position: relative;
   z-index: 1;
+  padding-bottom: 80px;
+  flex-shrink: 0;
 }
 
 .overview-hero-image {
   position: absolute;
   top: 0;
+  bottom: 0;
   right: 0;
-  width: 55%;
-  height: 100%;
+  width: 70%;
   pointer-events: none;
   z-index: 0;
 }
@@ -131,7 +136,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: left center;
   display: block;
 }
 
@@ -376,7 +381,4 @@ function switchTab(name) {
   document.querySelectorAll('.nav-tab').forEach((t, i) => {
     t.classList.toggle('active', TABS[i] === name);
   });
-  document.querySelectorAll('.tab-body').forEach((b, i) => {
-    b.classList.toggle('active', TABS[i] === name);
-  });
-  window.scrollT
+  document.querySelectorAll('.tab-body').
