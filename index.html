@@ -104,25 +104,26 @@ body {
 /* ─────────────────────────────────────────────
    OVERVIEW — HERO
 ───────────────────────────────────────────── */
-.overview-hero {
-  padding: 100px 80px 80px;
-  display: flex;
-  align-items: center;
-  gap: 0;
+#tab-overview {
+  position: relative;
   overflow: hidden;
 }
 
-.overview-hero-text {
-  flex: 1 1 0;
-  min-width: 0;
+.overview-hero {
+  padding: 100px 80px 80px;
+  max-width: 860px;
+  position: relative;
+  z-index: 1;
 }
 
 .overview-hero-image {
-  flex: 0 0 520px;
-  position: relative;
-  height: 420px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 580px;
+  height: 100%;
   pointer-events: none;
-  margin-right: -80px;
+  z-index: 0;
 }
 
 .overview-eyebrow {
@@ -292,18 +293,17 @@ body {
 <div class="tab-body active" id="tab-overview">
 
   <div class="overview-hero">
-    <div class="overview-hero-text">
-      <h1 class="overview-title">THE FOOD CHAIN HAS A BOTTOM. <em>YOU LIVE THERE.</em> BUT NOT FOR LONG.</h1>
-      <p class="overview-body">Welcome. You picked a game where everything is bigger than you, faster than you, and significantly more interested in eating you than making friends. This guide won't fix your instincts — but it might keep you alive long enough to develop some.</p>
+    <h1 class="overview-title">THE FOOD CHAIN HAS A BOTTOM. <em>YOU LIVE THERE.</em> BUT NOT FOR LONG.</h1>
+    <p class="overview-body">Welcome. You picked a game where everything is bigger than you, faster than you, and significantly more interested in eating you than making friends. This guide won't fix your instincts — but it might keep you alive long enough to develop some.</p>
 
-      <div class="game-overview">
-        <p class="game-overview-text">The Isle drops you into a living ecosystem with no instructions and no mercy. Every creature on the map is trying to survive — including the ones that want to make a meal out of you. The learning curve isn't a curve. It's a cliff. But once it clicks, there's nothing else like it.</p>
-        <p class="game-overview-text">You spawn as a juvenile. Small, fragile, and at the bottom of everything. Your only job is to eat, drink, and grow without getting eaten first. Reach adulthood and the game opens up — you become the threat instead of the prey. Push further and you're chasing Prime, the pinnacle of your species. Most players never get there. You will die dozens of times before you do. The good news is you're already used to it.</p>
-      </div>
+    <div class="game-overview">
+      <p class="game-overview-text">The Isle drops you into a living ecosystem with no instructions and no mercy. Every creature on the map is trying to survive — including the ones that want to make a meal out of you. The learning curve isn't a curve. It's a cliff. But once it clicks, there's nothing else like it.</p>
+      <p class="game-overview-text">You spawn as a juvenile. Small, fragile, and at the bottom of everything. Your only job is to eat, drink, and grow without getting eaten first. Reach adulthood and the game opens up — you become the threat instead of the prey. Push further and you're chasing Prime, the pinnacle of your species. Most players never get there. You will die dozens of times before you do. The good news is you're already used to it.</p>
     </div>
-    <div class="overview-hero-image">
-      <img src="the isle.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:left center;display:block;">
-    </div>
+  </div>
+
+  <div class="overview-hero-image">
+    <img src="The isle.PNG" alt="" style="width:100%;height:100%;object-fit:cover;object-position:left center;display:block;">
   </div>
 
   <div class="section-label">What's in this guide</div>
@@ -375,3 +375,4 @@ function switchTab(name) {
 
 </body>
 </html>
+                                                                 
