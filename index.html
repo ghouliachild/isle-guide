@@ -46,7 +46,7 @@ body {
    SITE HEADER
 ───────────────────────────────────────────── */
 .site-header {
-  padding: 48px 80px 0;
+  padding: 24px 80px 0;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -73,9 +73,9 @@ body {
 .nav {
   display: flex;
   gap: 0;
-  padding: 32px 80px 0;
+  padding: 16px 80px 0;
   border-bottom: 1px solid var(--border);
-  margin-top: 32px;
+  margin-top: 16px;
 }
 
 .nav-tab {
@@ -110,7 +110,7 @@ body {
 }
 
 .overview-hero {
-  padding: 100px 80px 80px;
+  padding: 48px 80px 48px;
   max-width: none;
   position: relative;
   z-index: 1;
@@ -390,7 +390,7 @@ body {
 </div>
 
 <script>
-const TABS = ['overview','dinosaurs','mutations','objectidocument.querySelectorAll('.nav-tab').forEach((t, i) => {
+const TABS = ['overview','dinosaurs','mutations','objectivdocument.querySelectorAll('.nav-tab').forEach((t, i) => {
     t.classList.toggle('active', TABS[i] === name);
   });
   document.querySelectorAll('.tab-body').forEach((b, i) => {
