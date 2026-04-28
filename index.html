@@ -381,4 +381,12 @@ function switchTab(name) {
   document.querySelectorAll('.nav-tab').forEach((t, i) => {
     t.classList.toggle('active', TABS[i] === name);
   });
-  document.querySelectorAll('.tab-body').
+  document.querySelectorAll('.tab-body').forEach((b, i) => {
+    b.classList.toggle('active', TABS[i] === name);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
