@@ -411,6 +411,8 @@
  </div>
  </div>
 
+ <div id="ptera-content" style="display:none;">
+
  <div class="htp-intro">
  <strong>Pteranodon is a flying reptile, not a fighter.</strong> Your survival is built on three things: altitude, mobility, and knowing when to leave. You are fast, fragile, and completely useless on the ground against anything larger than a rabbit. Stay airborne as much as possible — the ground is where you die.
  </div>
@@ -723,6 +725,7 @@
  <div class="keybind-row"><span class="key">F1</span><div class="key-desc"><strong>Toggle HUD</strong>Hide/show all UI elements</div></div>
  </div>
  </div>
+ </div>
 
  <!-- PTERANODON PANEL -->
  <div class="dino-panel" id="dino-pteranodon" style="display:none;">
@@ -955,7 +958,8 @@
  <div class="dino-stub-notice">Full guide coming soon.</div>
 </div>
 
- </div>
+
+  </div><!-- end tab-gameplay -->
 
  <!-- MUTATIONS TAB -->
  <div class="tab-body" id="tab-mutations" style="display:none;">
@@ -1096,6 +1100,9 @@ function selectDino(name) {
  if(panel) panel.style.display = '';
  const sel = document.getElementById('dino-select');
  if(sel) sel.value = name;
+
+ const pc = document.getElementById('ptera-content');
+ if(pc) pc.style.display = name === 'pteranodon' ? '' : 'none';
 }
 function setPlaystyle(style){if(!style)return;document.getElementById('no-selection').style.display='none';renderRec(playstyles[style]);}
 function renderRec(ps){const card=document.getElementById('rec-card');card.className='rec-card visible'+(ps.warning?' cannibal':'');let slotsHTML=ps.slots.map(s=>`<div class="rec-slot"><div class="rec-slot-num">${s.num}</div><div class="rec-slot-info"><div class="rec-slot-label">Slot ${s.num} — ${s.stage}</div><div class="rec-slot-name">${s.name}${s.hidden?' <span class="hidden-tag"> Hidden</span>':''}${s.prime?' <span class="prime-tag"> Prime</span>':''}</div><div class="rec-slot-why">${s.why}</div><div class="rec-slot-timing">⏱ ${s.timing}</div>${s.alt.length?`<div class="rec-alt" style="margin-top:8px;"><div class="rec-alt-label">Alternatives</div>${s.alt.map(a=>`<div class="rec-alt-item"><span>${a.name}:</span> ${a.why}</div>`).join('')}</div>`:''}</div></div>`).join('');card.innerHTML=`<div class="rec-header"><div class="rec-icon">${ps.icon}</div><div><div class="rec-title" style="color:${ps.color}">${ps.title}</div><div class="rec-subtitle">${ps.subtitle}</div></div></div><div class="rec-pitch">${ps.pitch}</div><div class="rec-slots">${slotsHTML}</div>${ps.warning?`<div style="background:rgba(218,54,51,0.1);border:1px solid rgba(218,54,51,0.3);border-radius:8px;padding:10px 12px;font-size:11px;color:#f85149;margin-top:4px;">${ps.warning}</div>`:''}`;}
