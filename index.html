@@ -104,9 +104,34 @@ body {
 /* ─────────────────────────────────────────────
    OVERVIEW — HERO
 ───────────────────────────────────────────── */
+#tab-overview {
+  position: relative;
+  overflow: hidden;
+}
+
 .overview-hero {
   padding: 100px 80px 80px;
   max-width: 860px;
+  position: relative;
+  z-index: 1;
+}
+
+.overview-hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.overview-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
 }
 
 .overview-eyebrow {
@@ -285,6 +310,10 @@ body {
     </div>
   </div>
 
+  <div class="overview-hero-image">
+    <img src="Raptor.png" alt="">
+  </div>
+
   <div class="section-label">What's in this guide</div>
 
   <div class="section-grid">
@@ -354,4 +383,4 @@ function switchTab(name) {
 
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                          
