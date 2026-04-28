@@ -277,11 +277,14 @@ body {
    OVERVIEW — FOOTER STRIP
 ───────────────────────────────────────────── */
 .overview-footer {
-  padding: 64px 80px;
+  padding: 24px 80px;
   font-size: 13px;
-  color: var(--text-dim);
+  color: var(--amber);
   letter-spacing: 0.5px;
   font-style: italic;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media (max-width: 1700px) {
@@ -303,7 +306,6 @@ body {
 <!-- SITE HEADER -->
 <header class="site-header">
   <div class="site-logo">IsleGuide</div>
-  <div class="site-meta">The Isle &middot; Evrima 0.20.109 &middot; Gateway</div>
 </header>
 
 <!-- NAV -->
@@ -365,7 +367,10 @@ body {
     </div>
   </div>
 
-  <div class="overview-footer">Good luck out there. You're going to need it.</div>
+  <div class="overview-footer">
+    <span>Good luck out there. You're going to need it.</span>
+    <span class="site-meta">The Isle &middot; Evrima 0.20.109 &middot; Gateway</span>
+  </div>
 
 </div>
 
@@ -386,11 +391,7 @@ body {
 
 <!-- ── MAP TAB (stub) ── -->
 <div class="tab-body" id="tab-map">
-  <div style="padding:120px 80px; color:rgba(255,255,255,0.15); font-size:11px; letter-spacing:3px; text-transform:uppercase;">Coming soon</div>
-</div>
-
-<script>
-const TABS = ['overview','dinosaurs','mutations','objectivdocument.querySelectorAll('.nav-tab').forEach((t, i) => {
+  <div style="padding:120px 80px; color:rgba(255,255,255,0.15); font-size:11px; letter-spacing:3px; text-transform:uppercasedocument.querySelectorAll('.nav-tab').forEach((t, i) => {
     t.classList.toggle('active', TABS[i] === name);
   });
   document.querySelectorAll('.tab-body').forEach((b, i) => {
